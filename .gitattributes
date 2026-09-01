@@ -1,0 +1,141 @@
+# WaveBreaker — Unity 6 (Asset Serialization: Force Text)
+#
+# 목적 3가지
+#   1. 줄바꿈 통일 — Windows/Mac 혼용 반에서 "전 파일이 수정됨"으로 보이는 사고 방지
+#   2. Unity YAML 에셋을 텍스트로 명시 — 씬·프리팹 병합이 가능해진다
+#   3. 바이너리 명시 — git 이 diff·병합을 시도하다 파일을 깨뜨리지 않게
+
+# ------------------------------------------------------------------ 기본
+# 텍스트 파일은 자동 감지해 저장소에는 LF 로 저장한다.
+* text=auto
+
+# ------------------------------------------------------------------ Unity YAML
+# Force Text 직렬화 기준. UnityYAMLMerge 를 병합 드라이버로 지정한다.
+# ※ 드라이버 등록은 1회만 하면 된다 — docs/05_Unity프로젝트/브랜치-전략.md 참고.
+#   등록하지 않아도 일반 텍스트 병합으로 동작한다(충돌 해결이 조금 더 번거로울 뿐).
+*.unity              text eol=lf merge=unityyamlmerge diff
+*.prefab             text eol=lf merge=unityyamlmerge diff
+*.asset              text eol=lf merge=unityyamlmerge diff
+*.mat                text eol=lf merge=unityyamlmerge diff
+*.anim               text eol=lf merge=unityyamlmerge diff
+*.controller         text eol=lf merge=unityyamlmerge diff
+*.overrideController text eol=lf merge=unityyamlmerge diff
+*.physicMaterial     text eol=lf merge=unityyamlmerge diff
+*.physicsMaterial2D  text eol=lf merge=unityyamlmerge diff
+*.playable           text eol=lf merge=unityyamlmerge diff
+*.mask               text eol=lf merge=unityyamlmerge diff
+*.brush              text eol=lf merge=unityyamlmerge diff
+*.flare              text eol=lf merge=unityyamlmerge diff
+*.fontsettings       text eol=lf merge=unityyamlmerge diff
+*.guiskin            text eol=lf merge=unityyamlmerge diff
+*.giparams           text eol=lf merge=unityyamlmerge diff
+*.renderTexture      text eol=lf merge=unityyamlmerge diff
+*.spriteatlas        text eol=lf merge=unityyamlmerge diff
+*.spriteatlasv2      text eol=lf merge=unityyamlmerge diff
+*.terrainlayer       text eol=lf merge=unityyamlmerge diff
+*.mixer              text eol=lf merge=unityyamlmerge diff
+*.shadervariants     text eol=lf merge=unityyamlmerge diff
+*.preset             text eol=lf merge=unityyamlmerge diff
+*.lighting           text eol=lf merge=unityyamlmerge diff
+*.signal             text eol=lf merge=unityyamlmerge diff
+*.wlt                text eol=lf merge=unityyamlmerge diff
+
+# .meta 는 절대 깨지면 안 된다. 깨지면 참조가 전부 끊긴다.
+*.meta               text eol=lf merge=unityyamlmerge diff
+
+# ------------------------------------------------------------------ 소스 · 설정
+*.cs                 text eol=lf diff=csharp
+*.shader             text eol=lf
+*.shadergraph        text eol=lf
+*.hlsl               text eol=lf
+*.cginc              text eol=lf
+*.compute            text eol=lf
+*.asmdef             text eol=lf
+*.asmref             text eol=lf
+*.inputactions       text eol=lf
+*.json               text eol=lf
+*.md                 text eol=lf
+*.txt                text eol=lf
+*.xml                text eol=lf
+*.svg                text eol=lf
+*.yml                text eol=lf
+*.yaml               text eol=lf
+*.sh                 text eol=lf
+
+# Windows 전용 스크립트는 CRLF 를 유지한다.
+*.ps1                text eol=crlf
+*.bat                text eol=crlf
+*.cmd                text eol=crlf
+
+# 생성물 — diff 를 보지 않는다.
+*.csproj             text eol=crlf -diff
+*.sln                text eol=crlf -diff
+
+# ------------------------------------------------------------------ 바이너리
+# 이미지
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.bmp   binary
+*.tga   binary
+*.tif   binary
+*.tiff  binary
+*.psd   binary
+*.ai    binary
+*.exr   binary
+*.hdr   binary
+*.ico   binary
+*.cubemap binary
+
+# 오디오 · 영상
+*.wav   binary
+*.mp3   binary
+*.ogg   binary
+*.aif   binary
+*.aiff  binary
+*.mp4   binary
+*.mov   binary
+*.webm  binary
+
+# 3D · 폰트
+*.fbx   binary
+*.obj   binary
+*.blend binary
+*.dae   binary
+*.3ds   binary
+*.ttf   binary
+*.otf   binary
+
+# 패키지 · 문서 · 라이브러리
+*.unitypackage binary
+*.zip   binary
+*.7z    binary
+*.rar   binary
+*.pdf   binary
+*.xlsx  binary
+*.docx  binary
+*.pptx  binary
+*.dll   binary
+*.so    binary
+*.dylib binary
+*.a     binary
+*.lib   binary
+*.aar   binary
+*.jar   binary
+
+# ------------------------------------------------------------------ Git LFS (미사용)
+# 이 프로젝트는 2D + Kenney CC0 스프라이트라 에셋이 작아 LFS 를 쓰지 않는다.
+# LFS 를 켜면 clone 하는 쪽에도 git-lfs 설치가 강제되고, 설치를 빠뜨리면
+# 이미지가 포인터 텍스트로 받아져 "에셋이 다 깨졌어요" 사고가 난다.
+#
+# 대용량 에셋(오디오 트랙, 고해상도 텍스처)을 넣게 되면 그때 아래를 켠다.
+# 켜기 전에 반드시 `git lfs install` 을 먼저 실행할 것.
+#
+# *.psd  filter=lfs diff=lfs merge=lfs -text
+# *.wav  filter=lfs diff=lfs merge=lfs -text
+# *.mp4  filter=lfs diff=lfs merge=lfs -text
+# *.fbx  filter=lfs diff=lfs merge=lfs -text
+
+# ------------------------------------------------------------------ GitHub 언어 통계
+docs/**   linguist-documentation

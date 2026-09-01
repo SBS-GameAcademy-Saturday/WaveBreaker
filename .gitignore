@@ -104,3 +104,7 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+
+# cli-loop (uloopmcp) — 에디터가 재생성하는 툴 스키마 캐시.
+# project-runner-pin.json 은 버전 핀이므로 추적을 유지한다.
+/.uloop/tools.json
