@@ -5,6 +5,7 @@
 | **회차 / 주차** | 031–040 (10회) / 7~8주차 |
 | **선행** | Phase 1 |
 | **산출물** | 키보드로 움직이는 캐릭터 |
+| **설계 근거** | [레퍼런스-분석.md](../00_기획/레퍼런스-분석.md) |
 
 > 🎉 **학생이 6주를 기다린 구간.** 첫 회차에 반드시 "화면에서 뭔가 움직이는" 결과를 만든다.
 
@@ -17,10 +18,24 @@
 
 ## 📚 다루는 내용
 
-| 주차 | 내용 |
+| 회차 | 내용 |
 |---|---|
-| 7주 (031–035) | 에디터 인터페이스 / GameObject·Component / Transform / Rigidbody 물리 실습 / Play 모드 / **MonoBehaviour·Start·Update** / Debug.Log / **[SerializeField]** |
-| 8주 (036–040) | transform.position 이동 / Vector2·Vector3 / **입력 기반 Player 이동** / Time.deltaTime / SetActive / [ContextMenu] |
+| 031 | 에디터 인터페이스와 **Inspector** — 6개 창, Scene 조작, 값 바꾸기 |
+| 032 | **Transform ①** Position과 좌표계 |
+| 033 | **Transform ②** Rotation · Scale · 부모자식 |
+| 034 | GameObject와 Component — 그릇과 부품 (Rigidbody 맛보기) |
+| 035 | 7주차 정리 — 조합 실습 + 자가진단 5단계 |
+| 036 | 첫 스크립트 — **MonoBehaviour · Start · Update · Debug.Log** |
+| 037 | **[SerializeField]** — Inspector 연동 + Play 모드 함정 |
+| 038 | 코드로 이동 — `transform.position` / Vector2·Vector3 |
+| 039 | **Time.deltaTime** — 이동거리를 공평하게 |
+| 040 | **입력 기반 Player 이동** — WASD / SetActive / [ContextMenu] |
+
+> 📚 이 순서는 [레퍼런스-분석.md](../00_기획/레퍼런스-분석.md) 에서 검증된 입문 강의 5종을 조사해 재설계한 것이다.
+> 핵심 근거 3가지:
+> 1. **Inspector에 한 회차 전부** — 골드메탈 엔진입문도 인터페이스에 통째로 한 편(B1)을 쓴다
+> 2. **Transform에 두 회차** — 기관 교육과정(한국디지털컨버전스협회)은 트랜스폼에만 3강을 쓴다
+> 3. **`Time.deltaTime`은 이동 뒤(039)** — 골드메탈 B8과 같다. 037·038에서 겪은 불편을 회수한다
 
 > 🔑 **Phase 0~1과의 연결을 계속 짚는다.** "이 스크립트도 클래스예요", "Start는 우리가 만들던 메서드예요", "`[SerializeField]`는 private 필드를 인스펙터에만 여는 겁니다(property 배웠죠)". 6주간 배운 게 헛되지 않았다는 확인이 이 구간 동기의 핵심이다.
 
@@ -53,3 +68,7 @@
 ## ⏭ 연결
 
 Phase 3에서 여기에 물리·충돌·프리팹을 붙여 "총알이 몬스터를 맞히는" 상태까지 간다.
+
+> 📌 **Rigidbody 물리는 Phase 3로 넘겼다.** 034회차에서 "부품을 붙이면 능력이 생긴다"는
+> 예시로만 쓰고, 중력·힘·충돌은 041회차부터 제대로 다룬다. 골드메탈 엔진입문도
+> 물리(B9~B11)를 이동(B6~B8) 뒤에 둔다 — 조작이 먼저고 물리가 나중이다.
