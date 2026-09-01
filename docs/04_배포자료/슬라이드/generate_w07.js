@@ -332,6 +332,55 @@ function shot(s, name, x, y, w, h, caption) {
   s.addNotes("좌표 맞히기 게임: 강사가 물체를 놓고 학생이 채팅에 좌표를 예상해 쓴다. 3~4번 반복하면 감각이 붙는다.");
 }
 
+// ================================================================ 6.5 월드/로컬 좌표
+{
+  const s = slide();
+  head(s, "033", "월드 좌표와 로컬 좌표.", "같은 자리에 있는데 Inspector 숫자가 다르다.");
+
+  shot(s, "032_WorldLocal", M, 2.15, 6.35, 3.55, "032_WorldLocal_Demo — 설명 없이 이 씬부터 연다");
+
+  const rx = 7.65, rw = W - M - 7.65;
+
+  // 두 오브젝트 비교
+  s.addText("Inspector Position", {
+    x: rx, y: 2.15, w: rw, h: 0.3,
+    fontFace: F_SEMI, fontSize: T.label, color: MUTED, margin: 0, isTextBox: true,
+  });
+  rule(s, rx, 2.6, rw, HAIRLINE);
+
+  const cmp = [
+    ["A_NoParent", "부모 없음", "3, 2"],
+    ["B_Child", "부모 있음", "0, 0"],
+  ];
+  let cy = 2.8;
+  cmp.forEach((c) => {
+    s.addText(c[0], { x: rx, y: cy, w: 2.1, h: 0.42, fontFace: F_MED, fontSize: T.body, color: INK, valign: "middle", margin: 0, isTextBox: true });
+    s.addText(c[1], { x: rx + 2.1, y: cy, w: 1.5, h: 0.42, fontFace: F_REG, fontSize: T.bodySm, color: FAINT, valign: "middle", margin: 0, isTextBox: true });
+    s.addText(c[2], { x: rx + 3.7, y: cy, w: 1.2, h: 0.42, fontFace: F_SEMI, fontSize: T.h4, color: INK, valign: "middle", margin: 0, isTextBox: true });
+    rule(s, rx, cy + 0.56, rw);
+    cy += 0.7;
+  });
+
+  s.addText("두 사각형은 화면상 같은 자리에 있다.", {
+    x: rx, y: 4.35, w: rw, h: 0.36,
+    fontFace: F_LIGHT, fontSize: T.body, color: MUTED, margin: 0, isTextBox: true,
+  });
+
+  // 규칙 — 잉크 반전
+  inverse(s, rx, 4.95, rw, 1.72);
+  s.addText("Position은 부모가 있으면 부모 기준,\n없으면 월드 기준이다.", {
+    x: rx + 0.4, y: 5.28, w: rw - 0.8, h: 1.05,
+    fontFace: F_SEMI, fontSize: T.h3, color: CANVAS, lineSpacingMultiple: 1.3, margin: 0, isTextBox: true,
+  });
+
+  s.addText("부모 자리 + 로컬 좌표 = 실제 자리", {
+    x: M, y: 6.35, w: 6.35, h: 0.4,
+    fontFace: F_SEMI, fontSize: T.h3, color: INK, margin: 0, isTextBox: true,
+  });
+
+  s.addNotes("설명 없이 씬부터 연다. 두 사각형이 같은 자리인데 숫자가 다른 걸 먼저 보여주고, 그다음에 이름을 붙인다. 순서가 바뀌면 용어 암기가 된다. B_Parent 의 Position X 를 6 으로 바꿔 자식이 따라가는데 자식 숫자는 (0,0) 그대로인 걸 확인시킨다. 038회차의 transform.position / localPosition 이 여기서 시작된다.");
+}
+
 // ================================================================ 7. 033 회전·크기
 {
   const s = slide();
@@ -365,11 +414,11 @@ function shot(s, name, x, y, w, h, caption) {
     x: px + 0.4, y: 2.5, w: pw - 0.8, h: 0.32,
     fontFace: F_SEMI, fontSize: T.label, color: FAINT, margin: 0, isTextBox: true,
   });
-  s.addText("자식이 되면 좌표를 부모 기준으로 센다.", {
+  s.addText("부모를 움직이면 위치·회전·크기가 다 따라온다.", {
     x: px + 0.4, y: 2.95, w: pw - 0.8, h: 0.95,
     fontFace: F_SEMI, fontSize: T.h3, color: CANVAS, lineSpacingMultiple: 1.25, margin: 0, isTextBox: true,
   });
-  s.addText("(0, 0)은 원점이 아니라 부모가 있는 자리다.", {
+  s.addText("자식이 되는 순간 Position이 로컬 좌표로 바뀐다.", {
     x: px + 0.4, y: 3.98, w: pw - 0.8, h: 0.4,
     fontFace: F_REG, fontSize: T.body, color: CANVAS, margin: 0, isTextBox: true,
   });
@@ -608,7 +657,7 @@ function shot(s, name, x, y, w, h, caption) {
     "X 양수는 오른쪽, Y 양수는 위",
     "2D는 Rotation Z만 쓴다",
     "Scale 음수는 뒤집기",
-    "자식 좌표는 부모 기준이다",
+    "월드 좌표와 로컬 좌표를 구분한다",
     "Component를 추가하고 제거한다",
     "Transform은 지울 수 없다",
     "막혔을 때 5단계를 돌린다",
