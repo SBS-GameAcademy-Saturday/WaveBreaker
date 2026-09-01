@@ -144,14 +144,20 @@ A 2D co-op wave defense game built step by step in a 7-month Unity course for ab
 
 | 항목 | 값 | 비고 |
 |---|---|---|
-| Unity 버전 | **Unity 6 LTS** (마이너 버전 확정 필요 ⬜) | MPPM이 Unity 6 이상 요구 |
-| 템플릿 | **2D (Built-in Render Pipeline)** | URP는 노베이스에게 설정 항목이 늘어난다. 2D 기본으로 간다 |
+| Unity 버전 | **Unity 6000.5.4f1** | `ProjectSettings/ProjectVersion.txt` 기준. MPPM이 Unity 6 이상 요구 |
+| 템플릿 | **Universal 2D (URP)** | Unity 6 Hub의 2D 템플릿 기본값. 아래 ⚠️ 참고 |
 | 프로젝트명 | **`WaveBreaker`** | 영문. 한글 금지 (2장 참고) |
 | 경로 | `C:\Unity\WaveBreaker` | ⚠️ **한글·공백 절대 금지** — 21주차 빌드에서 터진다 |
 | 해상도 | 1920 × 1080 기준, 16:9 | Canvas Scaler 기준값 |
 | Color Space | Linear | 기본값 유지 |
 
-> ⚠️ **URP를 쓰지 않는 이유**: 2D Renderer 에셋, Light 2D, Sorting Layer 추가 설정이 붙는다. 노베이스에게는 "왜 안 보이죠"가 늘어날 뿐이고, 이 게임에는 조명 연출이 필요 없다.
+> ⚠️ **URP를 쓰되, URP 기능은 가르치지 않는다.**
+> 원래는 Built-in RP로 가려 했으나 Unity 6 Hub의 2D 템플릿 기본값이 URP라, 다시 만들어도 같은 상황이 된다.
+> 대신 **범위를 좁힌다**: Light 2D · Volume · Renderer Feature는 수업에서 다루지 않는다.
+> 학생 눈에는 "기본 2D"와 다를 게 없어야 한다. `Assets/Settings/` 의 URP 에셋은 강사가 세팅해 두고 건드리지 않는다.
+>
+> 🚨 URP에서 실제로 걸리는 것 하나: **스프라이트가 안 보이면 Sorting Layer / Order in Layer를 먼저 본다.**
+> Built-in에서도 같은 문제지만 URP에서 더 자주 나온다. Phase 3에서 이 한 가지만 짚는다.
 
 ---
 
@@ -176,6 +182,7 @@ Assets/
 │   │   ├── Game.unity
 │   │   └── Result.unity
 │   ├── Scripts/
+│   │   ├── Practice/       ← Phase 2~4 연습용. 본 프로젝트 착수(14주차) 후 정리
 │   │   ├── Player/
 │   │   ├── Enemy/
 │   │   ├── Weapon/
@@ -194,6 +201,9 @@ Assets/
 ```
 
 > 🔑 **`_GameAssets`(받은 것)와 `_Project`(만든 것)를 분리한다.** 학생이 "내가 만든 게 어디 있지"를 헤매지 않고, 스냅샷 배포 시 덮어쓸 범위가 명확해진다.
+>
+> 📌 **`Scripts/Practice/`** 는 Phase 2~4에서 문법을 익히려고 만드는 일회성 스크립트를 모으는 곳이다.
+> 본 프로젝트 코드와 섞이면 14주차에 "이건 뭐였죠"가 나온다. 본 프로젝트 착수 시 한 번 비운다.
 
 ---
 
@@ -205,9 +215,17 @@ Assets/
 |---|---|---|
 | **TextMeshPro** | UI 텍스트 | Unity 6에서는 uGUI 패키지에 포함. 별도 설치 불필요 |
 | **2D Sprite / 2D Tilemap** | 기본 2D | 2D 템플릿에 기본 포함 |
-| Input System | — | ❌ **쓰지 않는다.** 구 `Input.GetAxis`로 간다 (아래 참고) |
+| **Input System** | 설치됨 (1.19.0) | ⚠️ 설치는 돼 있으나 **수업에서는 쓰지 않는다.** 구 `Input.GetAxis`로 간다 (아래 참고) |
 
-> ⚠️ **Input System을 쓰지 않는 이유**: Action Map·Binding 개념이 노베이스에게 큰 벽이고, 8주차에 이걸로 1주를 쓰면 게임 제작 시간이 사라진다. 구 Input Manager로 충분하다. 학생이 물으면 "현업에서는 새 시스템도 씁니다. 여기선 기본기부터"로 답한다.
+> ⚠️ **Input System을 가르치지 않는 이유**: Action Map·Binding 개념이 노베이스에게 큰 벽이고,
+> 8주차에 이걸로 1주를 쓰면 게임 제작 시간이 사라진다. 구 Input Manager로 충분하다.
+> 학생이 물으면 "현업에서는 새 시스템도 씁니다. 여기선 기본기부터"로 답한다. (27주차 ⭐도전 과제)
+>
+> 🔴 **필수 설정 — Active Input Handling = `Both`**
+> `Project Settings → Player → Other Settings → Active Input Handling`
+> 기본값 `Input System Package (New)` 상태에서 `Input.GetAxis` 를 호출하면 **컴파일은 되는데
+> 런타임에 `InvalidOperationException` 이 난다.** 8주차 첫 회차에서 반 전체가 동시에 막힌다.
+> `Both` 로 바꾸고 **에디터를 재시작**해야 적용된다. 템플릿 배포 전에 반드시 확인할 것.
 
 ### 22주차(네트워크)에 추가하는 것
 
