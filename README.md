@@ -31,6 +31,7 @@ Unity 6 LTS + C#, 싱글 플레이와 2인 협동(Netcode for GameObjects + Rela
 | [04_배포자료/](./docs/04_배포자료/README.md) | 학생 배포물 (에셋 패키지 · 가이드 · 스냅샷) |
 | [05_Unity프로젝트/](./docs/05_Unity프로젝트/README.md) | ★ 이 저장소의 규격 · 폴더 구조 · 패키지 |
 | [05_Unity프로젝트/스크립트-설계.md](./docs/05_Unity프로젝트/스크립트-설계.md) | 클래스 구조 · 상속 · 인터페이스 설계 |
+| [05_Unity프로젝트/브랜치-전략.md](./docs/05_Unity프로젝트/브랜치-전략.md) | ★ 주차별 · 컨텐츠별 브랜치 규칙과 작업 흐름 |
 
 ---
 
@@ -75,6 +76,7 @@ WaveBreaker/            ← 저장소 루트 = Unity 프로젝트 루트
 ├── Assets/             씬 · 스크립트 · 에셋
 ├── Packages/           manifest.json (패키지 목록)
 ├── ProjectSettings/    프로젝트 설정
+├── tools/              lesson.ps1 (브랜치 헬퍼)
 └── docs/               강의 문서 전체
 ```
 
@@ -83,6 +85,33 @@ WaveBreaker/            ← 저장소 루트 = Unity 프로젝트 루트
 ### 경로 규칙
 
 > ⚠️ 프로젝트 경로 **전체에 한글·공백이 없어야 합니다.** 권장: `C:\Unity\WaveBreaker`
+
+---
+
+## 🌿 브랜치 운용
+
+수업 준비는 **주차별 · 컨텐츠별 브랜치**로 나눠서 진행합니다. `main`에는 직접 커밋하지 않습니다.
+
+| 브랜치 | 예시 | 역할 |
+|---|---|---|
+| `main` | `main` | 항상 동작하는 최신 진행분. 언제 잘라도 학생에게 줄 수 있는 상태 |
+| `week/NN` | `week/07` | 그 주 5회차 분량 준비 |
+| `feat/<주제>` | `feat/player-move` | 주차 안에서 기능 하나 단위 |
+| `snapshot/<이름>` | `snapshot/P8_Final_Single` | 학생 배포용 고정점. 만든 뒤 건드리지 않음 |
+
+```bash
+./tools/lesson.ps1 week 7
+```
+
+```bash
+./tools/lesson.ps1 feat player-move
+```
+
+```bash
+./tools/lesson.ps1 done
+```
+
+전체 규칙 · 주차↔회차↔Phase 대응표: **[docs/05_Unity프로젝트/브랜치-전략.md](./docs/05_Unity프로젝트/브랜치-전략.md)**
 
 ---
 
