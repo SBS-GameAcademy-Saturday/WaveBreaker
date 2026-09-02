@@ -2,6 +2,7 @@ using UnityEngine;
 
 // 070회차 · 플레이어는 Enemy 를 상속하지 않는다. 그래도 IDamageable 이라 같은 방식으로 맞는다.
 // 080회차 · 무적시간과 사망 처리가 붙었다.
+// 086회차 · 최대 체력 업그레이드가 붙었다.
 public class PlayerHealth : MonoBehaviour, IDamageable
 {
     [SerializeField] private int maxHealth = 20;
@@ -42,6 +43,15 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         {
             Die();
         }
+    }
+
+    // 086회차 · 최대 체력이 오르면 그만큼 회복도 된다. 안 그러면 체감이 없다.
+    public void AddMaxHealth(int step)
+    {
+        maxHealth += step;
+        currentHealth = Mathf.Min(currentHealth + step, maxHealth);
+
+        Debug.Log($"최대 체력 상승 — {currentHealth}/{maxHealth}");
     }
 
     private void Die()

@@ -170,8 +170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89d6aee82592efa4bb754f9b5b8a140a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TankEnemy
-  maxHealth: 30
-  damage: 2
-  moveSpeed: 1.1
+  data: {fileID: 11400000, guid: 7fc756c8f47791e41b42f80a972d48ab, type: 2}
   expGemPrefab: {fileID: 1375084238115605958, guid: 820ed89be3c710f43becc558fe3fc4a9, type: 3}
   damageReduction: 0.5

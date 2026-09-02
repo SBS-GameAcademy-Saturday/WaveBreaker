@@ -1,6 +1,7 @@
 using UnityEngine;
 
 // 079회차 · 자동 조준 총알. 047의 Bullet 과 뼈대가 같고 "관통" 이 붙었다.
+// 086회차 · 피해와 관통 수를 AutoGun 이 정해준다.
 public class Projectile : MonoBehaviour
 {
     [SerializeField] private float speed = 12f;
@@ -13,6 +14,12 @@ public class Projectile : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
+    }
+
+    public void Setup(int newDamage, int newPierce)
+    {
+        damage = newDamage;
+        pierce = newPierce;
     }
 
     private void Start()
