@@ -9,6 +9,8 @@ TagManager:
   - Enemy
   - Brick
   - DeadZone
+  - Area
+  - Ground
   layers:
   - Default
   - TransparentFX
