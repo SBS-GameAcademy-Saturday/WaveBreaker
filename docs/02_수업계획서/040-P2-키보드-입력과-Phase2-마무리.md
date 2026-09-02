@@ -6,6 +6,7 @@
 | **소요** | 2시간 (비대면) |
 | **선행** | 039회차 (`Time.deltaTime`) |
 | **오늘 배우는 것** | `Input.GetAxisRaw`, `SetActive`, `[ContextMenu]` |
+| **씬** | 시작 `040_Input_Start` · 완성 `040_Input_Done` |
 | **준비물(강사)** | `PlayerMove.cs` 완성본, **Active Input Handling = Both 확인**, `Snapshot_P2` 배포본 |
 
 ## 🎯 오늘의 목표
@@ -81,7 +82,7 @@ void Update()
 > ⚠️ `GetAxis`와 `GetAxisRaw`의 차이를 묻는 학생이 있다.
 > **"`Raw`는 딱 -1, 0, 1만 나오고, 그냥 `GetAxis`는 부드럽게 올라갑니다. 지금은 `Raw`가 이해하기 쉬워요."** 까지만.
 
-### ② 이동과 연결 (12분) — 오늘의 핵심
+### ② 이동과 연결 (13분) — 오늘의 핵심
 
 **038·039에서 만든 것에 방향만 갈아 끼운다.**
 
@@ -153,7 +154,7 @@ void Update()
 
 > 💬 "`GetKeyDown`은 **누른 순간 한 번**, `GetKey`는 **누르고 있는 동안 계속**입니다."
 
-### ④ `[ContextMenu]` — Play 없이 실행 (5분)
+### ④ `[ContextMenu]` — Play 없이 실행 (6분)
 
 ```csharp
 [ContextMenu("원점으로 보내기")]
