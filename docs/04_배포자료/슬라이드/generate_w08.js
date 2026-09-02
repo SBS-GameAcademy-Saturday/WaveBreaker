@@ -363,7 +363,7 @@ function table(s, x, y, w, cols, rows, headRule, rowH) {
   inverse(s, M, 5.55, CW, 1.4);
   s.addText("우리가 원한 건 \"한 장마다 얼마\"가 아니라 \"1초에 얼마\" 였다.", {
     x: M + 0.4, y: 5.82, w: 11.3, h: 0.44, fontFace: F_SEMI, fontSize: T.h3, color: CANVAS, margin: 0, isTextBox: true });
-  s.addText("Time.deltaTime 은 직전 한 장을 그리는 데 걸린 시간(초)이다. 1초에 60장이면 한 장에 1/60초.", {
+  s.addText("Time.deltaTime 은 직전 한 장을 그리는 데 걸린 시간(초)이다.  deltaTime = 1 / FPS  —  FPS 가 아니라 FPS 를 뒤집은 값이다.", {
     x: M + 0.4, y: 6.32, w: 11.3, h: 0.44, fontFace: F_LIGHT, fontSize: T.body, color: FAINT, margin: 0, isTextBox: true });
   s.addNotes("1f / Time.deltaTime 을 화면에 찍어 학생마다 다른 숫자가 나오는 걸 눈으로 보여준다. 그게 원인이다.");
 }
@@ -411,13 +411,68 @@ function table(s, x, y, w, cols, rows, headRule, rowH) {
   ], null, 0.58);
 
   s.addText("빠른 컴퓨터는 더 자주 움직이는 대신 한 번에 조금씩 간다. 결국 같은 거리다.", {
-    x: rx, y: 5.55, w: rw, h: 0.9, fontFace: F_LIGHT, fontSize: T.body, color: MUTED,
+    x: rx, y: 5.42, w: rw, h: 0.9, fontFace: F_LIGHT, fontSize: T.body, color: MUTED,
     lineSpacingMultiple: 1.38, margin: 0, isTextBox: true });
 
   s.addNotes("여기가 이 회차의 전부다. '1초 동안 더하면 얼마?' 를 먼저 묻고 학생이 답하게 둔다. 답은 1초. 그다음에 곱셈을 보여준다. 실측: frameCount=267, deltaTime 평균=0.0070, 평균 x 프레임수 = 1.871 = 그때의 Time.time. 합이 곧 경과 시간이다.");
 }
 
-// ================================================================ 9. 039 고치기
+// ================================================================ 9.5 039 고정값이 아니다
+{
+  const s = slide();
+  head(s, "039", "deltaTime 은 고정값이 아니다.", "1/60 은 프레임이 일정하다는 가정이다. 실제로는 매 프레임 다르다.");
+
+  s.addText("같은 컴퓨터에서 연속으로 잰 값", {
+    x: M, y: 2.15, w: 7.0, h: 0.3,
+    fontFace: F_SEMI, fontSize: T.label, color: MUTED, margin: 0, isTextBox: true });
+
+  const rows = [
+    ["241", "0.00480", "208 fps", false],
+    ["271", "0.00473", "211 fps", false],
+    ["289", "0.00469", "213 fps", false],
+    ["309", "0.00877", "114 fps", true],
+    ["329", "0.00438", "228 fps", false],
+  ];
+  rule(s, M, 2.6, 7.0, HAIRLINE);
+  let y = 2.78;
+  rows.forEach((r) => {
+    if (r[3]) soft(s, M - 0.22, y - 0.08, 7.44, 0.6, R_SM);
+    s.addText(r[0], { x: M, y, w: 1.3, h: 0.44, fontFace: F_CODE, fontSize: T.body,
+      color: r[3] ? INK : MUTED, valign: "middle", margin: 0, isTextBox: true });
+    s.addText(r[1], { x: M + 1.5, y, w: 2.0, h: 0.44, fontFace: F_CODE, fontSize: T.h4,
+      bold: r[3], color: INK, valign: "middle", margin: 0, isTextBox: true });
+    s.addText(r[2], { x: M + 3.8, y, w: 1.7, h: 0.44, fontFace: F_REG, fontSize: T.body,
+      color: r[3] ? INK : MUTED, valign: "middle", margin: 0, isTextBox: true });
+    if (r[3]) s.addText("이 프레임만 두 배 느림", { x: M + 5.5, y, w: 2.3, h: 0.44,
+      fontFace: F_SEMI, fontSize: T.bodySm, color: INK, valign: "middle", margin: 0, isTextBox: true });
+    rule(s, M, y + 0.52, 7.0);
+    y += 0.6;
+  });
+
+  s.addText("매 프레임 직전 한 장이 실제로 걸린 시간을 잰 값이 들어온다.", {
+    x: M, y: 5.95, w: 7.0, h: 0.4, fontFace: F_LIGHT, fontSize: T.body, color: MUTED, margin: 0, isTextBox: true });
+
+  const rx = 8.35, rw = W - M - 8.35;
+  inverse(s, rx, 2.15, rw, 2.75);
+  s.addText("렉이 걸려도 보정된다.", {
+    x: rx + 0.4, y: 2.5, w: rw - 0.8, h: 0.44, fontFace: F_SEMI, fontSize: T.h3, color: CANVAS, margin: 0, isTextBox: true });
+  s.addText("두 배 느린 프레임에는 deltaTime 도 두 배로 들어온다. 그러니 그만큼 멀리 움직인다.", {
+    x: rx + 0.4, y: 3.05, w: rw - 0.8, h: 0.9, fontFace: F_REG, fontSize: T.body, color: CANVAS,
+    lineSpacingMultiple: 1.38, margin: 0, isTextBox: true });
+  rule(s, rx + 0.4, 4.1, rw - 0.8, INK_SOFT);
+  s.addText("프레임이 균일할 필요가 없다.", {
+    x: rx + 0.4, y: 4.28, w: rw - 0.8, h: 0.44, fontFace: F_LIGHT, fontSize: T.body, color: FAINT, margin: 0, isTextBox: true });
+
+  s.addText("안 곱하면 렉 걸린 만큼 손해를 본다.", {
+    x: rx, y: 5.2, w: rw, h: 0.44, fontFace: F_SEMI, fontSize: T.title, color: INK, margin: 0, isTextBox: true });
+  s.addText("곱하면 저절로 보정된다. 1초 뒤 위치는 렉이 있든 없든 똑같다.", {
+    x: rx, y: 5.68, w: rw, h: 0.9, fontFace: F_LIGHT, fontSize: T.body, color: MUTED,
+    lineSpacingMultiple: 1.38, margin: 0, isTextBox: true });
+
+  s.addNotes("038 에서 잰 값이 이걸 뒷받침한다. moveSpeed=3 으로 1.74초 뒤 x=-0.71, 공식값 -6 + 3x1.74 = -0.77, 오차 0.060. 프레임률이 208~228fps 로 흔들렸는데도 위치는 시간 공식대로 나왔다.");
+}
+
+// ================================================================ 10. 039 고치기
 {
   const s = slide();
   head(s, "039", "곱하면 값의 의미가 바뀐다.", "값이 갑자기 커져 놀라는데 단위가 바뀐 것이다. 0.05를 60번 하면 3이다.");
