@@ -363,9 +363,58 @@ function table(s, x, y, w, cols, rows, headRule, rowH) {
   inverse(s, M, 5.55, CW, 1.4);
   s.addText("우리가 원한 건 \"한 장마다 얼마\"가 아니라 \"1초에 얼마\" 였다.", {
     x: M + 0.4, y: 5.82, w: 11.3, h: 0.44, fontFace: F_SEMI, fontSize: T.h3, color: CANVAS, margin: 0, isTextBox: true });
-  s.addText("Time.deltaTime 은 직전 한 장을 그리는 데 걸린 시간(초)이다. 빠른 컴퓨터일수록 이 값이 작아서, 곱하면 상쇄된다.", {
+  s.addText("Time.deltaTime 은 직전 한 장을 그리는 데 걸린 시간(초)이다. 1초에 60장이면 한 장에 1/60초.", {
     x: M + 0.4, y: 6.32, w: 11.3, h: 0.44, fontFace: F_LIGHT, fontSize: T.body, color: FAINT, margin: 0, isTextBox: true });
   s.addNotes("1f / Time.deltaTime 을 화면에 찍어 학생마다 다른 숫자가 나오는 걸 눈으로 보여준다. 그게 원인이다.");
+}
+
+// ================================================================ 8.5 039 왜 곱하나
+{
+  const s = slide();
+  head(s, "039", "1초 동안 더하면 항상 1이다.", "이게 곱하는 이유다. 곱하라고만 하고 넘어가면 문법 암기가 된다.");
+
+  s.addText("deltaTime 을 1초 동안 전부 더하면 얼마가 될까?", {
+    x: M, y: 2.15, w: 11, h: 0.4, fontFace: F_SEMI, fontSize: T.h3, color: INK, margin: 0, isTextBox: true });
+
+  table(s, M, 2.8, 7.1, [
+    ["컴퓨터", 1.5, "", INK], ["1초 동안 프레임", 2.2, "", MUTED],
+    ["deltaTime", 1.7, "code", MUTED], ["전부 더하면", 1.7, "strong", INK],
+  ], [
+    ["A", "60번", "0.0167", "1초"],
+    ["B", "144번", "0.0069", "1초"],
+  ], null, 0.6);
+
+  s.addText("한 장 그리는 데 걸린 시간을 다 더하면 그게 총 걸린 시간이다. 당연하다.", {
+    x: M, y: 4.6, w: 7.1, h: 0.4, fontFace: F_LIGHT, fontSize: T.body, color: MUTED, margin: 0, isTextBox: true });
+
+  // 유도식
+  const rx = 8.3, rw = W - M - 8.3;
+  s.addText("그래서 곱한다", { x: rx, y: 2.15, w: rw, h: 0.3,
+    fontFace: F_SEMI, fontSize: T.label, color: MUTED, margin: 0, isTextBox: true });
+  code(s, rx, 2.55, rw, 2.2, [
+    ["매 프레임", "c"],
+    "  moveSpeed * deltaTime",
+    "",
+    ["1초 동안 다 더하면", "c"],
+    ["  moveSpeed * 1", "b"],
+    ["  = moveSpeed", "b"],
+  ]);
+  s.addText("프레임 수가 몇이든 상관없어진다.", {
+    x: rx, y: 4.95, w: rw, h: 0.4, fontFace: F_SEMI, fontSize: T.title, color: INK, margin: 0, isTextBox: true });
+
+  // 결과 대조
+  table(s, M, 5.35, 7.1, [
+    ["컴퓨터", 1.5, "", INK], ["한 장당 이동", 2.6, "code", MUTED], ["1초 동안", 3.0, "strong", INK],
+  ], [
+    ["A", "3 x 0.0167 = 0.05", "0.05 x 60 = 3"],
+    ["B", "3 x 0.0069 = 0.0207", "0.0207 x 144 = 3"],
+  ], null, 0.58);
+
+  s.addText("빠른 컴퓨터는 더 자주 움직이는 대신 한 번에 조금씩 간다. 결국 같은 거리다.", {
+    x: rx, y: 5.55, w: rw, h: 0.9, fontFace: F_LIGHT, fontSize: T.body, color: MUTED,
+    lineSpacingMultiple: 1.38, margin: 0, isTextBox: true });
+
+  s.addNotes("여기가 이 회차의 전부다. '1초 동안 더하면 얼마?' 를 먼저 묻고 학생이 답하게 둔다. 답은 1초. 그다음에 곱셈을 보여준다. 실측: frameCount=267, deltaTime 평균=0.0070, 평균 x 프레임수 = 1.871 = 그때의 Time.time. 합이 곧 경과 시간이다.");
 }
 
 // ================================================================ 9. 039 고치기
