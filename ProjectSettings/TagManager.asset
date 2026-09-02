@@ -9,7 +9,6 @@ TagManager:
   - Enemy
   - Brick
   - DeadZone
-  - Area
   - Ground
   layers:
   - Default
@@ -22,7 +21,7 @@ TagManager:
   - 
   - Bullet
   - Wall
-  - 
+  - Enemy
   - 
   - 
   - 
