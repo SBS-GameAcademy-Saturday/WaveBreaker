@@ -435,36 +435,53 @@ function shot(s, name, x, y, w, h, caption) {
   const s = slide();
   head(s, "033", "실습 — 로봇팔 만들기.", "어깨를 돌리면 팔 전체가 돌아야 한다.");
 
-  s.addText("계층 구조", {
-    x: M, y: 2.15, w: 4, h: 0.3,
+  s.addText("계층", {
+    x: M, y: 2.15, w: 2.6, h: 0.3,
     fontFace: F_SEMI, fontSize: T.label, color: MUTED, margin: 0, isTextBox: true,
   });
-  rule(s, M, 2.6, 5.4, HAIRLINE);
-  const tree = [["Shoulder", 0, "어깨 — 부모"], ["UpperArm", 1, "윗팔"], ["LowerArm", 2, "아랫팔"], ["Hand", 3, "손"]];
+  s.addText("로컬 X", {
+    x: M + 3.3, y: 2.15, w: 1.0, h: 0.3,
+    fontFace: F_SEMI, fontSize: T.label, color: MUTED, align: "right", margin: 0, isTextBox: true,
+  });
+  s.addText("월드 X", {
+    x: M + 4.5, y: 2.15, w: 1.0, h: 0.3,
+    fontFace: F_SEMI, fontSize: T.label, color: INK, align: "right", margin: 0, isTextBox: true,
+  });
+  rule(s, M, 2.6, 5.5, HAIRLINE);
+  const tree = [
+    ["Shoulder", 0, "0", "0"],
+    ["UpperArm", 1, "1", "1"],
+    ["LowerArm", 2, "1", "2"],
+    ["Hand", 3, "1", "3"],
+  ];
   let ty = 2.8;
   tree.forEach((t) => {
     s.addText(t[0], {
-      x: M + t[1] * 0.42, y: ty, w: 2.8, h: 0.36,
+      x: M + t[1] * 0.4, y: ty, w: 3.0, h: 0.4,
       fontFace: F_MED, fontSize: T.body, color: INK, valign: "middle", margin: 0, isTextBox: true,
     });
     s.addText(t[2], {
-      x: M + 3.5, y: ty, w: 1.9, h: 0.36,
-      fontFace: F_REG, fontSize: T.bodySm, color: FAINT, valign: "middle", margin: 0, isTextBox: true,
+      x: M + 3.3, y: ty, w: 1.0, h: 0.4,
+      fontFace: F_REG, fontSize: T.body, color: MUTED, align: "right", valign: "middle", margin: 0, isTextBox: true,
     });
-    rule(s, M, ty + 0.5, 5.4);
-    ty += 0.62;
+    s.addText(t[3], {
+      x: M + 4.5, y: ty, w: 1.0, h: 0.4,
+      fontFace: F_SEMI, fontSize: T.h4, color: INK, align: "right", valign: "middle", margin: 0, isTextBox: true,
+    });
+    rule(s, M, ty + 0.54, 5.5);
+    ty += 0.66;
   });
-  s.addText("4개를 먼저 만들어 계층부터 잡고, 그다음 좌표를 넣는다. 반대로 하면 위치가 튄다.", {
-    x: M, y: 5.5, w: 5.4, h: 0.7,
+  s.addText("로컬은 전부 1인데 월드는 0, 1, 2, 3이다.", {
+    x: M, y: 5.62, w: 5.6, h: 0.4,
+    fontFace: F_SEMI, fontSize: T.h3, color: INK, margin: 0, isTextBox: true,
+  });
+  s.addText("각자 자기 부모에서 1만큼 떨어져 있기 때문이다. Shoulder만 부모가 없어서 로컬과 월드가 같다.", {
+    x: M, y: 6.12, w: 5.6, h: 0.7,
     fontFace: F_LIGHT, fontSize: T.body, color: MUTED, lineSpacingMultiple: 1.38, margin: 0, isTextBox: true,
-  });
-  s.addText("Shoulder만 돌렸는데 손까지 따라 움직이면 통과.", {
-    x: M, y: 6.3, w: 5.7, h: 0.38,
-    fontFace: F_SEMI, fontSize: T.title, color: INK, margin: 0, isTextBox: true,
   });
 
   shot(s, "033_Transform", 6.85, 2.15, 5.65, 3.7, "완성 상태 — 4단 계층");
-  s.addNotes("팔이 흩어지면 자식 Position이 부모 기준이라는 걸 다시 짚는다. (1.5, 0)은 원점에서가 아니라 부모에서 1.5다.");
+  s.addNotes("Scale X 는 전부 1 로 둬야 로컬 1 이 월드 1 이 된다. 부모 Scale X 가 1 이 아니면 자식의 로컬 거리가 눌리거나 늘어난다 — 오늘은 그 얘기까지 하지 않는다. Shoulder 를 (0,3) 으로 옮겨 자식 숫자가 전부 1 그대로인 걸 확인시킨다.");
 }
 
 // ================================================================ 9. 034 부품표
