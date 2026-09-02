@@ -499,3 +499,81 @@ TextMeshPro 기본 폰트(LiberationSans)에는 **한글 글리프가 없다.** 
 > | 전 씬 | 한글 폰트 | Pretendard 적용, 폰트 경고 0건 |
 >
 > ✅ **키 입력(WASD · R)은 사용자가 직접 눌러 확인 완료.**
+
+---
+
+## 14주차 (066–070) — Phase 5부터는 연습 씬을 만들지 않는다
+
+**Phase 5 이후 실습은 `Assets/_Project/Scenes/Game.unity` 하나에서만 진행한다.**
+회차마다 Start / Done 씬을 만들지 않는다. 씬 하나가 65회차 동안 자란다.
+
+| 항목 | Phase 4까지 | Phase 5부터 |
+|---|---|---|
+| 씬 | 회차마다 새로 | `Game.unity` 하나 |
+| 회차 경계 | Start / Done 씬 쌍 | git 커밋 + 강의안 코드 블록 |
+| 완성본 배포 | Done 씬 | 스냅샷 5회차마다 (`Snapshot_P5_Map` 등) |
+
+### `Game.unity` 070회차 시점 구성
+
+| 오브젝트 | 부품 |
+|---|---|
+| `Main Camera` | Orthographic Size 5 · `CameraFollow` (target = Player, smoothTime 0.15) |
+| `GameManager` | `GameManager` (`GameState` 싱글톤) |
+| `Player` | SpriteRenderer · Rigidbody2D(중력 0, 회전 고정) · CircleCollider2D · `PlayerInput` · `PlayerController` · `PlayerHealth` |
+| `Ground` | `InfiniteGround` (tileSize 20, gridCount 3) + 타일 9장 자식 |
+| `Enemy` | SpriteRenderer · Rigidbody2D(중력 0) · CircleCollider2D · `ChargerEnemy` |
+
+> Build Settings 에 `Assets/_Project/Scenes/Game.unity` 를 등록해 두었다.
+
+> ⚠️ **바닥 타일 그림은 임시다.** `Assets/_GameAssets/Sprites/Environment/GroundTile.png`
+> (64×64, PPU 32, Point, 무압축) 를 코드로 만들어 넣었다. 정식 리소스가 오면
+> [리소스-교체-가이드](../../../../docs/00_기획/리소스-교체-가이드.md) 대로 같은 이름으로 덮어쓴다.
+
+> ✅ **자동 검증 완료 (2026-09-02)**
+>
+> | 확인한 것 | 실측 |
+> |---|---|
+> | 무한 맵 — 무작위 방향 15회 이동 | 카메라 시야 441점 중 **바닥 없는 지점 0** |
+> | 무한 맵 — 대각선 이동 8회 연속 | 441점 중 **0** |
+> | 격자 유지 | 타일 좌표 `% 20` 이 **전부 0**, 타일 수 9 유지 |
+> | 좌표 (213, −147) 로 순간이동 | 타일이 즉시 3×3 격자로 재배치됨 |
+> | 카메라 추적 | 플레이어 `x=9.75` 일 때 카메라 `x=9.39` (SmoothDamp 지연) |
+> | `ChargerEnemy.Start` | `Enemy : 돌진형 등장 (체력 10)` — `base.Start()` 동작 |
+> | 충돌 피해 | `Enemy : 돌진! 3 피해` → `플레이어 : -3  (남은 체력 17)` |
+> | `IDamageable` 조회 | `TryGetComponent<IDamageable>` = True, 실제 형 `ChargerEnemy` |
+> | `Enemy` 사망 | −4 3회 → `남은 체력 -2` → `Enemy 사망` → 오브젝트 제거 |
+> | `abstract` 부착 거부 | `Can't add script behaviour 'Enemy'. The script class can't be abstract!` |
+>
+> ⚠️ **WASD 키 입력은 미실측.** 레거시 Input Manager 라 에디터에서 키를 흉내낼 수 없어,
+> `PlayerController` 를 끄고 `linearVelocity` 를 직접 넣어 이동을 검증했다.
+> `PlayerInput` 자체는 040·067과 같은 `Input.GetAxisRaw` 방식이며 사용자가 이미 동작을 확인했다.
+
+### ★ 발견해서 고친 것 — 대각선으로 달리면 맵에 구멍이 났다
+
+처음 구현은 골드메탈식으로 **타일마다 Trigger 를 달고**, 플레이어의 `Area` 가 타일에서
+`OnTriggerExit2D` 로 벗어날 때 **더 많이 벌어진 축으로만** 60 옮기는 방식이었다.
+
+```
+대각선 이동 후: 카메라 시야 441점 중 273점에 바닥이 없음
+타일 좌표     : (40,40) (120,100) (140,40) (100,60) (60,60) ...  ← 격자 이탈
+```
+
+원인은 **한 축만 옮기는 것**이다. 대각선으로 나가면 두 축이 거의 동시에 경계를 넘는데
+한 축만 처리되고, 남은 축은 다시 `Exit` 가 걸리지 않아 영영 보정되지 않는다.
+
+고친 방법은 **Trigger 를 버리고 `Ground` 부모에서 매 프레임 9장을 검사**하는 것이다.
+
+```csharp
+if (diff.x >  half) tile.position += Vector3.left  * span;
+if (diff.x < -half) tile.position += Vector3.right * span;
+if (diff.y >  half) tile.position += Vector3.down  * span;
+if (diff.y < -half) tile.position += Vector3.up    * span;
+```
+
+- 가로·세로를 **따로** 보므로 대각선에서도 두 축이 다 처리된다
+- 매 프레임 보므로 한 번 어긋나도 다음 프레임에 복구된다
+- 타일은 항상 `span`(60)의 배수만큼만 움직여 20 격자가 깨지지 않는다
+- 코드도 짧아졌고 `Area` 오브젝트와 `Area` 태그가 필요 없어졌다
+
+> 🔑 069회차 강의안은 **고친 쪽**으로 쓰여 있다. `foreach (Transform tile in transform)` 로
+> 자식을 도는 것이 이 회차의 새 문법이다.
