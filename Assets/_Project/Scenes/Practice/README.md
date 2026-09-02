@@ -178,3 +178,71 @@ D 키를 눌러둔 상태에서
 > | `045_Layer_Start` | 총알끼리 서로 밀어냄 | 중심 반경 `0.35` → `0.76` 로 벌어짐 |
 >
 > **WASD 실제 입력은 사람이 직접 눌러 확인해야 한다.** 씬이나 스크립트를 고치면 다시 확인한다.
+
+---
+
+## 10주차 (046–050) — 프리팹과 동적 생성 (Phase 3)
+
+| 회차 | 시작 (학생) | 완성 (정답) | 붙는 스크립트 |
+|---|---|---|---|
+| 046 | `046_Prefab_Start` | `046_Prefab_Done` | — (전부 Inspector) |
+| 047 | `047_Instantiate_Start` | `047_Instantiate_Done` | `PlayerShooter` · `Bullet` |
+| 048 | `048_Destroy_Start` | `048_Destroy_Done` | `EnemySpawner` |
+| 049 | `049_GetComponent_Start` | `049_GetComponent_Done` | `Bullet` (수정) |
+| 050 | `050_Health_Start` | `050_Health_Done` | `Health` |
+
+카메라 규격은 위와 같다. **10주차도 전부 `orthographicSize = 6`.**
+
+### 프리팹 2종
+
+| 프리팹 | 경로 | 구성 |
+|---|---|---|
+| `Bullet` | `Prefabs/Projectile/` | Scale 0.3 · `Circle Collider 2D`(**Is Trigger**) · `Rigidbody 2D`(Gravity 0) · Layer `Bullet` · Sorting `Effect` · `Bullet.cs` |
+| `Enemy` | `Prefabs/Enemy/` | Scale 1 · `Circle Collider 2D` · Tag **`Enemy`** · Sorting `Enemy` · `Health.cs` |
+
+> **`Enemy` 에는 `Rigidbody 2D` 가 없다.** 043의 규칙대로 **둘 중 하나만** 있으면 되고,
+> 움직이는 쪽인 총알이 갖고 있다. 수업에서 이걸 짚으면 9주차 복습이 된다.
+
+### ⚠️ 047~050 은 스크립트 하나가 회차마다 자라난다
+
+`Bullet.cs` 는 047에서 만들어져 048(수명·삭제) · 049(`GetComponent`·`null`) · 050(`Health`)
+까지 **같은 파일이 계속 고쳐진다.** 저장소에는 **050 완성본만** 들어 있다.
+
+그래서 `047_Done` · `048_Done` · `049_Done` 을 열어 Play 하면 **그 회차보다 앞선 동작**을 한다
+(예: 047_Done 에서도 총알이 2초 뒤 사라지고 몬스터 체력이 깎인다).
+
+**회차별 중간 상태는 각 회차 강의안의 코드 블록이 정본이다.** 수업에서는 강의안 코드를 그대로
+치면서 진행하고, `_Done` 씬은 **씬 구성(오브젝트 배치·참조 연결)의 정답**으로만 쓴다.
+
+> 039회차와 같은 처리다. 씬을 쪼갤 수 없는 대상(스크립트 한 파일)은 **git 커밋과 강의안**이
+> 회차 경계를 갖는다.
+
+### 시작 씬에 미리 넣어둔 것
+
+| 회차 | 미리 있는 것 | 이유 |
+|---|---|---|
+| 046 | **프리팹이 아닌** 몬스터 10개 | 프리팹으로 만드는 게 학습 대상이다 |
+| 047 | `Player`(042 완성), `Enemy` 인스턴스 5개 | `FirePoint` 와 `PlayerShooter` 는 학생이 만든다 |
+| 048 | 047 완성 상태 | 총알이 안 사라지는 문제를 겪는 게 도입이다 |
+| 049 | 048 완성 상태 + `EnemySpawner` | 드래그를 없애는 게 학습 대상이다 |
+| 050 | 049 완성 상태 + `Enemy_Empty_NoHealth` | `null` 대비가 실제로 필요한 대상 |
+
+> **`Enemy_Empty_NoHealth`** — Tag 만 `Enemy` 이고 `SpriteRenderer` 도 `Health` 도 없는 오브젝트다.
+> 049·050 에서 **`null` 체크를 빼면 여기서 바로 `NullReferenceException` 이 난다.**
+> 화면에는 안 보이지만 `(4.5, 1.5)` 에 있다. 총구 정면(x=0)에서 비켜 놓았다 — 정면에 두면
+> 총알이 전부 여기서 막혀 뒤쪽 몬스터를 못 맞힌다.
+
+> ✅ **자동 검증 완료 (2026-09-02)**
+>
+> | 씬 | 확인한 것 | 실측 |
+> |---|---|---|
+> | `050_Health_Done` | 총알 3발 → 체력 30 소진 | Console `남은 체력: 20` → `10` → `0` → `Enemy 사망` |
+> | `050_Health_Done` | 죽은 몬스터가 씬에서 사라짐 | Enemy 태그 오브젝트 6 → 5개, x=0 이 사라짐 |
+> | `050_Health_Done` | 총알 수명 · 피격 삭제 | 발사 뒤 `살아있는 총알 = 0` |
+> | `050_Health_Done` | `Health` 없는 Enemy 를 쏴도 안전 | 콘솔 로그 **0건** (예외 없음), 대상은 그대로 남음 |
+> | `046_Prefab_Done` | 원본 수정 반영 + Override | 원본을 초록으로 바꾸니 **9개는 따라오고 1개(`Enemy_Override`)는 유지** |
+>
+> **스페이스 발사(`PlayerShooter`)는 미실측이다.** 040·042와 같은 이유로 구 Input Manager 라
+> `uloop simulate-keyboard` 가 안 먹는다. 검증은 `Bullet.prefab` 을 `FirePoint` 자리에
+> 직접 `Instantiate` 해서 했다 — `PlayerShooter` 가 하는 일과 같은 코드다.
+> **키 입력 자체는 사람이 직접 눌러 확인해야 한다.**
