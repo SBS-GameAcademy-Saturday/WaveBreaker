@@ -28,6 +28,13 @@ public class Health : MonoBehaviour
     // 게임 중에 변하는 값이라 Inspector 에 열 이유가 없다.
     private int currentHealth;
 
+    /// <summary>
+    /// 밖에서 읽기만 할 수 있다. 값을 바꾸는 건 TakeDamage 를 거쳐야 한다.
+    /// 체력바(Phase 7)와 064 도전 미션("체력이 가장 낮은 적 노리기")에서 쓴다.
+    /// </summary>
+    public int Current => currentHealth;
+    public int Max => maxHealth;
+
     private void Awake()
     {
         currentHealth = maxHealth;
