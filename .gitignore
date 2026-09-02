@@ -108,3 +108,6 @@ InitTestScene*.unity*
 # cli-loop (uloopmcp) — 에디터가 재생성하는 툴 스키마 캐시.
 # project-runner-pin.json 은 버전 핀이므로 추적을 유지한다.
 /.uloop/tools.json
+
+# Office 임시 잠금 파일 (PowerPoint/Word/Excel 로 문서를 열어두면 생긴다)
+~$*
