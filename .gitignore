@@ -114,3 +114,12 @@ InitTestScene*.unity*
 
 # JetBrains Rider / IntelliJ 프로젝트 설정 (개인 환경)
 /.idea/
+
+# 슬라이드 작업 중간물 — 씬에서 다시 뽑을 수 있다
+docs/04_배포자료/슬라이드/shots2/
+docs/04_배포자료/슬라이드/shots/
+docs/04_배포자료/슬라이드/render*/
+
+# pptxgenjs (npm install pptxgenjs 로 그때그때 받는다)
+/node_modules/
+/package-lock.json
