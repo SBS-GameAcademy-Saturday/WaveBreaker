@@ -577,3 +577,91 @@ if (diff.y < -half) tile.position += Vector3.up    * span;
 
 > 🔑 069회차 강의안은 **고친 쪽**으로 쓰여 있다. `foreach (Transform tile in transform)` 로
 > 자식을 도는 것이 이 회차의 새 문법이다.
+
+---
+
+## 15주차 (071–075) — 몬스터와 스폰
+
+`Game.unity` 하나가 계속 자란다. 연습 씬은 없다.
+
+### `Game.unity` 075회차 시점 구성 (14주차에서 추가된 것)
+
+| 오브젝트 | 부품 |
+|---|---|
+| `Main Camera / SpawnPoints` | 빈 오브젝트 8개 (반지름 14 원형) — **카메라 자식** |
+| `WaveManager` | `WaveManager` (프리팹 3종 · 포인트 8개 · 간격 2→0.4 · 웨이브 15초) |
+| `Player` | `PlayerAttack` 추가 (반경 3 · 피해 4 · 쿨다운 0.4) |
+| `HUD` | Canvas + TMP + `HUDView` (웨이브 / 처치) |
+| ~~`Enemy`~~ | **제거.** 이제 `WaveManager` 가 만든다 |
+
+### 몬스터 프리팹 3종 — `Assets/_Project/Prefabs/Enemy/`
+
+| 프리팹 | 스크립트 | override | 체력 | 속도 | 색 | 크기 |
+|---|---|---|---|---|---|---|
+| `Enemy_Charger` | `ChargerEnemy` | `Attack()` | 10 | 2.0 | 빨강 | 1.0 |
+| `Enemy_Runner` | `RunnerEnemy` | `Move()` | 4 | 5.5 | 노랑 | 0.85 |
+| `Enemy_Tank` | `TankEnemy` | `TakeDamage()` | 30 | 1.1 | 보라 | 1.5 |
+
+셋 다 같은 그림(`Enemy_Base.png`, 회색)을 쓰고 **`Sprite Renderer` 의 `Color` 와 `Scale` 만** 다르다.
+
+### 프로젝트 설정 변경
+
+| 항목 | 값 | 이유 |
+|---|---|---|
+| Layer 10 | **`Enemy`** 추가 | 몬스터끼리 편 가르기 |
+| Physics 2D → Layer Collision Matrix | **`Enemy` × `Enemy` 해제** | 몬스터끼리 서로 때리는 것을 막는다 |
+
+> `ProjectSettings/Physics2DSettings.asset` 의 `m_LayerCollisionMatrix` 에서 레이어 10 마스크가
+> `...fbff...` 로 저장돼 있다.
+
+> ✅ **자동 검증 완료 (2026-09-02)**
+>
+> | 확인한 것 | 실측 |
+> |---|---|
+> | 몬스터 추적 (071) | 스폰 직후 3마리 속도 `(-2.00, 0.00)` `(0.00, 2.00)` `(1.41, 1.41)` — 크기 2.0 = `moveSpeed` |
+> | 러너가 안 꺾는다 (072) | 플레이어를 `(40, 0)` 으로 옮겨도 속도 `(0.00, 5.50)` 그대로 |
+> | 돌진형은 꺾는다 (072) | 같은 순간 `(1.76, 0.95)` 로 방향 전환 (크기 2.00) |
+> | 탱커 피해 감소 (072) | `Enemy_Tank : 단단하다!  4 → 2` → `남은 체력 28` |
+> | 스폰 포인트 (073) | `Main Camera` 자식 8개, 반지름 14 |
+> | 웨이브 진행 (074) | 2 → `1.70초` · 3 → `1.40` · 4 → `1.10` · 5 → `0.80` · 6 → `0.50` · 7 → `0.40`(하한) |
+> | 종류 증가 (074) | 웨이브 1 = 1가지 · 2 = 2가지 · 3 이상 = 3가지 |
+> | 90초 방치 | 적 88마리, **처치 0** — 몬스터끼리 안 싸운다 |
+> | 다형성 한 방 (075) | 한 번 `Swing()` → `Charger -4(6)` / `Runner -4(0) 사망` / `Tank 4→2, -2(28)` |
+> | 처치 수 (075) | 8회 휘두르기 → `kills 0 → 38`, HUD `웨이브 8   처치 38` |
+> | `TryGetComponent<IDamageable>` | 세 종류 전부 True |
+>
+> ⚠️ **Space · WASD 키 입력은 미실측.** 레거시 Input Manager 라 에디터에서 키를 흉내낼 수 없어
+> `PlayerAttack.Swing()` 을 직접 호출해 검증했다. `Update` 안의 키 검사와 쿨다운 분기 자체는 미실측이다.
+
+### ★ 발견해서 고친 것 — 아무도 안 때렸는데 몬스터가 죽었다
+
+74회차 상태로 90초를 돌리자 **처치 수가 38** 이었다. 플레이어는 아무것도 하지 않았다.
+
+원인은 070에서 자랑했던 설계 그대로다.
+
+```csharp
+// ChargerEnemy.OnCollisionEnter2D
+if (collision.gameObject.TryGetComponent(out IDamageable target))
+    Attack(target);        // 몬스터도 IDamageable 이다
+```
+
+돌진형이 다른 몬스터를 때리고 있었다. 고치는 방법은 두 가지였다.
+
+| 방법 | 문제 |
+|---|---|
+| `if (상대가 Enemy면 return)` | 몬스터가 열 종류가 되면 조건을 열 군데 관리해야 한다 |
+| **`Enemy` 레이어 + Collision Matrix** | 한 곳. 코드는 한 줄도 안 고친다 |
+
+레이어를 골랐다. 재측정: 같은 조건 90초에 **처치 0**.
+
+> ⚠️ **부작용**: 몬스터끼리 겹쳐서 지나간다. 뱀서라이크에서는 흔한 처리라 그대로 둔다.
+> 073 강의안에 이 부작용까지 적어두었다.
+
+### ★ 발견해서 고친 것 — 몬스터 3종이 색으로 구분이 안 됐다
+
+처음에는 기존 `Enemy_Walk.png`(빨간 몬스터)에 `Color` 를 곱해 3종을 만들려 했다.
+**빨간 그림에 노란색을 곱해도 빨간색**이라 러너와 돌진형이 화면에서 구분되지 않았다.
+
+`Enemy_Walk.png` 의 첫 프레임을 **회색조로 변환한 `Enemy_Base.png`** 를 새로 만들어
+Phase 5 몬스터 전용 그림으로 삼았다. 회색에 색을 곱하니 빨강·노랑·보라가 제대로 나온다.
+(054의 애니메이션은 기존 `Enemy_Walk.png` 를 계속 쓴다. 건드리지 않았다.)
