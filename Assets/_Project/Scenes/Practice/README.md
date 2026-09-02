@@ -113,6 +113,7 @@ D 키를 눌러둔 상태에서
 
 > ✅ **수동 확인 완료 (2026-09-02).** `040_Input_Done` 을 Play 하고 직접 WASD 를 눌러
 > 캐릭터가 움직이는 것을 확인했다. 도구로는 못 재지만 실제 동작에는 문제가 없다.
+> **042 이후의 `PlayerPhysicsMove` · `PlayerShooter` 도 같은 방식으로 확인했다.**
 >
 > 씬을 고치거나 `PlayerMove` 를 수정한 뒤에는 **이 확인을 다시 해야 한다.** 자동 검증이 안 되므로
 > CI 나 스크립트가 잡아주지 않는다.
@@ -177,7 +178,8 @@ D 키를 눌러둔 상태에서
 > | `044_Trigger_Done` | 벽에서 멈춤 | 벽(x=6, 반폭 0.5) 앞 `player.x = 4.99`, `v = 0.00` |
 > | `045_Layer_Start` | 총알끼리 서로 밀어냄 | 중심 반경 `0.35` → `0.76` 로 벌어짐 |
 >
-> **WASD 실제 입력은 사람이 직접 눌러 확인해야 한다.** 씬이나 스크립트를 고치면 다시 확인한다.
+> ✅ **WASD 실제 입력은 사용자가 직접 눌러 확인 완료 (2026-09-02).** 도구로는 못 재지만 실제 동작에는 문제가 없다.
+> 씬이나 `PlayerPhysicsMove` 를 고치면 이 확인을 다시 한다.
 
 ---
 
@@ -242,10 +244,9 @@ D 키를 눌러둔 상태에서
 > | `050_Health_Done` | `Health` 없는 Enemy 를 쏴도 안전 | 콘솔 로그 **0건** (예외 없음), 대상은 그대로 남음 |
 > | `046_Prefab_Done` | 원본 수정 반영 + Override | 원본을 초록으로 바꾸니 **9개는 따라오고 1개(`Enemy_Override`)는 유지** |
 >
-> **스페이스 발사(`PlayerShooter`)는 미실측이다.** 040·042와 같은 이유로 구 Input Manager 라
-> `uloop simulate-keyboard` 가 안 먹는다. 검증은 `Bullet.prefab` 을 `FirePoint` 자리에
-> 직접 `Instantiate` 해서 했다 — `PlayerShooter` 가 하는 일과 같은 코드다.
-> **키 입력 자체는 사람이 직접 눌러 확인해야 한다.**
+> ✅ **스페이스 발사(`PlayerShooter`)도 사용자가 직접 눌러 확인 완료 (2026-09-02).**
+> 자동 검증은 `Bullet.prefab` 을 `FirePoint` 자리에 직접 `Instantiate` 해서 했다 —
+> `PlayerShooter` 가 하는 일과 같은 코드다. 키 입력 자체는 도구로 못 재서 수동으로 확인했다.
 
 ---
 
@@ -332,4 +333,90 @@ rb.linearVelocity = new Vector2(h, 0f) * moveSpeed;   // v 를 빼면 된다
 > | `055_Dodge_Done` | 장애물이 중력으로 떨어진다 | 스폰 y=6 → `t=1.62` 에 y=4.18 |
 > | `055_Dodge_Done` | 맞으면 체력이 깎이고 죽는다 | Console `Player 남은 체력: 20` → `10` → `0` → `Player 사망`, 플레이어가 씬에서 사라짐 |
 >
-> **WASD 실제 입력은 여전히 미실측이다.** 구 Input Manager 라 `uloop simulate-keyboard` 가 안 먹는다.
+> ✅ **WASD·스페이스 입력은 사용자가 직접 눌러 확인 완료 (2026-09-02).** 구 Input Manager 라
+> `uloop simulate-keyboard` 로는 못 재지만 실제 동작에는 문제가 없다.
+
+---
+
+## 12주차 (056–060) — 미니게임 ①② (Phase 4)
+
+| 회차 | 시작 (학생) | 완성 (정답) | 붙는 스크립트 |
+|---|---|---|---|
+| 056 | `056_Score_Start` | `056_Score_Done` | `DodgeGameManager` |
+| 057 | `057_GameOver_Start` | `057_GameOver_Done` | `DodgeGameManager` (수정) |
+| 058 | `058_Bricks_Start` | `058_Bricks_Done` | `BrickSpawner` |
+| 059 | `059_Ball_Start` | `059_Ball_Done` | `Ball` |
+| 060 | `060_Breakout_Start` | `060_Breakout_Done` | `Paddle` · `BreakoutManager` |
+
+카메라 규격은 위와 같다. **12주차도 전부 `orthographicSize = 6`.**
+
+### 새로 생긴 것
+
+| 무엇 | 경로 |
+|---|---|
+| 미니게임 스크립트 5종 | `Assets/_Project/Scripts/MiniGame/` |
+| `Brick` · `Ball` 프리팹 | `Prefabs/Enemy/Brick.prefab` · `Prefabs/Projectile/Ball.prefab` |
+| `BouncyBall` (Physics Material 2D) | `Assets/_Project/Materials/` — `Friction 0` · `Bounciness 1` |
+| **Pretendard 폰트 + TMP 폰트 에셋** | `Assets/_GameAssets/Fonts/` (아래 ⚠️ 참고) |
+| TMP Essentials | `Assets/TextMesh Pro/` |
+
+> **`Scripts/MiniGame/` 을 새로 만들었다.** 미니게임 전용 코드라 본 프로젝트 폴더(`Player`,
+> `Enemy`, `Weapon`, `Manager`)와 섞지 않는다. Phase 5 에서 본 프로젝트를 시작할 때
+> 이 폴더는 건드리지 않고 그대로 둔다.
+
+### ⚠️ 한글 폰트를 넣어야 했다
+
+TextMeshPro 기본 폰트(LiberationSans)에는 **한글 글리프가 없다.** `점수 0` 을 띄우는 순간
+`The character with Unicode value 시 was not found in the font asset` 경고가 쏟아지고
+글자가 빈칸으로 나온다.
+
+**Pretendard(SIL OFL 1.1)** 를 넣고 TMP 폰트 에셋(`Pretendard SDF`, **Atlas Population Mode
+= Dynamic**)을 만들어 **TMP 기본 폰트로 지정**했다. 자세한 내용은
+[Fonts/README.md](../../_GameAssets/Fonts/README.md).
+
+> 💬 수업에서는 **056회차 준비물**로 다룬다. 학생 프로젝트에도 같은 작업이 필요하다.
+
+### 시작 / 완성이 실제로 다른 곳
+
+| 회차 | Start | Done |
+|---|---|---|
+| 056 | 055 구성 그대로 (**Canvas 없음**) | Canvas + `ScoreText` + `DodgeGameManager` |
+| 057 | **056_Done 과 같은 구성** | 같음 + **Build Settings 등록** |
+| 058 | 빈 `BrickSpawner` 오브젝트만 | 블록 5행 10열 · 5색 |
+| 059 | 058_Done 그대로 (블록만) | **벽 3개 + 튀는 공** |
+| 060 | 059_Done 그대로 | **패들 + DeadZone + 결과 UI + 매니저** |
+
+> **056·057 의 Start/Done 이 겹치는 이유**: `DodgeGameManager.cs` 도 회차마다 자라나는
+> 한 파일이라 저장소에는 057 완성본만 있다. 그래서 `056_Score_Done` 을 열어도 게임오버가 동작한다.
+> `Bullet.cs` · `EnemySpawner.cs` 와 같은 처리다 — **회차별 중간 상태는 강의안 코드 블록이 정본**이다.
+
+### Build Settings 에 등록한 씬
+
+`SceneManager.LoadScene` 은 **빌드 목록에 있는 씬만** 열 수 있다. 아래 5개를 등록해 두었다.
+
+```
+056_Score_Done  057_GameOver_Start  057_GameOver_Done  060_Breakout_Start  060_Breakout_Done
+```
+
+> 057회차에서 **이 에러를 일부러 재현**하고 다 같이 읽는다. Phase 0 의 "에러 읽는 습관" 자리다.
+> ```
+> Scene 'xxx' couldn't be loaded because it has not been added to the Build Settings
+> ```
+
+> ✅ **자동 검증 완료 (2026-09-02)**
+>
+> | 씬 | 확인한 것 | 실측 |
+> |---|---|---|
+> | `058_Bricks_Done` | 격자 배치 · 가운데 정렬 · 행별 색 | 블록 **50개**, x 범위 `-5.40 ~ 5.40`, **중심 0.00**, 서로 다른 색 **5개** |
+> | `057_GameOver_Done` | 점수 갱신 | `t=0.99` 에 `점수 1`, `t=9.51` 에 `점수 9` |
+> | `057_GameOver_Done` | 죽으면 멈춤 | 장애물 3대 후 `GameOverText(on)` · `player=죽음` · `timeScale=0`, 점수 10에서 정지 |
+> | `060_Breakout_Done` | 공 속도 유지 | `t=1.06`·`t=1.16` 모두 **속도 8.000** (`.normalized * speed`) |
+> | `060_Breakout_Done` | 블록 파괴 | `t=1.06` 에 남은 블록 **49** (한 개 깨짐) |
+> | `060_Breakout_Done` | 게임오버 | 공이 DeadZone 통과 → `ResultText = "게임 오버 — R 키로 다시"`, `timeScale=0` |
+> | `060_Breakout_Done` | 클리어 | 블록 0 → 0.5초 코루틴이 감지 → `ResultText = "클리어! — R 키로 다시"`, `timeScale=0` |
+> | 전 씬 | 한글 폰트 | Pretendard 적용 후 **폰트 경고 0건** |
+>
+> 클리어 검증은 `DeadZone` 을 **플레이 세션에서만** 끄고 했다(디스크의 씬은 그대로다).
+> 공이 1.4초면 바닥에 닿아 게임오버가 먼저 나기 때문이다.
+>
+> ✅ **키 입력(WASD · 스페이스 · R)은 사용자가 직접 눌러 확인 완료.**

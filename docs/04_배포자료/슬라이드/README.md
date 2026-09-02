@@ -11,6 +11,7 @@
 | `9주차-부딪히게만들기.pptx` | 9주차 | 041–045 | 16 | `generate_w09.js` |
 | `10주차-찍어내고없애기.pptx` | 10주차 | 046–050 | 16 | `generate_w10.js` |
 | `11주차-시간과그림.pptx` | 11주차 | 051–055 | 16 | `generate_w11.js` |
+| `12주차-끝내는연습.pptx` | 12주차 | 056–060 | 16 | `generate_w12.js` |
 
 > 📌 **8주차는 스크린샷이 아니라 코드가 내용이다.** 코딩 주간이라 씬 렌더는 흰 사각형뿐이라
 > 슬라이드 소재로 약하다. 코드 블록·비교표 중심으로 짜고 스크린샷은 타이틀과 040 실습에만 썼다.
@@ -74,6 +75,10 @@ node generate_w10.js
 
 ```bash
 node generate_w11.js
+```
+
+```bash
+node generate_w12.js
 ```
 
 > ⚠️ 스크립트가 씬 스크린샷을 `shots2/final/*.png` 에서 읽는다. 없으면 실패한다.
@@ -234,3 +239,41 @@ $app = New-Object -ComObject PowerPoint.Application; $d = $app.Presentations.Ope
 
 앞의 둘은 스폰 코루틴을 기다리지 않고 몬스터를 줄 세운 뒤 `Time.timeScale = 0` 으로 정지시켜 찍었다.
 배치는 연출이지만 오브젝트·스프라이트·애니메이션 상태는 실제 실행 중인 씬 그대로다.
+
+## 슬라이드 구성 (12주차)
+
+| # | 내용 |
+|---|---|
+| 1 | 타이틀 |
+| 2 | Phase 4 소개 + 이번 주 흐름 |
+| 3 | 056 · Canvas 와 TMP · 한글 폰트 |
+| 4 | 056 · deltaTime 이 점수가 된다 |
+| 5 | 057 · 죽음 감지는 null 확인 |
+| 6 | 057 · timeScale · LoadScene · Build Settings (강조색 1회) |
+| 7 | 057 · 개조 예시 5개 ★ |
+| 8 | 058 · 4주차 2중 for 와 나란히 ★ |
+| 9 | 058 · 인덱스를 좌표로 + 실측 |
+| 10 | 059 · Physics Material 2D |
+| 11 | 059 · 040 에서 미뤄둔 .normalized |
+| 12 | 059 · Collision 과 Trigger |
+| 13 | 060 · 패들은 Kinematic |
+| 14 | 060 · 두 매니저가 거의 같다 ★ |
+| 15 | 흔한 사고 (강사용) |
+| 16 | 12주차 정리 + 13주차 예고 |
+
+> 📌 **14장이 이 덱의 결론이다.** 057 과 060 의 매니저를 나란히 놓고 "게임이 달라도 뼈대는
+> 같다" 를 보여준다. 8장(4주차 콘솔 ↔ 유니티)과 짝을 이룬다 — Phase 4 는 새 기술이 아니라
+> **이미 배운 것의 새 쓰임**이라는 게 이 덱 전체의 주장이다.
+
+### 12주차 스크린샷 (`shots2/final/`)
+
+| 파일 | 어떻게 뽑았나 |
+|---|---|
+| `057_Dodge_Score.png` | `057_GameOver_Done` Play 중, 장애물 4개를 배치하고 `Time.timeScale = 0` 으로 정지 |
+| `060_Breakout.png` | `060_Breakout_Done` Play 중, 블록 7개를 깬 중반 상태를 만들고 정지 |
+
+두 장 모두 배치는 연출이지만 오브젝트·UI·물리 상태는 실제 실행 중인 씬 그대로다.
+
+> ⚠️ `057_Dodge_Score.png` 의 `점수 12` 가 제대로 보이는 것은 **Pretendard TMP 폰트를
+> 넣은 뒤**다. 기본 폰트로는 한글이 빈칸으로 나온다 —
+> [Fonts/README.md](../../../Assets/_GameAssets/Fonts/README.md) 참고.
