@@ -111,3 +111,6 @@ InitTestScene*.unity*
 
 # Office 임시 잠금 파일 (PowerPoint/Word/Excel 로 문서를 열어두면 생긴다)
 ~$*
+
+# JetBrains Rider / IntelliJ 프로젝트 설정 (개인 환경)
+/.idea/

@@ -81,3 +81,32 @@ B_Parent                    Position (3, 2)
 
 `docs/04_배포자료/슬라이드/` 의 PPT 는 **`_Done` 씬을 1920×1080 으로 렌더한 이미지**를 쓴다.
 씬을 고쳤으면 이미지도 다시 뽑아야 한다 — 절차는 슬라이드 폴더의 README 참고.
+
+---
+
+## 8주차 (036–040) — 스크립트가 붙는 씬
+
+| 회차 | 시작 (학생) | 완성 (정답) | 붙는 스크립트 |
+|---|---|---|---|
+| 036 | `036_Script_Start` | `036_Script_Done` | `HelloUnity` |
+| 037 | `037_SerializeField_Start` | `037_SerializeField_Done` | `Spinner` · `Bouncer` |
+| 038 | `038_Move_Start` | `038_Move_Done` | `Mover` |
+| 039 | `039_DeltaTime` (하나) | — | 위 셋 전부 |
+| 040 | `040_Input_Start` | `040_Input_Done` | `PlayerMove` |
+
+> **039는 씬을 나누지 않는다.** 그 회차는 씬이 아니라 **스크립트를 고치는** 회차다.
+> 진행 전후는 git 커밋 경계로 본다 — `[036-038]` 커밋이 고치기 전, `[039]` 커밋이 고친 뒤다.
+
+### ⚠️ 040은 자동 검증이 안 된다
+
+`PlayerMove`는 수업 방침대로 **구 Input Manager**(`Input.GetAxisRaw`)를 쓴다.
+그런데 `uloop simulate-keyboard`는 **Input System에만** 키를 주입한다. 실측:
+
+```
+D 키를 눌러둔 상태에서
+  legacy  Input.GetKey(D) = False     GetAxisRaw("Horizontal") = 0.0
+  new     Keyboard.current.dKey.isPressed = True
+```
+
+**시뮬레이션으로는 캐릭터가 움직이지 않는다.** 040의 이동은 사람이 직접 키를 눌러 확인해야 한다.
+입력을 뺀 나머지(참조 연결 · `SetActive` 토글 · `[ContextMenu]`)는 자동 검증된다.
