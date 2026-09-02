@@ -4,18 +4,21 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // 084·085회차 · 레벨업하면 시간이 멈추고 카드 3장이 뜬다.
-//
-// 084 — Time.timeScale = 0 으로 멈추고, 아무 키나 누르면 다시 흐르게 한다.
-// 085 — 서로 다른 업그레이드 3개를 뽑아 카드에 올리고, 고르면 적용한다.
+// 086회차 · 업그레이드가 8종이 됐다.
+// 089회차 · 종류와 수치를 코드에서 빼서 UpgradeData(SO) 배열로 옮겼다.
+//           이제 카드를 추가하려면 에셋을 하나 더 만들어 배열에 넣으면 된다. 코드는 안 고친다.
 public class LevelUpView : MonoBehaviour
 {
     [SerializeField] private GameObject panel;
     [SerializeField] private Button[] buttons = new Button[3];
     [SerializeField] private TMP_Text[] labels = new TMP_Text[3];
 
+    [SerializeField] private UpgradeData[] upgrades;
+
     [SerializeField] private MeleeRing meleeRing;
     [SerializeField] private AutoGun autoGun;
     [SerializeField] private PlayerController playerController;
+    [SerializeField] private PlayerHealth playerHealth;
 
     public bool IsOpen => panel != null && panel.activeSelf;
 
@@ -31,80 +34,96 @@ public class LevelUpView : MonoBehaviour
 
         if (panel != null) panel.SetActive(true);
 
-        List<UpgradeType> picked = PickThree();
+        List<UpgradeData> picked = PickThree();
 
         for (int i = 0; i < buttons.Length; i++)
         {
-            UpgradeType type = picked[i];   // 반복문 변수를 그대로 쓰면 전부 마지막 값이 된다
+            if (i >= picked.Count)
+            {
+                if (buttons[i] != null) buttons[i].gameObject.SetActive(false);
+                continue;
+            }
 
-            if (labels[i] != null) labels[i].text = Describe(type);
+            UpgradeData data = picked[i];   // 반복문 변수를 그대로 쓰면 전부 마지막 값이 된다
+
+            if (buttons[i] != null) buttons[i].gameObject.SetActive(true);
+            if (labels[i] != null) labels[i].text = $"{data.title}\n<size=60%>{data.description}";
 
             if (buttons[i] == null) continue;
 
             buttons[i].onClick.RemoveAllListeners();
-            buttons[i].onClick.AddListener(() => Choose(type));
+            buttons[i].onClick.AddListener(() => Choose(data));
         }
     }
 
-    public void Choose(UpgradeType type)
+    public void Choose(UpgradeData data)
     {
-        Apply(type);
+        Apply(data);
 
         if (panel != null) panel.SetActive(false);
 
         Time.timeScale = 1f;   // 이걸 빼면 게임이 영영 멈춰 있다
     }
 
-    // 서로 다른 3개를 뽑는다. 종류가 3개뿐이라 지금은 전부 나온다.
-    private List<UpgradeType> PickThree()
+    // 서로 다른 3개를 뽑는다.
+    private List<UpgradeData> PickThree()
     {
-        List<UpgradeType> all = new List<UpgradeType>
-        {
-            UpgradeType.BladeCount,
-            UpgradeType.FireRate,
-            UpgradeType.MoveSpeed
-        };
+        List<UpgradeData> pool = new List<UpgradeData>();
 
-        List<UpgradeType> result = new List<UpgradeType>();
-
-        while (result.Count < 3 && all.Count > 0)
+        foreach (UpgradeData u in upgrades)
         {
-            int index = Random.Range(0, all.Count);
-            result.Add(all[index]);
-            all.RemoveAt(index);
+            if (u != null) pool.Add(u);
+        }
+
+        List<UpgradeData> result = new List<UpgradeData>();
+
+        while (result.Count < 3 && pool.Count > 0)
+        {
+            int index = Random.Range(0, pool.Count);
+            result.Add(pool[index]);
+            pool.RemoveAt(index);   // 뽑은 건 빼야 중복이 안 나온다
         }
 
         return result;
     }
 
-    private string Describe(UpgradeType type)
+    private void Apply(UpgradeData data)
     {
-        switch (type)
-        {
-            case UpgradeType.BladeCount: return "칼 +1\n<size=60%>주위를 도는 칼이 늘어난다";
-            case UpgradeType.FireRate: return "연사 +\n<size=60%>총이 더 자주 나간다";
-            case UpgradeType.MoveSpeed: return "이동 +\n<size=60%>더 빨리 움직인다";
-        }
-        return "";
-    }
-
-    private void Apply(UpgradeType type)
-    {
-        switch (type)
+        switch (data.type)
         {
             case UpgradeType.BladeCount:
-                if (meleeRing != null) meleeRing.AddBlade();
+                if (meleeRing != null) meleeRing.AddBlade((int)data.value);
+                break;
+
+            case UpgradeType.BladeSpeed:
+                if (meleeRing != null) meleeRing.AddRotateSpeed(data.value);
+                break;
+
+            case UpgradeType.BladeDamage:
+                if (meleeRing != null) meleeRing.AddBladeDamage((int)data.value);
                 break;
 
             case UpgradeType.FireRate:
-                if (autoGun != null) autoGun.SpeedUp(0.06f, 0.12f);
+                if (autoGun != null) autoGun.SpeedUp(data.value, data.minLimit);
+                break;
+
+            case UpgradeType.GunDamage:
+                if (autoGun != null) autoGun.AddDamage((int)data.value);
+                break;
+
+            case UpgradeType.Pierce:
+                if (autoGun != null) autoGun.AddPierce((int)data.value);
                 break;
 
             case UpgradeType.MoveSpeed:
-                if (playerController != null) playerController.SpeedUp(0.6f);
+                if (playerController != null) playerController.SpeedUp(data.value);
+                break;
+
+            case UpgradeType.MaxHealth:
+                if (playerHealth != null) playerHealth.AddMaxHealth((int)data.value);
                 break;
         }
 
-        Debug.Log($"업그레이드 선택: {type}");
+        Debug.Log($"업그레이드 선택: {data.title} ({data.type})");
     }
 }

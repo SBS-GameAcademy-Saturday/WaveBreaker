@@ -184,8 +184,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 34
-  m_fontSizeBase: 34
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -254,7 +254,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 32, y: -24}
-  m_SizeDelta: {x: 700, y: 60}
+  m_SizeDelta: {x: 1220, y: 60}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &166595410
 GameObject:
@@ -476,10 +476,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e55ae43b5dbaabc4eb51edb90b3dd5e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeRing
+  data: {fileID: 0}
   bladePrefab: {fileID: 2818916249809842428, guid: 92eb711ac1f968343a266824a1c1b395, type: 3}
-  bladeCount: 3
-  radius: 2
-  rotateSpeed: 180
 --- !u!1 &507341486
 GameObject:
   m_ObjectHideFlags: 0
@@ -1761,6 +1759,14 @@ MonoBehaviour:
   minInterval: 0.4
   intervalStep: 0.3
   waveDuration: 15
+  bossPrefabs:
+  - {fileID: 4648608048634230165, guid: bcb7ce5f6069aa84397e91a936dd407b, type: 3}
+  - {fileID: 3845228276742599873, guid: 074d9003da9c36647b5f52cec5197725, type: 3}
+  - {fileID: 6586884478202794279, guid: c0e7373c2d28e1d44b8769f02eb2d826, type: 3}
+  bossTimes:
+  - 180
+  - 360
+  - 600
 --- !u!4 &1376567913
 Transform:
   m_ObjectHideFlags: 0
@@ -1994,9 +2000,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b1b3eb854005ba448453aaa50a4eb7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AutoGun
+  data: {fileID: 0}
   projectilePrefab: {fileID: 7505689658882639516, guid: ed79811937333ae419b3a013d8347a28, type: 3}
-  range: 8
-  fireInterval: 0.5
 --- !u!114 &1378747219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2478,9 +2483,19 @@ MonoBehaviour:
   - {fileID: 359250187}
   - {fileID: 809498465}
   - {fileID: 774533222}
+  upgrades:
+  - {fileID: 11400000, guid: aa33f5484e0400f43bc0bd9f22d5c6bc, type: 2}
+  - {fileID: 11400000, guid: 7dac743d36e8db347936c2cd843bcff2, type: 2}
+  - {fileID: 11400000, guid: 171e39ce06c07a4448d9f8475a8aad2f, type: 2}
+  - {fileID: 11400000, guid: 95c3c1176081d834194bd67c85a51e17, type: 2}
+  - {fileID: 11400000, guid: 192af8cfb575a0646b5b3cb8ea9f07c8, type: 2}
+  - {fileID: 11400000, guid: c5ea6c59c66981045a345d568127c19f, type: 2}
+  - {fileID: 11400000, guid: e9e90c268730a30488b868cf7ceec0e7, type: 2}
+  - {fileID: 11400000, guid: 6bf25e7af1f8d7a4e9c4fc1b5234ff4d, type: 2}
   meleeRing: {fileID: 416664781}
   autoGun: {fileID: 1378747218}
   playerController: {fileID: 1378747212}
+  playerHealth: {fileID: 1378747211}
 --- !u!1 &1748847256
 GameObject:
   m_ObjectHideFlags: 0

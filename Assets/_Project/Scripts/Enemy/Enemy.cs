@@ -5,12 +5,16 @@ using UnityEngine;
 //
 // 071회차 · 플레이어를 향해 걸어오게 만들었다. Move() 를 virtual 로 둬서 072에서 자식마다 바꾼다.
 // 072회차 · TakeDamage 를 virtual 로 바꿨다. TankEnemy 가 받는 피해를 줄이기 위해서다.
+// 081회차 · 죽으면 경험치 젬을 떨군다.
+// 087·088회차 · 수치를 EnemyData(SO)에서 읽는다. 코드를 안 고치고 밸런싱할 수 있다.
 public abstract class Enemy : MonoBehaviour, IDamageable
 {
-    [SerializeField] protected int maxHealth = 10;
-    [SerializeField] protected int damage = 1;
-    [SerializeField] protected float moveSpeed = 2f;
-    [SerializeField] protected GameObject expGemPrefab;   // 081회차
+    [SerializeField] protected EnemyData data;
+    [SerializeField] protected GameObject expGemPrefab;
+
+    protected int maxHealth = 10;
+    protected int damage = 1;
+    protected float moveSpeed = 2f;
 
     protected int currentHealth;
     protected Rigidbody2D rb;
@@ -21,6 +25,22 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     {
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
+
+        ApplyData();
+    }
+
+    // 088회차 · SO 의 값을 런타임 필드로 옮긴다. 그 뒤로는 SO 를 건드리지 않는다.
+    protected virtual void ApplyData()
+    {
+        if (data == null) return;
+
+        maxHealth = data.maxHealth;
+        damage = data.damage;
+        moveSpeed = data.moveSpeed;
+
+        if (sprite != null) sprite.color = data.color;
+
+        transform.localScale = Vector3.one * data.scale;
     }
 
     // private 으로 두면 자식이 override 할 수 없다.
@@ -55,6 +75,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     public virtual void TakeDamage(int amount)
     {
+        // 090회차 · 한 프레임에 칼 여러 자루와 총알이 동시에 맞으면 Die() 가 여러 번 불린다.
+        // Destroy 는 프레임 끝에 처리되기 때문이다. 080에서 플레이어에 넣은 검사와 같다.
+        if (currentHealth <= 0) return;
+
         currentHealth -= amount;
         Debug.Log($"{name} : -{amount}  (남은 체력 {currentHealth})");
 

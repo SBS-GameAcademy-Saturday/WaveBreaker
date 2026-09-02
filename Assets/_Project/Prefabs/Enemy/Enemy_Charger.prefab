@@ -170,8 +170,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 080a1ae577d128b4faa7409210420af3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChargerEnemy
-  maxHealth: 10
-  damage: 1
-  moveSpeed: 2
+  data: {fileID: 11400000, guid: c6c436ffcd3ef4f4ab56984bbae1a126, type: 2}
   expGemPrefab: {fileID: 1375084238115605958, guid: 820ed89be3c710f43becc558fe3fc4a9, type: 3}
   chargeDamage: 3
