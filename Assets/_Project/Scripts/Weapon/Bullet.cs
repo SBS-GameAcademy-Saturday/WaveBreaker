@@ -8,6 +8,13 @@ using UnityEngine;
 ///   048  Destroy(gameObject, lifeTime) 로 수명을 준다 + 맞으면 둘 다 삭제
 ///   049  [SerializeField] rb 드래그를 GetComponent 로 대체 + null 대비
 ///   050  색을 바꾸는 대신 Health.TakeDamage 를 부른다
+///   055  맞힐 대상을 Inspector 에서 정하도록 targetTag 를 열었다
+///
+/// 왜 targetTag 를 열었나 (055)
+///   "부딪히면 상대 체력을 깎고 사라지는 것" 은 총알만이 아니다.
+///   위에서 떨어지는 장애물도 같은 물건이다. 코드는 하나, 용도는 둘.
+///     총알   targetTag = "Enemy",  Gravity Scale 0, Speed 10
+///     장애물 targetTag = "Player", Gravity Scale 1, Speed 0  (중력이 떨어뜨린다)
 ///
 /// 왜 Start 인가 (042 와 다른 점)
 ///   플레이어는 키 입력이 매 순간 바뀌니 FixedUpdate 가 맞다.
@@ -24,6 +31,9 @@ public class Bullet : MonoBehaviour
     [SerializeField] private float lifeTime = 2f;
 
     [SerializeField] private int damage = 10;
+
+    // 누구를 맞힐지. 기본값은 총알 기준이라 047~050 수업 코드와 동작이 같다.
+    [SerializeField] private string targetTag = "Enemy";
 
     private Rigidbody2D rb;
 
@@ -44,7 +54,7 @@ public class Bullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Enemy"))
+        if (other.CompareTag(targetTag))
         {
             // 점 앞에 있는 게 주인이다. other. 이 붙었으니 상대의 부품을 찾는다.
             // Health 는 내가 만든 클래스지만 컴포넌트라서 똑같이 찾힌다.
