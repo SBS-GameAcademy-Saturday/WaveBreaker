@@ -1,6 +1,6 @@
-# 실습 씬 — 7주차 (031–035)
+# 실습 씬 (031–045)
 
-회차마다 **시작 / 완성** 쌍으로 세팅돼 있다. 강사 시연이 필요한 회차는 **Demo** 씬이 따로 있다.
+주차별로 아래에 이어 붙인다. 회차마다 **시작 / 완성** 쌍으로 세팅돼 있다. 강사 시연이 필요한 회차는 **Demo** 씬이 따로 있다.
 
 | 회차 | 시작 (학생) | 완성 (정답) | 시연 (강사) |
 |---|---|---|---|
@@ -12,7 +12,7 @@
 
 ---
 
-## 왜 시작 씬을 미리 주는가
+## 7주차 (031–035) — 왜 시작 씬을 미리 주는가
 
 **`File → New Scene` 을 시키면 3D 기본 카메라(원근 + 스카이박스)가 나온다.**
 2D 프로젝트인데 화면이 이상해지고, 노베이스는 첫 회차부터 "왜 이렇게 보이죠"에 걸린다.
@@ -116,3 +116,65 @@ D 키를 눌러둔 상태에서
 >
 > 씬을 고치거나 `PlayerMove` 를 수정한 뒤에는 **이 확인을 다시 해야 한다.** 자동 검증이 안 되므로
 > CI 나 스크립트가 잡아주지 않는다.
+
+---
+
+## 9주차 (041–045) — 물리와 충돌 (Phase 3)
+
+| 회차 | 시작 (학생) | 완성 (정답) | 붙는 스크립트 |
+|---|---|---|---|
+| 041 | `041_Rigidbody_Start` | `041_Rigidbody_Done` | — (전부 Inspector) |
+| 042 | `042_PhysicsMove_Start` | `042_PhysicsMove_Done` | `PlayerPhysicsMove` |
+| 043 | `043_Collider_Start` | `043_Collider_Done` | — (전부 Inspector) |
+| 044 | `044_Trigger_Start` | `044_Trigger_Done` | `Collector` |
+| 045 | `045_Layer_Start` | `045_Layer_Done` | — (전부 Inspector) |
+
+카메라 규격은 위와 같다. **9주차는 전부 `orthographicSize = 6`.**
+
+### 시작 씬에 미리 넣어둔 것 (그리고 왜)
+
+| 회차 | 미리 있는 것 | 이유 |
+|---|---|---|
+| 041 | 흰 Square 1개 | `Rigidbody 2D` 붙이는 게 학습 대상이다 |
+| 042 | `Player`(040 `PlayerMove` + `Box Collider 2D`), 벽, `Item` | **"충돌 부품이 있는데도 통과한다"** 를 보여주는 게 도입이다 |
+| 043 | `Player`(042 완성), **Collider 없는** 회색 Square | Collider 를 붙이는 게 학습 대상이라 일부러 비웠다 |
+| 044 | `Player`, 코인 3개(`Is Trigger` 켬, **Tag 없음**), 벽 | **Tag 를 만들고 붙이는 것**이 그 회차의 핵심이라 비웠다 |
+| 045 | 배경, `Player`, 벽, 겹쳐 있는 총알 20개 | Layer 를 만들고 붙이는 게 학습 대상이다 |
+
+### ⚠️ Tag · Layer · Sorting Layer 는 씬이 아니라 프로젝트 설정이다
+
+아래는 `ProjectSettings/TagManager.asset` 에 **이미 등록돼 있다.** 완성 씬이 동작하려면 필요하기 때문이다.
+
+| | 등록된 것 |
+|---|---|
+| Tag | `Coin`, `Wall` |
+| Layer | `Bullet`, `Wall` |
+| Sorting Layer | `Background`, `Ground`, `Enemy`, `Player`, `Effect` |
+
+**학생의 `Snapshot_P2` 에는 없다.** 그래서 044·045 수업에서 **만드는 과정은 반드시 같이 한다.**
+
+### ⚠️ Layer Collision Matrix 는 저장하지 않았다
+
+`Physics 2D → Layer Collision Matrix` 도 프로젝트 설정이라 **씬마다 다르게 가질 수 없다.**
+끈 상태로 저장하면 `045_Layer_Start`(총알끼리 부딪히는 걸 보여주는 씬)가 망가진다.
+
+**그래서 저장소는 전부 켜진 기본 상태다.** `045_Layer_Done` 을 시연하려면
+수업 중에 `Bullet × Bullet` 과 `Bullet × Player` 를 **직접 끄고**, 끝나면 되돌린다.
+
+### ⚠️ 042 이후 이동은 자동 검증이 안 된다
+
+`PlayerPhysicsMove` 도 040 과 같이 **구 Input Manager**(`Input.GetAxisRaw`)를 쓴다.
+`uloop simulate-keyboard` 는 Input System 에만 키를 주입하므로 **시뮬레이션으로는 안 움직인다.**
+
+검증은 `PlayerPhysicsMove` 를 잠시 끄고 `rb.linearVelocity` 를 직접 넣어 밀어서 했다.
+
+> ✅ **자동 검증 완료 (2026-09-02)**
+>
+> | 씬 | 확인한 것 | 실측 |
+> |---|---|---|
+> | `041_Rigidbody_Done` | Gravity Scale 0 / 1 / 3 의 낙하 차이 | 6.4초 후 `y = 3.000` / `-201.06` / `-609.18` (**약 3배**) |
+> | `044_Trigger_Done` | 코인 3개 획득 + 벽 충돌 | Console 에 `1개째`·`2개째`·`3개째 먹었다` + `부딪혔다: Wall`, 코인 3개 전부 비활성 |
+> | `044_Trigger_Done` | 벽에서 멈춤 | 벽(x=6, 반폭 0.5) 앞 `player.x = 4.99`, `v = 0.00` |
+> | `045_Layer_Start` | 총알끼리 서로 밀어냄 | 중심 반경 `0.35` → `0.76` 로 벌어짐 |
+>
+> **WASD 실제 입력은 사람이 직접 눌러 확인해야 한다.** 씬이나 스크립트를 고치면 다시 확인한다.

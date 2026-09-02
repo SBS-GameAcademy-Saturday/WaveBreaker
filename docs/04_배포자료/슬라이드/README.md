@@ -8,6 +8,7 @@
 |---|---|---|---|---|
 | `7주차-유니티입문.pptx` | 7주차 | 031–035 | 15 | `generate_w07.js` |
 | `8주차-코드로움직이기.pptx` | 8주차 | 036–040 | 16 | `generate_w08.js` |
+| `9주차-부딪히게만들기.pptx` | 9주차 | 041–045 | 16 | `generate_w09.js` |
 
 > 📌 **8주차는 스크린샷이 아니라 코드가 내용이다.** 코딩 주간이라 씬 렌더는 흰 사각형뿐이라
 > 슬라이드 소재로 약하다. 코드 블록·비교표 중심으로 짜고 스크린샷은 타이틀과 040 실습에만 썼다.
@@ -61,6 +62,10 @@ node generate_w07.js
 node generate_w08.js
 ```
 
+```bash
+node generate_w09.js
+```
+
 > ⚠️ 스크립트가 씬 스크린샷을 `shots2/final/*.png` 에서 읽는다. 없으면 실패한다.
 
 ## 스크린샷 다시 뽑기
@@ -109,3 +114,42 @@ PowerPoint COM 으로 PNG 를 뽑아 본다. 실제 렌더러라 한글 폰트�
 ```powershell
 $app = New-Object -ComObject PowerPoint.Application; $d = $app.Presentations.Open("$PWD\7주차-유니티입문.pptx", $true, $false, $false); foreach ($s in $d.Slides) { $s.Export("$PWD\render\slide-$('{0:D2}' -f $s.SlideIndex).png", "PNG", 1400, 788) }; $d.Close(); $app.Quit()
 ```
+
+## 슬라이드 구성 (9주차)
+
+| # | 내용 |
+|---|---|
+| 1 | 타이틀 |
+| 2 | 이번 주 흐름 (041–045) |
+| 3 | 041 · Rigidbody 2D · Body Type 3종 |
+| 4 | 041 · Gravity Scale / Mass / Linear Damping + 낙하 실측 |
+| 5 | 042 · 왜 040 코드는 벽을 뚫나 |
+| 6 | 042 · linearVelocity 와 deltaTime |
+| 7 | 042 · Update vs FixedUpdate |
+| 8 | 043 · 충돌 성립 조건 4분면 |
+| 9 | 043 · Is Trigger |
+| 10 | 044 · OnTriggerEnter2D |
+| 11 | 044 · Tag — 만들었다 ≠ 붙였다 |
+| 12 | 044 · Trigger vs Collision |
+| 13 | 045 · Layer Collision Matrix |
+| 14 | 045 · Sorting Layer (before / after) ★ |
+| 15 | 충돌 5단계 체크리스트 (강조색 1회) |
+| 16 | 9주차 종료 조건 + 10주차 예고 |
+
+> 📌 **9주차는 Inspector 주간이라 표가 내용의 절반이다.** 스크린샷은 타이틀 · 043 · 044 와
+> **14장의 Sorting Layer 전후 비교**에만 쓴다. 14장의 두 장이 이 덱에서 유일하게 그림이
+> 설명을 대신하는 자리다.
+
+### 9주차 스크린샷 (`shots2/final/`)
+
+| 파일 | 씬 |
+|---|---|
+| `042_PhysicsMove.png` | `042_PhysicsMove_Done` |
+| `043_Collider.png` | `043_Collider_Done` |
+| `044_Trigger.png` | `044_Trigger_Done` |
+| `045_Layer_Start.png` | `045_Layer_Start` — 배경이 캐릭터를 덮은 상태 |
+| `045_Layer_Done.png` | `045_Layer_Done` — Sorting Layer 를 준 상태 |
+
+전부 Play 직후 `--capture-mode rendering` 1920×1080 으로 뽑았다. 씬을 고쳤으면 다시 뽑는다.
+
+> ⚠️ `shots2/` 와 `render_*/` 는 커밋하지 않는다. 씬에서 언제든 다시 뽑을 수 있는 중간 산출물이다.
