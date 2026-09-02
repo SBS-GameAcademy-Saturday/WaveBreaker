@@ -10,6 +10,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     [SerializeField] protected int maxHealth = 10;
     [SerializeField] protected int damage = 1;
     [SerializeField] protected float moveSpeed = 2f;
+    [SerializeField] protected GameObject expGemPrefab;   // 081회차
 
     protected int currentHealth;
     protected Rigidbody2D rb;
@@ -70,6 +71,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         if (GameManager.Instance != null)
         {
             GameManager.Instance.AddKill();
+        }
+
+        // 081회차 · 죽은 자리에 경험치 젬을 떨군다.
+        if (expGemPrefab != null)
+        {
+            Instantiate(expGemPrefab, transform.position, Quaternion.identity);
         }
 
         Destroy(gameObject);

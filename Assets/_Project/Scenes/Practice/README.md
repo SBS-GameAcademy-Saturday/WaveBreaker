@@ -742,3 +742,81 @@ Phase 5 몬스터 전용 그림으로 삼았다. 회색에 색을 곱하니 빨�
 ```
 
 Phase 5 종료 조건 9개를 모두 만족한다 (`docs/01_Phase개요/Phase5-본프로젝트코어.md`).
+
+---
+
+## 17주차 (081–085) — 경험치와 레벨업 (Phase 6 착수)
+
+`Game.unity` 하나가 계속 자란다. 연습 씬은 없다.
+
+### `Game.unity` 085회차 시점 구성 (16주차에서 추가된 것)
+
+| 오브젝트 | 부품 |
+|---|---|
+| `EventSystem` | **새로 추가.** 없으면 UI 버튼이 아예 안 눌린다 |
+| `Player` | `PlayerLevel` 추가 (baseExp 5 · expStep 3 · `levelUpView` 연결) |
+| `HUD` | `LevelUpView` 추가 |
+| `HUD/LevelUpPanel` | 반투명 배경 + `Title` + `Card_0/1/2` (각 `Image` + `Button` + `Label`) |
+| `HUD/CenterText` | **패널보다 뒤로 옮김** (게임오버 문구가 가려지지 않게) |
+| `Enemy_*` 프리팹 3종 | `Exp Gem Prefab` 연결 |
+
+### 젬 프리팹 — `Assets/_Project/Prefabs/Item/ExpGem.prefab`
+
+| 항목 | 값 |
+|---|---|
+| `Rigidbody 2D` | **Kinematic** · Gravity 0 |
+| `Circle Collider 2D` | `Is Trigger` · Radius 0.28 |
+| `ExpGem` | exp 1 · 자석 범위 2.5 · 끌리는 속도 8 |
+
+> `Kinematic` 인 이유: 082에서 `transform.position` 으로 직접 움직인다. `Dynamic` 이면
+> 물리에 밀리고, Rigidbody 가 아예 없으면 정적 콜라이더로 취급돼 움직일 때마다 재계산된다.
+
+> ✅ **자동 검증 완료 (2026-09-02)**
+>
+> | 확인한 것 | 실측 |
+> |---|---|
+> | 젬 드롭 (081) | 몬스터 사망 자리에 생성. 조작 없이 방치 시 9개까지 누적 확인 |
+> | 자석 — 범위 안 (082) | 거리 `2.00` 젬 → 끌려와 소멸, 경험치 증가 |
+> | 자석 — 범위 밖 (082) | 거리 `4.00` 젬 → 3회 샘플 모두 `4.00` 그대로 |
+> | 레벨업 곡선 (083) | 필요 경험치 `5 → 8 → 11 → 14` (`baseExp 5 + (Lv-1)*3`) |
+> | HUD (083) | `웨이브 4     처치 34     체력 5/20     Lv.4  0/14` |
+> | 시간 정지 (084) | 레벨업 순간 `timeScale = 0`, 패널 열림 `True` |
+> | 멈춤 중 젬 (084) | `Time.deltaTime = 0` 이라 자석이 동작하지 않음 — **의도된 동작** |
+> | 카드 3장 (085) | `칼 +1` / `이동 +` / `연사 +` — 매번 서로 다름 |
+> | 카드 클릭 (085) | `Button.onClick.Invoke()` → `업그레이드 선택: BladeCount`, 칼 **3 → 4** |
+> | 재배치 (085) | 칼 4자루 localPosition `(2,0) (0,2) (-2,0) (0,-2)` — 정확히 90도 |
+> | 연사 업그레이드 | `연사 상승 — 발사 간격 0.44초` (0.50 − 0.06) |
+> | 이동 업그레이드 | `이동 속도 상승 — 5.6` (5.0 + 0.6) |
+> | 창 닫힘 | 클릭 직후 `timeScale = 1`, 패널 닫힘 |
+>
+> ⚠️ **마우스 클릭 자체는 미실측.** 에디터에서 실제 클릭을 흉내낼 수 없어
+> `Button.onClick.Invoke()` 로 **배선(리스너 연결)** 을 검증했다.
+> `EventSystem` 을 통한 실제 클릭 경로는 미실측이다.
+> ⚠️ **`Input.anyKeyDown` (084 중간 상태) 도 미실측.** 최종본은 버튼 방식이다.
+
+### ★ 검증 중에 겪은 것 — 젬이 안 끌려온다고 착각했다
+
+범위 `2.0` 에 둔 젬이 3회 샘플 내내 `2.00` 그대로였다. 자석 코드가 안 도는 줄 알았다.
+
+리플렉션으로 젬 내부를 찍어보니 원인이 나왔다.
+
+```
+enabled=True activeInHierarchy=True timeScale=0
+exp=1  magnetRange=2.5  moveSpeed=8  player=Player (UnityEngine.Transform)
+```
+
+`timeScale = 0` — **레벨업 창이 떠 있었다.** `Time.deltaTime` 이 0이라
+`MoveTowards` 의 이동량이 0이었던 것이다. 버그가 아니라 **084에서 가르치는 동작 그대로**다.
+
+카드를 골라 `timeScale = 1` 로 되돌린 뒤 재측정: 범위 안 젬은 즉시 흡수, 범위 밖 젬은 `4.00` 유지.
+
+> 🔑 084 강의안의 "멈춘 상태에서 뭐가 멈추는가" 표에 **젬 자석**을 넣어둔 근거가 이것이다.
+
+### ★ 설계 판단 — `UpgradeManager` 를 따로 만들지 않았다
+
+`docs/05_Unity프로젝트/스크립트-설계.md` 초안에는 `UpgradeManager` 가 따로 있었다.
+지금은 업그레이드가 **3종**이고 추첨·표시·적용이 전부 `LevelUpView` 한 파일에 들어간다.
+파일을 나누면 서로를 참조하는 배선만 늘어난다.
+
+086에서 8종이 되고 `UpgradeData`(SO)가 들어오면 그때 분리한다.
+설계 문서의 `UpgradeManager` 행도 그렇게 고쳐뒀다.
