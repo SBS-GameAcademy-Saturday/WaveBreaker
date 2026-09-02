@@ -23,6 +23,10 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float spawnRangeX = 7f;
     [SerializeField] private float spawnY = 4f;
 
+    // 063회차 — 미니게임 ③ 은 사방에서 나온다. 체크하면 원 위에서 뽑는다.
+    [SerializeField] private bool spawnAroundCircle;
+    [SerializeField] private float spawnRadius = 12f;
+
     // StartCoroutine 이 돌려주는 손잡이. 안 받아두면 나중에 못 멈춘다.
     private Coroutine spawnRoutine;
 
@@ -62,6 +66,17 @@ public class EnemySpawner : MonoBehaviour
     }
 
     /// <summary>
+    /// 064회차 — 웨이브. 시간이 지날수록 스폰 간격을 줄인다.
+    ///
+    /// SurvivalManager 가 밖에서 부르므로 public 이다 — 050 의 TakeDamage 와 같은 판단이다.
+    /// Mathf.Max 로 하한을 두지 않으면 간격이 0이나 음수가 되어 게임이 터진다.
+    /// </summary>
+    public void SpeedUp(float step, float min)
+    {
+        spawnInterval = Mathf.Max(spawnInterval - step, min);
+    }
+
+    /// <summary>
     /// 자동 스폰이 생긴 뒤에도 남겨둔다. Play 를 누르지 않고 테스트할 때 여전히 편하다.
     /// </summary>
     [ContextMenu("몬스터 10마리 소환")]
@@ -75,8 +90,29 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnOne()
     {
+        Instantiate(enemyPrefab, spawnAroundCircle ? RandomEdgePosition() : RandomTopPosition(),
+                    Quaternion.identity);
+    }
+
+    // 048~052: 위쪽에서 랜덤하게
+    private Vector3 RandomTopPosition()
+    {
         float x = Random.Range(-spawnRangeX, spawnRangeX);
 
-        Instantiate(enemyPrefab, new Vector3(x, spawnY, 0f), Quaternion.identity);
+        return new Vector3(x, spawnY, 0f);
+    }
+
+    /// <summary>
+    /// 063회차 — 화면 밖 원 위의 한 점.
+    ///
+    /// 각도를 랜덤으로 뽑고 그 각도의 원 위 한 점을 구한다.
+    /// Cos·Sin 은 "각도를 x, y 로 바꿔주는 함수" 까지만 설명한다. 삼각함수를 파고들지 않는다.
+    /// spawnRadius 를 화면보다 크게 두어야 화면 밖에서 걸어 들어온다.
+    /// </summary>
+    private Vector3 RandomEdgePosition()
+    {
+        float angle = Random.Range(0f, Mathf.PI * 2f);
+
+        return new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0f) * spawnRadius;
     }
 }
