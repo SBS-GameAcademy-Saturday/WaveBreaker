@@ -9,6 +9,7 @@
 | `7주차-유니티입문.pptx` | 7주차 | 031–035 | 15 | `generate_w07.js` |
 | `8주차-코드로움직이기.pptx` | 8주차 | 036–040 | 16 | `generate_w08.js` |
 | `9주차-부딪히게만들기.pptx` | 9주차 | 041–045 | 16 | `generate_w09.js` |
+| `10주차-찍어내고없애기.pptx` | 10주차 | 046–050 | 16 | `generate_w10.js` |
 
 > 📌 **8주차는 스크린샷이 아니라 코드가 내용이다.** 코딩 주간이라 씬 렌더는 흰 사각형뿐이라
 > 슬라이드 소재로 약하다. 코드 블록·비교표 중심으로 짜고 스크린샷은 타이틀과 040 실습에만 썼다.
@@ -64,6 +65,10 @@ node generate_w08.js
 
 ```bash
 node generate_w09.js
+```
+
+```bash
+node generate_w10.js
 ```
 
 > ⚠️ 스크립트가 씬 스크린샷을 `shots2/final/*.png` 에서 읽는다. 없으면 실패한다.
@@ -153,3 +158,39 @@ $app = New-Object -ComObject PowerPoint.Application; $d = $app.Presentations.Ope
 전부 Play 직후 `--capture-mode rendering` 1920×1080 으로 뽑았다. 씬을 고쳤으면 다시 뽑는다.
 
 > ⚠️ `shots2/` 와 `render_*/` 는 커밋하지 않는다. 씬에서 언제든 다시 뽑을 수 있는 중간 산출물이다.
+
+## 슬라이드 구성 (10주차)
+
+| # | 내용 |
+|---|---|
+| 1 | 타이틀 |
+| 2 | 이번 주 흐름 (046–050) |
+| 3 | 046 · 원본과 복사본 |
+| 4 | 046 · Override / Revert / Apply |
+| 5 | 047 · Instantiate 인자 3개 |
+| 6 | 047 · Project 에서 끄나 Hierarchy 에서 끄나 |
+| 7 | 047 · 총알은 Start, 플레이어는 FixedUpdate |
+| 8 | 048 · gameObject 와 this (강조색 1회) |
+| 9 | 048 · 맞으면 둘 다 · Destroy vs SetActive |
+| 10 | 048 · 몬스터 스폰 — 새로 배우는 게 없다 |
+| 11 | 049 · 드래그를 한 줄로 없앤다 |
+| 12 | 049 · 점 앞이 주인 · null |
+| 13 | 050 · 콘솔 Enemy → Health ★ |
+| 14 | 050 · public/private · Awake · Mathf.Clamp |
+| 15 | 흔한 사고 (강사용) |
+| 16 | 10주차 종료 조건 + 11주차 예고 |
+
+> 📌 **10주차는 코드가 내용의 대부분이다.** 흰 네모뿐인 씬이라 스크린샷은 네 자리에만 썼다.
+> 13장(콘솔 ↔ 유니티 대조)이 이 덱의 중심이다. 036에서 한 약속을 갚는 자리라
+> **콘솔 코드를 반드시 옆에 띄우고 진행한다.**
+
+### 10주차 스크린샷 (`shots2/final/`)
+
+| 파일 | 어떻게 뽑았나 |
+|---|---|
+| `046_Prefab.png` | `046_Prefab_Done` — 인스턴스 10개 중 하나가 Override(노랑) |
+| `047_Instantiate.png` | `050_Health_Done` Play 중, 발사 간격만큼 떨어진 자리에 총알 4발을 놓고 `Time.timeScale = 0` 으로 정지시켜 캡처 |
+| `048_Spawn.png` | 같은 씬에서 `EnemySpawner.SpawnTen()` 을 호출해 스폰된 상태 |
+
+> ⚠️ `047_Instantiate.png` 는 **연출한 한 프레임**이다. 스페이스를 연타했을 때 실제로 남는
+> 배치와 같지만, 구 Input Manager 라 키를 시뮬레이션할 수 없어 총알을 직접 놓고 찍었다.
