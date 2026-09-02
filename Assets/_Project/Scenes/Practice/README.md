@@ -665,3 +665,80 @@ if (collision.gameObject.TryGetComponent(out IDamageable target))
 `Enemy_Walk.png` 의 첫 프레임을 **회색조로 변환한 `Enemy_Base.png`** 를 새로 만들어
 Phase 5 몬스터 전용 그림으로 삼았다. 회색에 색을 곱하니 빨강·노랑·보라가 제대로 나온다.
 (054의 애니메이션은 기존 `Enemy_Walk.png` 를 계속 쓴다. 건드리지 않았다.)
+
+---
+
+## 16주차 (076–080) — 무기와 코어 루프 · Phase 5 종료
+
+`Game.unity` 하나가 계속 자란다. 연습 씬은 없다.
+
+### `Game.unity` 080회차 시점 구성 (15주차에서 바뀐 것)
+
+| 오브젝트 | 부품 |
+|---|---|
+| `Player` | `PlayerAttack` **제거** (076에서 뗀다) · `AutoGun` 추가 |
+| `Player/Blades` | 빈 오브젝트 + `MeleeRing` (칼 3자루 · 반지름 2 · 초당 180도) |
+| `Player` `PlayerHealth` | 무적시간 `0.6`, `sprite` 연결 (무적 동안 반투명) |
+| `HUD/CenterText` | 게임오버 문구 (평소엔 비활성) |
+| `GameManager` | `Update` 에서 `R` 재시작 · `ChangeState` 가 `Time.timeScale` 제어 |
+| `ChargerEnemy` | `OnCollisionEnter2D` → **`OnCollisionStay2D`** |
+
+### 무기 프리팹 — `Assets/_Project/Prefabs/Weapon/`
+
+| 프리팹 | 스크립트 | 값 |
+|---|---|---|
+| `Blade` | `Blade` | 피해 3 · 타격 간격 0.3초 · Trigger Box `0.55 × 1.05` |
+| `Projectile` | `Projectile` | 속도 12 · 피해 3 · 관통 2 · 수명 2초 |
+
+> `Blade` 에는 **`Rigidbody 2D` 를 붙이지 않는다.** 부모 `Player` 의 바디에 붙어
+> 컴파운드 콜라이더가 되므로 Trigger 가 정상 동작한다.
+
+> ⚠️ **`ChargerEnemy.Attack` 의 `돌진! N 피해` 로그를 뺐다.** `Stay` 로 바꾸면서
+> 매 물리 프레임 찍히기 때문이다. 070·073 강의안의 그 로그는 **Enter 시점의 것**이며,
+> 회차별 중간 상태는 강의안 코드 블록이 정본이다 (`Bullet.cs` 와 같은 처리).
+
+> ✅ **자동 검증 완료 (2026-09-02)**
+>
+> | 확인한 것 | 실측 |
+> |---|---|
+> | 칼 배치 (077) | `bladeCount 3` → localPosition `(2,0)` `(-1,1.73)` `(-1,-1.73)` — 정확히 120도 |
+> | 칼 배치 6개 | `(2,0) (1,1.73) (-1,1.73) (-2,0) (-1,-1.73) (1,-1.73)` — 정확히 60도 |
+> | 회전 (076) | `Blades` 의 z 회전이 계속 증가 (표본 `50.9°`) |
+> | 자동 조준 (078) | `CurrentTarget = Enemy_Charger(Clone)` |
+> | 발사 (079) | 동시 비행 총알 3~4발 유지 |
+> | 조작 없이 전투 | 약 100초에 `처치 51` (Space 를 한 번도 안 눌렀다) |
+> | 무적시간 (080) | `-3` 이 7번, 그 사이 간격이 무적시간에 맞춰 일정 |
+> | 사망 → 게임오버 | `플레이어 사망` → `state=GameOver` · `timeScale=0` |
+> | HUD | `웨이브 6   처치 51   체력 0/20` + `게임 오버 / 51마리 처치 / R 키로 다시` |
+> | 재시작 | `Restart()` 후 `Wave=1` · `hp=20/20` · `state=Playing` · `timeScale=1` |
+>
+> ⚠️ **`R` 키 입력 자체는 미실측.** 레거시 Input Manager 라 에디터에서 키를 흉내낼 수 없어
+> `GameManager.Restart()` 를 직접 호출해 재시작 경로를 검증했다.
+> `Update` 안의 `Input.GetKeyDown(KeyCode.R)` 분기는 미실측이다.
+> (`Time.timeScale = 0` 에서도 `Update` 는 도는 것이 057에서 확인된 동작이다.)
+
+### ★ 설계 판단 — `WeaponBase` 추상 클래스를 만들지 않았다
+
+`docs/05_Unity프로젝트/스크립트-설계.md` 초안에는 `WeaponBase` (abstract) 아래
+`StraightWeapon` / `PierceWeapon` 을 두는 구조가 있었다. **만들지 않았다.**
+
+| | 회전 칼 | 자동 총 |
+|---|---|---|
+| 공격 방식 | 상시 회전, 닿으면 벤다 | 쿨다운마다 발사 |
+| 필요한 것 | 각도 배치 · Trigger | 타겟 탐색 · 프리팹 생성 |
+| 공통 코드 | **없다** | |
+
+부모로 뽑을 코드가 한 줄도 없어서, 껍데기만 있는 추상 클래스가 됐을 것이다.
+무기가 셋 이상 늘고 공통 코드가 실제로 생기면 그때 뽑는다.
+(070의 `Enemy` 는 반대다 — 체력·사망·플레이어 탐색이 전부 공통이라 부모가 값을 한다.)
+
+### ★ Phase 5 종료 — 코어 루프 한 바퀴
+
+조작 없이 방치했을 때의 전체 흐름이 실측으로 확인됐다.
+
+```
+시작 → 무기가 자동으로 51마리 처치 → 몬스터에 둘러싸여 7대 피격 → 사망
+     → timeScale 0 · 게임오버 문구 → Restart() → Wave 1 · hp 20/20 로 복귀
+```
+
+Phase 5 종료 조건 9개를 모두 만족한다 (`docs/01_Phase개요/Phase5-본프로젝트코어.md`).

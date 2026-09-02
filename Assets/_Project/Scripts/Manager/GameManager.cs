@@ -1,8 +1,10 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 // 066회차 · 게임 전체 상태를 한 곳에서 들고 있는다.
 // 이 프로젝트에서 싱글톤은 이것 하나만 허용한다.
 // 075회차 · 처치 수를 여기서 센다.
+// 080회차 · 게임오버에서 멈추고, R 로 다시 시작한다.
 public enum GameState
 {
     Title,
@@ -30,6 +32,19 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
+
+        // 게임오버로 멈춘 채 씬을 다시 열면 화면이 얼어 있다 (057).
+        Time.timeScale = 1f;
+    }
+
+    void Update()
+    {
+        if (State != GameState.GameOver) return;
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Restart();
+        }
     }
 
     public void ChangeState(GameState next)
@@ -37,10 +52,18 @@ public class GameManager : MonoBehaviour
         State = next;
 
         Debug.Log("게임 상태: " + next);
+
+        Time.timeScale = (next == GameState.GameOver) ? 0f : 1f;
     }
 
     public void AddKill()
     {
         Kills++;
+    }
+
+    public void Restart()
+    {
+        Time.timeScale = 1f;   // 이걸 빼면 다시 열어도 멈춰 있다
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
