@@ -8,6 +8,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private SpriteRenderer sprite;
 
+    // 085회차 · 레벨업으로 이동 속도가 오른다.
+    public void SpeedUp(float step)
+    {
+        moveSpeed += step;
+        Debug.Log($"이동 속도 상승 — {moveSpeed:F1}");
+    }
+
     void FixedUpdate()
     {
         Vector2 move = input.MoveInput;

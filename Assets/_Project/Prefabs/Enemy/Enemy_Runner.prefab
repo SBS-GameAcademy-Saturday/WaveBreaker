@@ -173,3 +173,4 @@ MonoBehaviour:
   maxHealth: 4
   damage: 1
   moveSpeed: 5.5
+  expGemPrefab: {fileID: 1375084238115605958, guid: 820ed89be3c710f43becc558fe3fc4a9, type: 3}

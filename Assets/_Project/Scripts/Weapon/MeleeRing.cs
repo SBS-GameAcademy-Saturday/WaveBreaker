@@ -20,6 +20,13 @@ public class MeleeRing : MonoBehaviour
         transform.Rotate(0f, 0f, rotateSpeed * Time.deltaTime);
     }
 
+    // 085회차 · 레벨업으로 칼이 늘어난다.
+    public void AddBlade()
+    {
+        bladeCount++;
+        Build();
+    }
+
     [ContextMenu("칼 다시 배치")]
     public void Build()
     {

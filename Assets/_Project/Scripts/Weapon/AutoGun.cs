@@ -34,6 +34,13 @@ public class AutoGun : MonoBehaviour
         }
     }
 
+    // 085회차 · 레벨업으로 연사가 빨라진다. 074의 WaveManager.SpeedUp 과 같은 모양이다.
+    public void SpeedUp(float step, float min)
+    {
+        fireInterval = Mathf.Max(fireInterval - step, min);
+        Debug.Log($"연사 상승 — 발사 간격 {fireInterval:F2}초");
+    }
+
     // 4주차 "배열에서 최솟값 찾기" 와 같은 구조다. 비교 대상이 숫자가 아니라 거리일 뿐이다.
     private Transform FindNearest()
     {
