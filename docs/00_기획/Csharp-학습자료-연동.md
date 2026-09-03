@@ -115,8 +115,9 @@ CSharpStudyProject/
 | 자료 | 어디서 쓰나 |
 |---|---|
 | [`Ch7/Class3`](https://github.com/SBS-GameAcademy-Saturday/CSharpStudyProject/blob/main/Chapter7_Extension/Class3.cs) Property | 024에서 한 번, **070·081** 에서 다시 |
-| [`Ch7/Class4`](https://github.com/SBS-GameAcademy-Saturday/CSharpStudyProject/blob/main/Chapter7_Extension/Class4.cs) Delegate · [`Class6`](https://github.com/SBS-GameAcademy-Saturday/CSharpStudyProject/blob/main/Chapter7_Extension/Class6.cs) Event | **088회차 HUD 이벤트** (`OnHealthChanged`) |
-| [`Ch7/Class5`](https://github.com/SBS-GameAcademy-Saturday/CSharpStudyProject/blob/main/Chapter7_Extension/Class5.cs) Action/Func · [`Class7`](https://github.com/SBS-GameAcademy-Saturday/CSharpStudyProject/blob/main/Chapter7_Extension/Class7.cs) Lambda | 088 이후 · 116 `Rpc` 콜백 이해 |
+| [`Ch7/Class4`](https://github.com/SBS-GameAcademy-Saturday/CSharpStudyProject/blob/main/Chapter7_Extension/Class4.cs) Delegate · [`Class6`](https://github.com/SBS-GameAcademy-Saturday/CSharpStudyProject/blob/main/Chapter7_Extension/Class6.cs) Event | **115회차** `Health.OnValueChanged += OnHealthChanged;` · 119 · 122 |
+| [`Ch7/Class7`](https://github.com/SBS-GameAcademy-Saturday/CSharpStudyProject/blob/main/Chapter7_Extension/Class7.cs) Lambda | **085회차** `buttons[i].onClick.AddListener(() => Choose(data));` |
+| [`Ch4/Class7`](https://github.com/SBS-GameAcademy-Saturday/CSharpStudyProject/blob/main/Chapter4_Method/Class7.cs) 클로저 | **085회차** — 반복문 변수를 그대로 담으면 전부 마지막 값이 된다 (`int index = i;`) |
 | [`Ch6/Class4`](https://github.com/SBS-GameAcademy-Saturday/CSharpStudyProject/blob/main/Chapter6_DataStructure/Class4.cs) Dictionary | **102회차 오브젝트 풀링** (`Dictionary<GameObject, Queue<GameObject>>`) |
 | [`Ch6/Class6`](https://github.com/SBS-GameAcademy-Saturday/CSharpStudyProject/blob/main/Chapter6_DataStructure/Class6.cs) Queue | **102회차 풀 서랍** |
 | [`Ch7/Class1`](https://github.com/SBS-GameAcademy-Saturday/CSharpStudyProject/blob/main/Chapter7_Extension/Class1.cs) Generic | 115 `NetworkVariable<T>` 를 볼 때 한 줄 |
@@ -124,10 +125,15 @@ CSharpStudyProject/
 | [`Ch5/Class4`](https://github.com/SBS-GameAcademy-Saturday/CSharpStudyProject/blob/main/Chapter5_OOP/Class4.cs) 스택과 힙 · [`Class13`](https://github.com/SBS-GameAcademy-Saturday/CSharpStudyProject/blob/main/Chapter5_OOP/Class13.cs) 박싱 | **101회차 "왜 렉이 걸리나"** 의 배경 |
 | [`RPGProjectil.md`](https://github.com/SBS-GameAcademy-Saturday/CSharpStudyProject/blob/main/RPGProjectil.md) delegate/event 턴제 RPG | **버퍼(131–140)** 또는 빠른 학생 ⭐도전 |
 
+> ⚠️ **2026-09-03 정정.** 처음에는 Delegate·Event 를 "088회차 HUD 이벤트" 로 적었는데 **틀렸다.**
+> `HUDView` 는 이벤트를 안 쓰고 `Update()` 에서 매 프레임 읽어 그린다. 프로젝트 스크립트 전체에
+> `event` 선언이 하나도 없다. `+=` 로 구독하는 첫 자리는 **115회차 `NetworkVariable.OnValueChanged`** 다.
+> 람다와 클로저도 마찬가지로 **085회차 `AddListener(() => Choose(data))`** 가 첫 자리다.
+
 **아예 안 쓰는 것** — 커리큘럼에 자리가 없다. 지우지는 말고 참고 자료로 둔다.
 
-`Ch3` 정규식·인코딩·`StringBuilder`·Raw 리터럴 · `Ch4` 클로저 ·
-`Ch6` LinkedList·SortedList·SortedDictionary · `Ch7` Reflection
+`Ch3` 정규식·인코딩·`StringBuilder`·Raw 리터럴 ·
+`Ch6` LinkedList·SortedList·SortedDictionary · `Ch7` Reflection·Nullable·Action/Func
 
 ## 5. 슬라이드
 
@@ -137,6 +143,14 @@ CSharpStudyProject/
 |---|---|
 | `ch01.js` → `Chapter1_데이터와_변수.pptx` | 004–010회차 |
 | `ch02.js` → `Chapter2_조건문과_반복문.pptx` | 011–015회차 |
+
+**WaveBreaker 쪽에도 이 저장소를 다루는 덱이 하나 있다.**
+
+| 파일 | 무엇 |
+|---|---|
+| [`부록A-CSharp-지금은-안-배우는-것.pptx`](../04_배포자료/슬라이드/부록A-CSharp-지금은-안-배우는-것.pptx) | 위 4장의 내용을 16장으로 — "나중에 만난다" 와 "아예 안 쓴다" |
+
+> ⚠️ **이 문서의 4장과 그 덱은 같은 내용이다.** 한쪽을 고치면 `generate_apxA.js` 도 같이 고친다.
 
 > 💡 **디자인은 [`WaveBreaker/docs/04_배포자료/슬라이드/DESIGN.md`](../04_배포자료/슬라이드/DESIGN.md) 를 따르면 된다.**
 > `codeH(n) = n*0.225 + 0.62` 헬퍼와 `code()`/`table()` 이 y 를 반환하는 규칙이 그쪽에 정리돼 있다.
