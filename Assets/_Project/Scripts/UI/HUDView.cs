@@ -5,6 +5,7 @@ using UnityEngine;
 // 080회차 · 체력과 게임오버 문구가 붙었다.
 // 083회차 · 레벨과 경험치가 붙었다.
 // 090회차 · 경과 시간과 승리 문구가 붙었다.
+// 097회차 · 화면 가운데 게임오버 문구를 없앴다. 이제 결과 씬이 그 일을 한다.
 // 094·095회차 · 긴 한 줄(statusLabel)을 없앴다.
 //   체력·경험치는 바(StatBar)로, 레벨·시간·처치 수는 화면 모서리에 따로 붙인다.
 //   HUDView 가 하는 일은 그대로다 — "게임 상태를 읽어서 화면에 옮긴다".
@@ -18,7 +19,6 @@ public class HUDView : MonoBehaviour
     [SerializeField] private TMP_Text levelLabel;
     [SerializeField] private TMP_Text timeLabel;
     [SerializeField] private TMP_Text killLabel;
-    [SerializeField] private TMP_Text centerLabel;
 
     [Header("읽어올 곳")]
     [SerializeField] private WaveManager waveManager;
@@ -54,23 +54,6 @@ public class HUDView : MonoBehaviour
         if (killLabel != null)
         {
             killLabel.text = $"처치 {GameManager.Instance.Kills}";
-        }
-
-        if (centerLabel == null) return;
-
-        bool finished = GameManager.Instance.IsFinished;
-
-        centerLabel.gameObject.SetActive(finished);
-
-        if (!finished) return;
-
-        if (GameManager.Instance.State == GameState.Clear)
-        {
-            centerLabel.text = $"클리어!\n{GameManager.Instance.Kills}마리 처치\n\nR 키로 다시";
-        }
-        else
-        {
-            centerLabel.text = $"게임 오버\n{GameManager.Instance.Kills}마리 처치\n\nR 키로 다시";
         }
     }
 }

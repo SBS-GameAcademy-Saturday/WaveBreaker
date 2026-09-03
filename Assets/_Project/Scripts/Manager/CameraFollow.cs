@@ -5,14 +5,20 @@ using UnityEngine;
 // Update 에 쓰면 플레이어가 움직이기 전 위치를 보게 돼 화면이 떤다. 그래서 LateUpdate.
 //
 // 095회차 · "하나를 따라간다" 를 "목록의 중심을 따라간다" 로 바꿨다.
-//   목록에 하나만 넣으면 동작이 068과 완전히 같다. 지금은 실제로 하나만 넣는다.
-//   Phase 9 에서 협동을 붙일 때 이 파일은 안 고치고 목록에 하나 더 넣기만 하면 된다.
+//   목록에 하나만 넣으면 동작이 068과 완전히 같다.
+//
+// 099회차 · 흔들기가 여기 들어왔다.
+//   따로 스크립트를 만들면 "따라가기가 먼저냐 흔들기가 먼저냐" 를 매번 신경 써야 한다.
+//   같은 LateUpdate 안에서 순서대로 하면 그 걱정이 아예 없어진다.
 public class CameraFollow : MonoBehaviour
 {
     [SerializeField] private List<Transform> targets = new List<Transform>();
     [SerializeField] private float smoothTime = 0.15f;
 
     private Vector3 velocity;
+
+    private float shakeLeft;
+    private float shakePower;
 
     void LateUpdate()
     {
@@ -23,6 +29,9 @@ public class CameraFollow : MonoBehaviour
         Vector3 goal = new Vector3(center.x, center.y, -10f);
 
         transform.position = Vector3.SmoothDamp(transform.position, goal, ref velocity, smoothTime);
+
+        // 따라간 다음에 흔든다. 순서가 반대면 흔든 걸 따라가기가 지워버린다.
+        transform.position += ShakeOffset();
     }
 
     // 목록의 평균 위치. 원소가 하나면 그 하나의 위치와 같은 값이 나온다.
@@ -42,5 +51,26 @@ public class CameraFollow : MonoBehaviour
         if (count == 0) return transform.position;
 
         return sum / count;
+    }
+
+    public void Shake(float power, float duration)
+    {
+        // 약한 흔들림이 강한 흔들림을 덮어쓰면 안 된다.
+        if (duration <= shakeLeft && power <= shakePower) return;
+
+        shakeLeft = duration;
+        shakePower = power;
+    }
+
+    private Vector3 ShakeOffset()
+    {
+        if (shakeLeft <= 0f) return Vector3.zero;
+
+        // 히트스톱 중에도 흔들려야 한다. timeScale 을 안 타는 시간을 쓴다.
+        shakeLeft -= Time.unscaledDeltaTime;
+
+        if (shakeLeft <= 0f) return Vector3.zero;
+
+        return (Vector3)Random.insideUnitCircle * shakePower;
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 // 070회차 · 6주차에 콘솔로 짠 Enemy 를 유니티로 옮긴 것.
@@ -7,10 +8,16 @@ using UnityEngine;
 // 072회차 · TakeDamage 를 virtual 로 바꿨다. TankEnemy 가 받는 피해를 줄이기 위해서다.
 // 081회차 · 죽으면 경험치 젬을 떨군다.
 // 087·088회차 · 수치를 EnemyData(SO)에서 읽는다. 코드를 안 고치고 밸런싱할 수 있다.
+// 099·100회차 · 맞으면 하얗게 번쩍이고, 죽으면 파티클과 소리가 난다.
 public abstract class Enemy : MonoBehaviour, IDamageable
 {
     [SerializeField] protected EnemyData data;
     [SerializeField] protected GameObject expGemPrefab;
+
+    [Header("연출 (099·100회차)")]
+    [SerializeField] protected GameObject deathEffect;
+    [SerializeField] protected AudioClip hitSfx;
+    [SerializeField] protected AudioClip dieSfx;
 
     protected int maxHealth = 10;
     protected int damage = 1;
@@ -82,15 +89,44 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         currentHealth -= amount;
         Debug.Log($"{name} : -{amount}  (남은 체력 {currentHealth})");
 
+        Flash();
+
+        if (AudioManager.Instance != null) AudioManager.Instance.Play(hitSfx, 0.5f);
+
         if (currentHealth <= 0)
         {
             Die();
         }
     }
 
+    // 099회차 · 맞은 걸 눈으로 알려준다. 숫자를 읽는 것보다 빠르다.
+    protected void Flash()
+    {
+        if (sprite == null || !gameObject.activeInHierarchy) return;
+
+        StopCoroutine(nameof(FlashRoutine));
+        StartCoroutine(nameof(FlashRoutine));
+    }
+
+    private IEnumerator FlashRoutine()
+    {
+        Color original = data != null ? data.color : Color.white;
+
+        sprite.color = Color.white;
+
+        // 히트스톱 중에도 번쩍여야 한다. timeScale 을 안 타는 대기를 쓴다.
+        yield return new WaitForSecondsRealtime(0.06f);
+
+        if (sprite != null) sprite.color = original;
+    }
+
     protected virtual void Die()
     {
         Debug.Log($"{name} 사망");
+
+        if (deathEffect != null) Instantiate(deathEffect, transform.position, Quaternion.identity);
+
+        if (AudioManager.Instance != null) AudioManager.Instance.Play(dieSfx, 0.6f);
 
         if (GameManager.Instance != null)
         {

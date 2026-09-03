@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 // 084·085회차 · 레벨업하면 시간이 멈추고 카드 3장이 뜬다.
 // 086회차 · 업그레이드가 8종이 됐다.
+// 096회차 · 창을 제대로 만들었다. 어둡게 깔고, 카드 3장을 가운데 놓는다.
+// 098회차 · timeScale 을 직접 안 만진다. GameManager 에게 상태만 알린다.
 // 089회차 · 종류와 수치를 코드에서 빼서 UpgradeData(SO) 배열로 옮겼다.
 //           이제 카드를 추가하려면 에셋을 하나 더 만들어 배열에 넣으면 된다. 코드는 안 고친다.
 public class LevelUpView : MonoBehaviour
@@ -30,7 +32,9 @@ public class LevelUpView : MonoBehaviour
     public void Open()
     {
         // 시간이 멈춘다. Update 는 계속 돌지만 Time.deltaTime 이 0 이라 아무것도 안 움직인다.
-        Time.timeScale = 0f;
+        // 098회차 · 멈추는 일 자체는 GameManager 가 한다. 여기선 "고르는 중" 이라고만 알린다.
+        if (GameManager.Instance != null) GameManager.Instance.ChangeState(GameState.Upgrading);
+        else Time.timeScale = 0f;
 
         if (panel != null) panel.SetActive(true);
 
@@ -62,7 +66,9 @@ public class LevelUpView : MonoBehaviour
 
         if (panel != null) panel.SetActive(false);
 
-        Time.timeScale = 1f;   // 이걸 빼면 게임이 영영 멈춰 있다
+        // 이걸 빼면 게임이 영영 멈춰 있다
+        if (GameManager.Instance != null) GameManager.Instance.ChangeState(GameState.Playing);
+        else Time.timeScale = 1f;
     }
 
     // 서로 다른 3개를 뽑는다.

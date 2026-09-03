@@ -172,4 +172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TankEnemy
   data: {fileID: 11400000, guid: 7fc756c8f47791e41b42f80a972d48ab, type: 2}
   expGemPrefab: {fileID: 1375084238115605958, guid: 820ed89be3c710f43becc558fe3fc4a9, type: 3}
+  deathEffect: {fileID: 8089645050778842963, guid: a9b3e612886173843a1792f354e17a6c, type: 3}
+  hitSfx: {fileID: 8300000, guid: 4c2adab059de2de4995ce5d051cb8048, type: 3}
+  dieSfx: {fileID: 8300000, guid: 7a95994d0b5a86640a55ae84e49106f4, type: 3}
   damageReduction: 0.5

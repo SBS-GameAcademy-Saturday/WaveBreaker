@@ -993,3 +993,131 @@ Anchor 가 이미 제대로 잡혀 있었기 때문이다. **Scaler 는 "크기"
 
 `HealthBar` / `ExpBar` 를 따로 만들지 않았다. 둘이 하는 일이 **"현재값/최대값 만큼 채워라"** 로
 완전히 같기 때문이다. 보스 머리 위 체력바가 필요해져도 같은 것을 붙이면 된다.
+
+---
+
+## 20주차 (096–100) — 화면을 잇는다 · Phase 7 종료
+
+**씬이 세 개가 됐다.** `Title.unity` → `Game.unity` → `Result.unity`.
+
+### 새 파일
+
+| 파일 | 하는 일 |
+|---|---|
+| `Scenes/Title.unity` | 타이틀. 오브젝트 4개 (Camera / EventSystem / AudioManager / UI) |
+| `Scenes/Result.unity` | 결과. 라벨 4개 + 버튼 2개 |
+| `Scripts/Manager/RunResult.cs` | **static.** 씬을 넘겨도 안 사라지는 성적 보관소 |
+| `Scripts/Manager/AudioManager.cs` | 효과음 한 곳. 같은 소리는 `minGap` 0.05초 간격 |
+| `Scripts/UI/TitleView.cs` · `ResultView.cs` · `PauseView.cs` | 화면 세 개 |
+| `Scripts/Effect/DeathEffect.cs` | 스프라이트 조각 8개. 정렬 레이어 `Effect` |
+| `_GameAssets/Audio/Sfx_*.wav` | 효과음 4종 (PowerShell 생성) |
+| `Prefabs/Effect/DeathEffect.prefab` | 위 스크립트 + `UI_Bar` 스프라이트 |
+
+### Build Settings
+
+| 번호 | 씬 |
+|---|---|
+| 0 | `Title` ← 게임을 켜면 여기부터 |
+| 1 | `Game` |
+| 2 | `Result` |
+
+### `Game.unity` 100회차 시점 구성 (19주차에서 바뀐 것)
+
+| 오브젝트 | 바뀐 것 |
+|---|---|
+| `HUD/LevelUpPanel` | 사방 Stretch · 알파 0.86 · Raycast 켬. 카드 300×250, Pos X `-334/0/+334` |
+| `HUD/CenterText` | **삭제.** 결과 씬이 그 일을 한다 |
+| `HUD/PausePanel` | **신규.** 계속하기 / 타이틀로 |
+| `HUD` | `PauseView` 추가 |
+| `AudioManager` | **신규** (세 씬 모두) |
+| `GameManager` | `Wave Manager` · `Player Level` 연결 (결과에 적을 값) |
+| `Player` | `PlayerHealth` 에 `Cam` · `Hurt Sfx` 연결 |
+| 몬스터 프리팹 6종 | `Death Effect` · `Hit Sfx` · `Die Sfx` |
+
+> 🔑 **`timeScale` 을 대입하는 곳은 `GameManager` 안에만 있다.**
+> `LevelUpView` · `PauseView` 는 `ChangeState(Upgrading / Paused / Playing)` 만 부른다.
+> 066에서 만든 `GameState` 의 `Paused` · `Upgrading` 이 34주 만에 쓰였다.
+
+> ✅ **자동 검증 완료 (2026-09-03)**
+>
+> | 확인한 것 | 실측 |
+> |---|---|
+> | 씬 전환 (097) | Title → [시작] → `씬=Game` · Result → [타이틀] → `씬=Title` |
+> | 데이터 유지 | 죽기 전 `시간 8.7초 처치 2 Lv.4` → 결과 화면 `00:08 / 2 / 4` |
+> | 레벨업 창 (096) | 실제 클릭 `Card_1` → `panel=False timeScale=1 state=Playing` |
+> | 일시정지 (098) | `Open()` → `state=Paused timeScale=0` · [계속하기] 클릭 → `Playing / 1` |
+> | **timeScale 충돌** | 레벨업 중 `HitStop` 호출 → `timeScale=0` 유지 (1초 뒤에도 `Upgrading`) |
+> | 셰이크 (099) | `shakeLeft=0.150 shakePower=0.120` |
+> | 히트스톱 | 피격 직후 `timeScale=0` → 끝난 뒤 `1` |
+> | 조각 (099) | 3개 생성 → 조각 24개 · `layer=Effect` · 화면에 보임 |
+> | 사운드 (100) | `AudioSource isPlaying=True` · `playOnAwake=False` · `spatialBlend=0` |
+> | 컴파일 | 에러 0 · 경고 0 |
+>
+> 🔑 **이번 주차부터 마우스 클릭이 실측이다.** `uloop simulate-mouse-ui` 로
+> `EventSystem` 을 통한 진짜 클릭 경로를 검증했다 (`Btn_Start` · `Card_1` · `Btn_Resume` · `Btn_Title`).
+> 14주차부터 19주차까지 미실측으로 남겨뒀던 항목이다.
+>
+> ⚠️ **`ESC` 키는 여전히 미실측.** 레거시 Input Manager 라 키 입력을 흉내낼 수 없어
+> `PauseView.Open()` 을 직접 불러 검증했다.
+> ⚠️ **소리가 실제로 들리는지는 미실측.** `AudioSource.isPlaying = True` 까지만 확인했다.
+
+### ★ 발견해서 고친 것 — 창은 떠 있는데 게임이 돌았다
+
+```
+레벨업 창 열림   →  창 = True   timeScale = 0     ← 정상
+(그 사이 플레이어가 맞아 히트스톱 발생)
+1초 뒤          →  창 = True   timeScale = 1     ← 게임이 돈다
+```
+
+**원인**: `timeScale` 을 세 곳에서 만지고 있었다 — `LevelUpView`, `PauseView`,
+`GameManager.HitStop`. 히트스톱이 **끝나면서 `1f` 로 되돌리는데**, 그때 레벨업 창이
+떠 있는지 알 방법이 없었다.
+
+**고친 것**: `GameManager` 를 유일한 주인으로 만들었다.
+
+```csharp
+private bool ShouldFreeze => IsFinished || State == GameState.Paused || State == GameState.Upgrading;
+
+// HitStop 이 끝날 때
+if (!ShouldFreeze) Time.timeScale = 1f;
+```
+
+`LevelUpView`·`PauseView` 는 `ChangeState` 만 부른다. **재측정**: 레벨업 중 `HitStop` 을
+호출해도 `timeScale = 0` 이 유지된다.
+
+> 🔑 098 강의안의 핵심 블록이 이 경위다. 학생도 같은 구조로 만들면 같은 버그를 만난다.
+
+### ★ 포기한 것 — URP 2D 에서 파티클이 안 나왔다
+
+`ParticleSystem` 으로 죽음 이펙트를 만들었는데 **화면에 아무것도 안 나왔다.**
+입자는 분명히 살아 있었다.
+
+```
+입자 24개 · isVisible = True · 머티리얼 있음 · bounds 가 화면 안
+```
+
+순서대로 고쳐봤다.
+
+| 시도 | 결과 |
+|---|---|
+| 머티리얼이 `NULL` 이었다 (런타임 생성 머티리얼은 프리팹에 저장 안 됨) | 내장 `Sprites-Default` 로 교체 → 그대로 |
+| 머티리얼에 텍스처가 없었다 | `UI_Bar` 를 물림 + URP 2D 셰이더로 → 그대로 |
+| 크기가 0.023 · 알파 0.18 이었다 (수명 끝에서 측정) | 크기 0.28~0.48 · 수명 0.45 로 → 그대로 |
+| 정렬 레이어가 `Default`(값 0) 라 `Background` 보다 아래였다 | `Effect` 로 → **그대로** |
+
+**판단**: 스프라이트로 갈아탔다. `DeathEffect.cs` 가 `SpriteRenderer` 조각 8개를
+직접 만들어 날린다. 이 게임의 모든 것이 스프라이트라 확실히 나온다.
+
+> 🔑 마지막 정렬 레이어 문제는 **진짜 결함**이었으므로 고쳐서 스프라이트 쪽에 반영했다.
+> 파티클이 안 나온 진짜 원인은 **끝내 못 찾았다.** 099 강의안에 이 판단 자체를 넣었다 —
+> "안 되는 걸 붙잡기보다 되는 걸로 만든다" 는 것도 가르칠 내용이다.
+
+### ★ 겪은 것 — 버튼에 글자가 없었다
+
+일시정지 버튼 두 개가 **네모만 떠 있었다.** 버튼 배경(`Image`)은 만들었는데
+자식 `Label` 의 `text` 를 안 채운 것이었다. 098 강의안의 "오늘 1등 사고" 로 넣었다.
+
+### ★ 겪은 것 — 레벨업 제목이 시계와 겹쳤다
+
+`Title` 을 `Pos Y = -80` 에 뒀더니 위 가운데 `TimeLabel`(00:15) 과 겹쳤다.
+`-150` 으로 내렸다. 096 강의안에 넣었다.
