@@ -41,6 +41,7 @@ public class NetworkWaveManager : NetworkBehaviour
     {
         if (!IsServer) return;
         if (enemyPrefab == null) return;
+        if (NetworkTeam.IsPaused) return;   // 123회차 · 멈춰 있으면 안 만든다
 
         // 103회차의 개수 상한. 네트워크에서는 더 중요하다 — 오브젝트마다 데이터가 오간다.
         if (Object.FindObjectsByType<NetworkEnemy>().Length >= maxAlive) return;

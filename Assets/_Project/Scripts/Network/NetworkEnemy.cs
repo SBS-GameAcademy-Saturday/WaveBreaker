@@ -66,6 +66,9 @@ public class NetworkEnemy : NetworkBehaviour
         // 🔑 움직이는 것도 서버만. 클라이언트가 같이 움직이면 위치가 싸운다.
         if (!IsServer) return;
 
+        // 123회차 · 레벨업 카드를 고르는 동안 멈춘다.
+        if (NetworkTeam.IsPaused) { rb.linearVelocity = Vector2.zero; return; }
+
         Transform target = FindNearestPlayer();
 
         if (target == null)

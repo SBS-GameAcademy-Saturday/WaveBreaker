@@ -4,6 +4,9 @@ using UnityEngine;
 // 068회차 · 플레이어를 부드럽게 따라간다.
 // Update 에 쓰면 플레이어가 움직이기 전 위치를 보게 돼 화면이 떤다. 그래서 LateUpdate.
 //
+// 121회차 · 둘이 멀어지면 화면을 넓힌다. 목록이 1개면 span 이 0 이라 기본 크기 그대로다.
+//   싱글에서는 아무것도 안 바뀐다.
+//
 // 120회차 · 협동 카메라. 고친 건 목록에 넣고 빼는 문 두 개뿐이다.
 //   095에서 이미 "목록의 중심" 으로 만들어뒀기 때문에 계산은 한 줄도 안 고쳤다.
 //
@@ -17,6 +20,16 @@ public class CameraFollow : MonoBehaviour
 {
     [SerializeField] private List<Transform> targets = new List<Transform>();
     [SerializeField] private float smoothTime = 0.15f;
+
+    [Header("거리 기반 줌 (121회차)")]
+    [SerializeField] private float baseSize = 5f;
+    [SerializeField] private float maxSize = 8.5f;
+    [SerializeField] private float zoomPadding = 0.6f;
+    [SerializeField] private float zoomSmooth = 0.4f;
+
+    // 목록에서 가장 먼 두 점 사이의 거리. 121·리쉬가 같이 쓴다.
+    public float Span { get; private set; }
+    public Vector3 CenterPoint { get; private set; }
 
     private Vector3 velocity;
 
@@ -35,6 +48,20 @@ public class CameraFollow : MonoBehaviour
 
         // 따라간 다음에 흔든다. 순서가 반대면 흔든 걸 따라가기가 지워버린다.
         transform.position += ShakeOffset();
+
+        Zoom();
+    }
+
+    // 121회차 · 멀어진 만큼 화면을 넓힌다.
+    private void Zoom()
+    {
+        Camera cam = GetComponent<Camera>();
+        if (cam == null || !cam.orthographic) return;
+
+        // 🔑 목록이 하나면 Span 이 0 이다 → goal 이 baseSize → 싱글은 그대로다.
+        float goal = Mathf.Clamp(baseSize + Span * zoomPadding, baseSize, maxSize);
+
+        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, goal, Time.deltaTime / zoomSmooth);
     }
 
     // 목록의 평균 위치. 원소가 하나면 그 하나의 위치와 같은 값이 나온다.
@@ -53,7 +80,24 @@ public class CameraFollow : MonoBehaviour
 
         if (count == 0) return transform.position;
 
-        return sum / count;
+        Vector3 center = sum / count;
+
+        // 121회차 · 가장 먼 두 점 사이의 거리를 재둔다.
+        float span = 0f;
+        foreach (Transform a in targets)
+        {
+            if (a == null) continue;
+            foreach (Transform b in targets)
+            {
+                if (b == null) continue;
+                span = Mathf.Max(span, Vector2.Distance(a.position, b.position));
+            }
+        }
+
+        Span = span;
+        CenterPoint = center;
+
+        return center;
     }
 
     // 120회차 · 접속한 플레이어가 스스로 등록한다.

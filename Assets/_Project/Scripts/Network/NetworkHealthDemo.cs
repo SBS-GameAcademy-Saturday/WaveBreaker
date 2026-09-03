@@ -54,6 +54,14 @@ public class NetworkHealthDemo : NetworkBehaviour
         Health.Value = Mathf.Max(Health.Value - amount, 0);
     }
 
+    // 122회차 · 부활할 때 쓴다. 서버만 부른다.
+    public void SetHealth(int value)
+    {
+        if (!IsServer) return;
+
+        Health.Value = Mathf.Max(value, 0);   // 부활 체력은 부르는 쪽이 정한다
+    }
+
     // 116회차 · 클라이언트가 부르면 서버로 전달돼 서버에서 실행된다.
     //   같은 함수를 호스트가 불러도 잘 돈다 — 호스트는 이미 서버라서 바로 실행된다.
     [Rpc(SendTo.Server)]

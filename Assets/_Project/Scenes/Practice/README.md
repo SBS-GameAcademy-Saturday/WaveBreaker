@@ -1549,3 +1549,145 @@ CS0618: 'CurrentPlayer.ReadOnlyTags()' is obsolete:
 
 대신 **싱글에서 동작이 안 바뀌는 것만** 넣었다 — `NetworkRole` 문지기 두 줄과
 카메라의 `AddTarget`/`RemoveTarget`. 실제 통합은 문서가 정한 대로 **125회차(모드 통합)** 에서 한다.
+
+---
+
+## 25주차 (121–125) — 배운 게 안 통할 때 · Phase 9 종료
+
+> 🔴 **Phase 9 가 끝났다. `Game.unity` 는 20회차 내내 한 번도 안 건드렸다.**
+> 협동은 새 씬 `Coop.unity` 에 넣고 타이틀에서 고르게 했다.
+
+### 새 파일
+
+| 파일 | 하는 일 |
+|---|---|
+| `Scripts/Network/NetworkSoftLeash.cs` | 중심에서 멀어지면 **내 캐릭터만** 살짝 당긴다 (`IsOwner`) |
+| `Scripts/Network/NetworkPlayerDown.cs` | 다운·부활 — `IsDown` · `ReviveProgress` 를 서버가 쓴다 |
+| `Scripts/Network/NetworkLevelUpView.cs` | 레벨업 창 — **둘 다 고를 때까지** 멈춤 유지 (`ChoiceRpc`) |
+| `Scripts/Network/RelayConnector.cs` | Relay 할당 → 6자리 코드 발급 / 코드로 입장 |
+| `Scenes/Coop.unity` | 협동 씬. Build Settings 인덱스 3 |
+
+### 본 게임에서 바꾼 것 — 스크립트 2개, `Game.unity` 0개
+
+| 파일 | 무엇 | 싱글 영향 |
+|---|---|---|
+| `CameraFollow.cs` | `Span` · `CenterPoint` · `Zoom()` 추가 | **없음** — 목록 1개면 `Span = 0` → `ortho = baseSize` |
+| `TitleView.cs` | `StartCoop()` 한 함수 추가 | **없음** — 기존 버튼 그대로 |
+
+연습 씬 쪽에서는 `NetworkHealthDemo.SetHealth` 를 `Clamp(v, 0, max)` → `Max(v, 0)` 로 바꿨다.
+
+> 🔑 **최대 체력으로 자르면 기획서의 "부활 = 체력 30" 이 20으로 잘린다.**
+> 부활 체력이 최대 체력보다 클 수 있다는 걸 122회차에서야 알았다. 상한은 부르는 쪽이 정한다.
+
+---
+
+> ✅ **자동 검증 완료 (2026-09-03)**
+>
+> **121 — 거리 기반 줌**
+>
+> ```
+> Span = 1.34
+>    → orthographicSize = 5.80        (5 + 1.34 × 0.6 = 5.80)
+> 싱글 : orthographicSize = 5.00
+> ```
+>
+> **122 — 다운과 부활**
+>
+> ```
+> [다운시킨 직후]
+>    플레이어 0  체력 20  다운=False
+>    플레이어 1  체력  0  다운=True   부활게이지 0.0
+>
+> [동료를 1.20 거리로 옮기고 2초 뒤]
+>    플레이어 1  다운=True   부활게이지 2.1
+>
+> [4초 뒤]
+>    플레이어 1  체력 30  다운=False   ← 부활
+> ```
+>
+> **로그**
+>
+> ```
+> [호스트] 소유자 1 다운
+> [호스트] 소유자 1 부활 — 체력 30
+> ```
+>
+> **123 — 양쪽 시간 정지**
+>
+> ```
+> [레벨업 직후]        멈춤 = True
+> [호스트가 카드 선택]  선택 1 / 2명
+>                     멈춤 = True      ← 클라이언트가 아직 안 골랐다
+>                     내 패널 = False   ← 내 것만 닫혔다
+> ```
+>
+> **124 — Relay (실제 인터넷 접속)**
+>
+> ```
+> UnityServices 초기화 = Initialized
+> 로그인 = True   PlayerId = L1xXNWcKBH4J45bpKTHhOJwYEj9f
+> 접속 코드 = RMKDHN
+> Relay 서버 = 34.180.64.245:37000
+> StartHost = True
+> IsListening=True  IsHost=True  내 번호=0
+> 전송 방식 = RelayUnityTransport
+> ```
+>
+> 🔴 **싱글 회귀 통과 — Phase 9 종료 조건 마지막 항목**
+>
+> ```
+> [타이틀 → 혼자 하기]
+> 씬 = Game
+> 시간 14초  처치 5  Lv.1  체력 20/20
+> 살아있는 몬스터 2  풀 재사용 26
+> NetworkRole.IsServerOrOffline = True
+> NetworkManager 존재 = False
+> 카메라 목록 1개  카메라 (0.00, 0.00, -10.00)
+> 싱글 카메라 ortho = 5.00
+>
+> [타이틀 → 같이 하기]
+> 씬 = Coop
+> IsListening=True  IsHost=True
+> ```
+>
+> ⚠️ **키보드 이동은 미실측** (레거시 Input Manager — 22주차부터 같은 이유).
+> ⚠️ **Relay 로 실제 2대가 붙는 것은 미실측.** 코드 발급과 호스트 기동까지만 쟀다.
+> ⚠️ **클라이언트 쪽 화면 상태는 미실측.** 값은 호스트에서 읽었다.
+> ⚠️ **협동 10분 완주·밸런스 미실측.**
+
+### ★ 겪은 것 — `AllocationUtils` 가 이 버전엔 없다
+
+공식 문서의 `AllocationUtils.ToRelayServerData(...)` 를 쓰려니 컴파일이 안 됐다.
+설치된 `com.unity.services.relay` 에 그 타입이 없다.
+
+7인자 `SetRelayServerData(ip, port, allocationIdBytes, key, connectionData, hostConnectionData, isSecure)`
+오버로드로 대신했다. **호스트는 `hostConnectionData` 에 `null`**, 클라이언트는 `join.HostConnectionData` 를 넣는다.
+
+### ★ 겪은 것 — Relay 는 Edit 모드에서 초기화가 안 된다
+
+```
+Unity Services can only be initialized in Play Mode
+```
+
+Play 모드에서 다시 돌리니 바로 됐다. **124 강의안 사고표 첫 줄**에 넣었다 — 수업에서 반드시 나온다.
+
+### ★ 겪은 것 — 멈춤 측정이 한 번 오염됐다
+
+앞선 확인에서 내가 직접 `team.SetPaused(false)` 를 불러놓고 그대로 다음 측정을 했다.
+그래서 "둘 다 골라야 움직인다" 테스트가 **멈춤=False** 로 잘못 나왔다.
+
+Play 를 새로 띄워 다시 쟀고, 그때 `선택 1/2명 · 멈춤=True` 가 나왔다. **위에 적은 값은 재측정한 것**이다.
+
+### ★ 설계 판단 — 씬을 끝내 합치지 않았다
+
+125회차의 목표는 "모드 통합" 이었지만 **`Game.unity` 에 협동을 넣지 않았다.**
+
+본 게임의 몬스터·젬은 `PoolManager` 에서 꺼내고(102·103), 협동은 `NetworkObject.Spawn()` 으로 만든다(117).
+한 코드로 합치려면 **스폰 경로를 통째로 갈아엎어야** 하고, 그건 Phase 9 문서가 최대 사고로 지정한
+"협동을 만들다 싱글을 깨뜨린다" 에 정면으로 걸린다.
+
+대신 `Coop.unity` 를 따로 두고 타이틀에서 고르게 했다. **이 판단과 이유를 125 강의안에 그대로 적었다** —
+학생이 "왜 안 합쳤냐" 고 물으면 정직하게 답하라고.
+
+합칠 준비는 `NetworkRole.IsServerOrOffline` 로 이미 돼 있다. 본 게임 `WaveManager` 가 그 문지기를 쓰고 있고,
+싱글은 "호스트 혼자 하는 게임" 으로 취급된다.
