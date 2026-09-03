@@ -3,8 +3,7 @@ using UnityEngine;
 
 // 109회차 · 접속하면 캐릭터가 하나 더 생긴다 — 그걸 눈으로 보기 위한 최소 스크립트.
 //
-// 아직 움직이지 않는다. 이동 동기화는 112회차, "내 것만 내가 조종" 은 114회차다.
-// 오늘은 딱 하나만 확인한다 — 접속한 사람 수만큼 오브젝트가 생기는가.
+// 120회차 · 협동 카메라에 스스로 등록한다. 목록에 들어가면 카메라가 알아서 중심을 잡는다.
 public class NetworkPlayerTag : NetworkBehaviour
 {
     [SerializeField] private SpriteRenderer sprite;
@@ -27,6 +26,11 @@ public class NetworkPlayerTag : NetworkBehaviour
 
         if (sprite != null) sprite.color = colors[OwnerClientId % (ulong)colors.Length];
 
+        // 120회차 · 내 화면의 카메라 목록에 나를 넣는다.
+        //   "내 것" 만 넣는 게 아니라 둘 다 넣는다 — 카메라는 둘의 중심을 봐야 하니까.
+        CameraFollow cam = Camera.main != null ? Camera.main.GetComponent<CameraFollow>() : null;
+        if (cam != null) cam.AddTarget(transform);
+
         // 접속한 사람마다 자기 화면에서 이 로그를 본다. 그래서 같은 줄이 여러 번 보인다.
         Debug.Log($"[{(IsServer ? "호스트" : "클라이언트")}] 플레이어 등장 — " +
                   $"소유자 {OwnerClientId}  내 것인가 = {IsOwner}");
@@ -34,6 +38,9 @@ public class NetworkPlayerTag : NetworkBehaviour
 
     public override void OnNetworkDespawn()
     {
+        CameraFollow cam = Camera.main != null ? Camera.main.GetComponent<CameraFollow>() : null;
+        if (cam != null) cam.RemoveTarget(transform);
+
         Debug.Log($"플레이어 퇴장 — 소유자 {OwnerClientId}");
     }
 }
