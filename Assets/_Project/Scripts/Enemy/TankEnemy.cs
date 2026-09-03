@@ -6,9 +6,9 @@ public class TankEnemy : Enemy
 {
     [SerializeField, Range(0f, 0.9f)] private float damageReduction = 0.5f;
 
-    protected override void Start()
+    protected override void OnEnable()
     {
-        base.Start();
+        base.OnEnable();
         Debug.Log($"{name} : 탱커 등장 (체력 {maxHealth}, 피해 감소 {damageReduction:P0})");
     }
 

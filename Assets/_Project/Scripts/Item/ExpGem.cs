@@ -3,6 +3,7 @@ using UnityEngine;
 // 081·082회차 · 몬스터가 죽으면 떨어지는 경험치 젬.
 // 081 — 떨어지기만 한다. 밟아야 먹는다.
 // 082 — 자석 범위 안에 들어오면 플레이어 쪽으로 끌려온다.
+// 103회차 · 먹으면 버리지 않고 서랍에 반납한다.
 public class ExpGem : MonoBehaviour
 {
     [SerializeField] private int exp = 1;
@@ -41,7 +42,7 @@ public class ExpGem : MonoBehaviour
             level.AddExp(exp);
         }
 
-        Destroy(gameObject);
+        PoolManager.Despawn(gameObject);
     }
 
     private void OnDrawGizmosSelected()
