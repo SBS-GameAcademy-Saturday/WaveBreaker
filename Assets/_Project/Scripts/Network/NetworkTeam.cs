@@ -18,7 +18,21 @@ public class NetworkTeam : NetworkBehaviour
     public NetworkVariable<int> Level = new NetworkVariable<int>(
         1, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
 
+    // 123회차 · 협동에서는 Time.timeScale 로 못 멈춘다. 서버가 "멈춤" 상태를 들고 있는다.
+    public NetworkVariable<bool> Paused = new NetworkVariable<bool>(
+        false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
     public int NeedExp => baseExp + (Level.Value - 1) * expStep;
+
+    // 멈춰 있나. 몬스터와 스폰이 이걸 본다.
+    public static bool IsPaused => Instance != null && Instance.Paused.Value;
+
+    public void SetPaused(bool value)
+    {
+        if (!IsServer) return;
+
+        Paused.Value = value;
+    }
 
     private void Awake()
     {

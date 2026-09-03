@@ -18,6 +18,9 @@ public class NetworkPlayerMove : NetworkBehaviour
     {
         if (input == null || rb == null) return;
 
+        // 123회차 · 멈춰 있으면 아무도 안 움직인다.
+        if (NetworkTeam.IsPaused) { rb.linearVelocity = Vector2.zero; return; }
+
         // 내 것이 아니면 움직이지 않는다. 상대 캐릭터는 NetworkTransform 이 옮겨 준다.
         // 여기서 속도를 건드리면 받은 위치와 싸운다.
         if (!IsOwner)

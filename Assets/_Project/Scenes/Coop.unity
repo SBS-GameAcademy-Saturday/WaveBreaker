@@ -608,7 +608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 52136077
+  GlobalObjectIdHash: 1547252950
   InScenePlacedSourceGlobalObjectIdHash: 0
   m_InScenePlacedDisabledByDefault: 0
   DeferredDespawnTick: 0
@@ -1212,7 +1212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2143001885
+  GlobalObjectIdHash: 2454760434
   InScenePlacedSourceGlobalObjectIdHash: 0
   m_InScenePlacedDisabledByDefault: 0
   DeferredDespawnTick: 0
@@ -2200,7 +2200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 4287147122
+  GlobalObjectIdHash: 3113534853
   InScenePlacedSourceGlobalObjectIdHash: 0
   m_InScenePlacedDisabledByDefault: 0
   DeferredDespawnTick: 0
@@ -2554,8 +2554,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "116~120\uD68C\uCC28 \xB7 \uBAAC\uC2A4\uD130\xB7\uC82C\uC740 \uD638\uC2A4\uD2B8\uB9CC
-    \uB9CC\uB4E0\uB2E4 \xB7 \uACBD\uD5D8\uCE58\uB294 \uD300 \uACF5\uC720"
+  m_text: "\uAC19\uC774 \uD558\uAE30 \u2014 [\uD638\uC2A4\uD2B8] \uB85C \uBC29\uC744
+    \uB9CC\uB4E4\uAC70\uB098 [\uD074\uB77C\uC774\uC5B8\uD2B8] \uB85C \uBD99\uB294\uB2E4"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ce7c6f713b3af0340ad9b551425c840d, type: 2}
   m_sharedMaterial: {fileID: -5491693598251383942, guid: ce7c6f713b3af0340ad9b551425c840d, type: 2}
