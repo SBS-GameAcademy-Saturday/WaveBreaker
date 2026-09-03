@@ -29,6 +29,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     protected Rigidbody2D rb;
     protected SpriteRenderer sprite;
     protected SpriteAnimator anim;
+
+    // 131회차 · 죽는 연출이 끝날 때까지 기다린다. 그동안은 안 움직이고 안 때린다.
+    protected bool dying;
     protected Transform player;
 
     protected virtual void Awake()
@@ -68,6 +71,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
         currentHealth = maxHealth;   // 이걸 안 하면 지난 판의 체력 0 을 그대로 갖고 나온다
 
+        // 🔑 죽는 중에 반납했으니 꺼낼 때 되돌린다. 안 하면 두 번째부터 안 움직인다.
+        dying = false;
+        var col = GetComponent<Collider2D>();
+        if (col != null) col.enabled = true;
+
         GameObject found = GameObject.FindWithTag("Player");
 
         if (found != null)
@@ -83,6 +91,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     protected virtual void FixedUpdate()
     {
+        if (dying) return;
+
         // 플레이어가 없으면 쫓을 대상이 없다. 063 의 target == null 과 같은 상황이다.
         if (player == null) return;
 
@@ -98,11 +108,18 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         sprite.flipX = dir.x < 0f;
     }
 
+    // 131회차 · 때릴 때 공격 애니메이션. 자식이 Attack 을 부르면 여기가 같이 돈다.
+    protected void PlayAttackAnim()
+    {
+        if (anim != null && !dying) anim.PlayAttack();
+    }
+
     public virtual void TakeDamage(int amount)
     {
         // 090회차 · 한 프레임에 칼 여러 자루와 총알이 동시에 맞으면 Die() 가 여러 번 불린다.
         // Destroy 는 프레임 끝에 처리되기 때문이다. 080에서 플레이어에 넣은 검사와 같다.
         if (currentHealth <= 0) return;
+        if (dying) return;
 
         currentHealth -= amount;
         Debug.Log($"{name} : -{amount}  (남은 체력 {currentHealth})");
@@ -143,7 +160,15 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     protected virtual void Die()
     {
+        if (dying) return;
+        dying = true;
+
         Debug.Log($"{name} 사망");
+
+        // 쓰러지는 동안 밀거나 때리지 않게 멈춘다
+        if (rb != null) rb.linearVelocity = Vector2.zero;
+        var deadCol = GetComponent<Collider2D>();
+        if (deadCol != null) deadCol.enabled = false;
 
         if (deathEffect != null) PoolManager.Spawn(deathEffect, transform.position, Quaternion.identity);
 
@@ -160,7 +185,22 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             PoolManager.Spawn(expGemPrefab, transform.position, Quaternion.identity);
         }
 
+        // 131회차 · 죽는 애니메이션이 있으면 다 보여주고 반납한다.
+        //   ⚠️ 그동안 AliveCount 에는 계속 잡혀 있다. 0.4초라 상한(250)에 영향이 없다.
+        if (anim != null && anim.HasDeath)
+        {
+            StartCoroutine(DespawnAfter(anim.DeathLength));
+            anim.PlayDeath();
+            return;
+        }
+
         // 102회차 · 버리지 않고 서랍에 반납한다.
+        PoolManager.Despawn(gameObject);
+    }
+
+    private IEnumerator DespawnAfter(float seconds)
+    {
+        yield return new WaitForSeconds(seconds);
         PoolManager.Despawn(gameObject);
     }
 

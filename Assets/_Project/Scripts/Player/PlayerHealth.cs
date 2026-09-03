@@ -52,6 +52,10 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         if (GameManager.Instance != null) GameManager.Instance.HitStop(hitStopTime);
         if (AudioManager.Instance != null) AudioManager.Instance.Play(hurtSfx);
 
+        // 131회차 · 피격 애니메이션. 없으면 아무 일도 안 일어난다.
+        var anim = GetComponent<SpriteAnimator>();
+        if (anim != null) anim.PlayHurt();
+
         if (currentHealth == 0)
         {
             Die();

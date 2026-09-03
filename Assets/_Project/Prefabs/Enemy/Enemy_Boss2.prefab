@@ -211,5 +211,19 @@ MonoBehaviour:
   - {fileID: -1285687089710984539, guid: 1325fc38216cead46af5a7d0ded7e756, type: 3}
   - {fileID: -7428596026729828391, guid: 1325fc38216cead46af5a7d0ded7e756, type: 3}
   - {fileID: 2818803440080794168, guid: 1325fc38216cead46af5a7d0ded7e756, type: 3}
+  attack:
+  - {fileID: -5418072359286379437, guid: 73c11b50484ca7a4c9d7d35118ed637a, type: 3}
+  - {fileID: -491500320656828002, guid: 73c11b50484ca7a4c9d7d35118ed637a, type: 3}
+  - {fileID: -1258464557429515223, guid: 73c11b50484ca7a4c9d7d35118ed637a, type: 3}
+  - {fileID: -6287394912629731536, guid: 73c11b50484ca7a4c9d7d35118ed637a, type: 3}
+  - {fileID: -5176415140387163916, guid: 73c11b50484ca7a4c9d7d35118ed637a, type: 3}
+  - {fileID: -3670061954406771588, guid: 73c11b50484ca7a4c9d7d35118ed637a, type: 3}
+  - {fileID: -8348852315816166244, guid: 73c11b50484ca7a4c9d7d35118ed637a, type: 3}
+  - {fileID: -1907901267935048289, guid: 73c11b50484ca7a4c9d7d35118ed637a, type: 3}
+  death:
+  - {fileID: -792133667658823560, guid: 44abe8d4e5217a147a053f4cee1774ae, type: 3}
+  - {fileID: -1540659363887167176, guid: 44abe8d4e5217a147a053f4cee1774ae, type: 3}
+  - {fileID: 3460962629557216559, guid: 44abe8d4e5217a147a053f4cee1774ae, type: 3}
+  - {fileID: 3115979261655960100, guid: 44abe8d4e5217a147a053f4cee1774ae, type: 3}
   fps: 6
   moveThreshold: 0.05

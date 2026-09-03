@@ -14,6 +14,8 @@ public class SpriteAnimator : MonoBehaviour
     [SerializeField] private Sprite[] idle;
     [SerializeField] private Sprite[] walk;
     [SerializeField] private Sprite[] hurt;
+    [SerializeField] private Sprite[] attack;
+    [SerializeField] private Sprite[] death;
 
     [Header("설정")]
     [SerializeField] private float fps = 10f;
@@ -26,8 +28,13 @@ public class SpriteAnimator : MonoBehaviour
     private int frame;
     private float timer;
 
-    private Sprite[] once;         // 한 번만 재생하고 끝낼 것 (피격)
+    private Sprite[] once;         // 한 번만 재생할 것 (피격 · 공격 · 죽음)
     private float onceLeft;
+    private bool holdLast;         // 죽음은 마지막 프레임에서 멈춘다
+    private bool frozen;
+
+    public bool HasDeath => death != null && death.Length > 0;
+    public float DeathLength => HasDeath ? death.Length / Mathf.Max(fps, 0.01f) : 0f;
 
     private void Awake()
     {
@@ -40,24 +47,37 @@ public class SpriteAnimator : MonoBehaviour
     {
         once = null;
         onceLeft = 0f;
+        holdLast = false;
+        frozen = false;
         frame = 0;
         timer = 0f;
         current = null;
     }
 
-    // 피격 애니메이션을 한 번 재생한다. 끝나면 알아서 걷기/서기로 돌아간다.
-    public void PlayHurt()
+    private void PlayOnce(Sprite[] clip, bool hold)
     {
-        if (hurt == null || hurt.Length == 0) return;
+        if (clip == null || clip.Length == 0) return;
 
-        once = hurt;
-        onceLeft = hurt.Length / Mathf.Max(fps, 0.01f);
+        // 같은 걸 이미 재생 중이면 처음으로 되돌리지 않는다.
+        // 몬스터가 닿아 있는 동안 Attack 이 매 프레임 불려서 0번 프레임에 멈추는 걸 막는다.
+        if (once == clip) return;
+
+        once = clip;
+        onceLeft = clip.Length / Mathf.Max(fps, 0.01f);
+        holdLast = hold;
+        frozen = false;
         frame = 0;
         timer = 0f;
     }
 
+    public void PlayHurt() => PlayOnce(hurt, false);
+    public void PlayAttack() => PlayOnce(attack, false);
+    public void PlayDeath() => PlayOnce(death, true);
+
     private void Update()
     {
+        if (frozen) return;
+
         Sprite[] want = Pick();
         if (want == null || want.Length == 0) return;
 
@@ -76,6 +96,14 @@ public class SpriteAnimator : MonoBehaviour
         while (timer >= step)
         {
             timer -= step;
+
+            // 마지막에서 멈춰야 하는 것(죽음)은 넘기지 않는다
+            if (holdLast && once != null && frame >= current.Length - 1)
+            {
+                frozen = true;
+                return;
+            }
+
             frame = (frame + 1) % current.Length;
             sprite.sprite = current[frame];
         }
@@ -86,7 +114,9 @@ public class SpriteAnimator : MonoBehaviour
         if (once != null)
         {
             onceLeft -= Time.deltaTime;
-            if (onceLeft > 0f) return once;
+
+            if (onceLeft > 0f || holdLast) return once;
+
             once = null;
         }
 

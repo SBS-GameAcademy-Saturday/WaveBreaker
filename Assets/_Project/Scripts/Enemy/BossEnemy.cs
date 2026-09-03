@@ -24,6 +24,7 @@ public class BossEnemy : Enemy
     {
         if (collision.gameObject.TryGetComponent(out IDamageable target))
         {
+            PlayAttackAnim();   // 131회차
             Attack(target);
         }
     }
