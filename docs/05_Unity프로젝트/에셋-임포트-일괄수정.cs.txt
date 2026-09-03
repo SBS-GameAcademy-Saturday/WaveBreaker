@@ -20,8 +20,11 @@ var rules = new (string folder, int ppu, int cell, bool slice)[]
 {
     // 🔴 FX 팩은 슬라이스하지 않는다 — 아래 주석 참고
     ("Assets/_GameAssets/Sprites/Effect and FX Pixel All Free", 64, 64, false),
-    ("Assets/_GameAssets/Sprites/Tiny RPG Character Asset Pack 01 v2.0 -Free Soldier&Orc", 100, 100, true),
-    ("Assets/_GameAssets/Sprites/Tiny RPG Character Asset Pack 02 -Free Demon_A&Blood Monster_A", 100, 100, true),
+    // 🔑 Tiny RPG 는 PPU 25 다 (격자 100 이 아니다).
+    // 100x100 칸에 그림이 20px 뿐이라 칸의 79%가 빈 공간이고, PPU 100 이면
+    // 기존 32px 스프라이트의 1/4 로 보인다. 21px / 25 = 0.84 → 기존 0.81 과 맞는다.
+    ("Assets/_GameAssets/Sprites/Tiny RPG Character Asset Pack 01 v2.0 -Free Soldier&Orc", 25, 100, true),
+    ("Assets/_GameAssets/Sprites/Tiny RPG Character Asset Pack 02 -Free Demon_A&Blood Monster_A", 25, 100, true),
     ("Assets/_GameAssets/Sprites/DarkAgesUi_v1.0", 32, 32, true),
     ("Assets/_GameAssets/Sprites/Coin_Gems", 16, 16, true),
 };
