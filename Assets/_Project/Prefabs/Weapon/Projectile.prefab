@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2408741428351280309}
   - component: {fileID: 5935017237047477661}
   - component: {fileID: 3109157013467490441}
+  - component: {fileID: 1438273157357671277}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Untagged
@@ -174,3 +175,40 @@ MonoBehaviour:
   damage: 3
   pierce: 2
   lifeTime: 2
+--- !u!114 &1438273157357671277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7505689658882639516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 156d758c81e3f514e95c74576e8d23d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteAnimator
+  idle:
+  - {fileID: -2692017360447016719, guid: 0a1eed92a715c254cb3e96cc0626ac75, type: 3}
+  - {fileID: 8079474583889063115, guid: 0a1eed92a715c254cb3e96cc0626ac75, type: 3}
+  - {fileID: -5517249830624331127, guid: 0a1eed92a715c254cb3e96cc0626ac75, type: 3}
+  - {fileID: -5684647968464018991, guid: 0a1eed92a715c254cb3e96cc0626ac75, type: 3}
+  - {fileID: 460585016100246795, guid: 0a1eed92a715c254cb3e96cc0626ac75, type: 3}
+  - {fileID: 4604652231247594688, guid: 0a1eed92a715c254cb3e96cc0626ac75, type: 3}
+  - {fileID: -3914333959989880853, guid: 0a1eed92a715c254cb3e96cc0626ac75, type: 3}
+  - {fileID: -8807902850259532418, guid: 0a1eed92a715c254cb3e96cc0626ac75, type: 3}
+  - {fileID: -909570359034585207, guid: 0a1eed92a715c254cb3e96cc0626ac75, type: 3}
+  walk:
+  - {fileID: -2692017360447016719, guid: 0a1eed92a715c254cb3e96cc0626ac75, type: 3}
+  - {fileID: 8079474583889063115, guid: 0a1eed92a715c254cb3e96cc0626ac75, type: 3}
+  - {fileID: -5517249830624331127, guid: 0a1eed92a715c254cb3e96cc0626ac75, type: 3}
+  - {fileID: -5684647968464018991, guid: 0a1eed92a715c254cb3e96cc0626ac75, type: 3}
+  - {fileID: 460585016100246795, guid: 0a1eed92a715c254cb3e96cc0626ac75, type: 3}
+  - {fileID: 4604652231247594688, guid: 0a1eed92a715c254cb3e96cc0626ac75, type: 3}
+  - {fileID: -3914333959989880853, guid: 0a1eed92a715c254cb3e96cc0626ac75, type: 3}
+  - {fileID: -8807902850259532418, guid: 0a1eed92a715c254cb3e96cc0626ac75, type: 3}
+  - {fileID: -909570359034585207, guid: 0a1eed92a715c254cb3e96cc0626ac75, type: 3}
+  hurt: []
+  attack: []
+  death: []
+  fps: 15
+  moveThreshold: 0.05

@@ -18,6 +18,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
     [Header("연출 (099·100회차)")]
     [SerializeField] protected GameObject deathEffect;
+    [SerializeField] protected GameObject hitEffect;      // 131회차 · 맞은 자리에 튀는 것
     [SerializeField] protected AudioClip hitSfx;
     [SerializeField] protected AudioClip dieSfx;
 
@@ -128,6 +129,10 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
         // 131회차 · 피격 애니메이션. 없으면 아무 일도 안 일어난다.
         if (anim != null) anim.PlayHurt();
+
+        // 131회차 · 맞은 자리에 이펙트를 띄운다. 몸통 한가운데보다 살짝 위가 잘 보인다.
+        if (hitEffect != null)
+            PoolManager.Spawn(hitEffect, transform.position + Vector3.up * 0.2f, Quaternion.identity);
 
         if (AudioManager.Instance != null) AudioManager.Instance.Play(hitSfx, 0.5f);
 
