@@ -1241,3 +1241,93 @@ if (!ShouldFreeze) Time.timeScale = 1f;
 "켜질 때 도는 함수" 라는 설명이 학생에게 훨씬 잘 붙는다.
 
 풀에서 꺼내는 쪽(`PoolManager`)이 아무것도 호출하지 않아도 되는 것도 이점이다.
+
+---
+
+## 22주차 (106–110) — 게임이 두 개다 · Phase 9 착수
+
+> 🔴 **이번 주 `Game.unity` 를 한 번도 안 건드렸다.**
+> Phase 9 최대 사고는 협동을 만들다 싱글을 깨뜨리는 것이다.
+> 22~23주차는 **연습 씬에서만** 작업하고, 본 게임에는 24주차부터 옮긴다.
+
+### 설치한 패키지 (Unity 6.5 / 6000.5.4f1)
+
+| 패키지 | 버전 | 쓰는 회차 |
+|---|---|---|
+| `com.unity.netcode.gameobjects` | 2.13.2 | 108~ |
+| `com.unity.multiplayer.playmode` | 2.0.2 | 110 |
+| `com.unity.multiplayer.tools` | 2.2.11 | (프로파일러) |
+| `com.unity.services.core` | 1.18.0 | 124 |
+| `com.unity.services.authentication` | 3.7.4 | 124 |
+| `com.unity.services.relay` | 1.2.0 | 124 |
+
+### 새 파일
+
+| 파일 | 하는 일 |
+|---|---|
+| `Scenes/Practice/109_Network_Test.unity` | 연습 씬. 카메라 · NetworkManager · UI · EventSystem |
+| `Prefabs/Network/NetworkPlayer.prefab` | SpriteRenderer + `NetworkObject` + `NetworkPlayerTag` |
+| `Scripts/Network/NetworkPlayerTag.cs` | `OnNetworkSpawn` 에서 소유자별 색 · 로그 |
+| `Scripts/Network/NetworkTestUI.cs` | 호스트/클라이언트/서버 버튼 + 상태 표시 |
+| `Assets/DefaultNetworkPrefabs.asset` | NGO 가 자동 생성 |
+
+`NetworkManager` 설정: `Player Prefab = NetworkPlayer`, `UnityTransport 127.0.0.1:7777`.
+연습 씬은 Build Settings 에 **넣되 체크는 꺼뒀다**.
+
+> ✅ **자동 검증 완료 (2026-09-03)**
+>
+> | 확인한 것 | 실측 |
+> |---|---|
+> | 패키지 | 6개 전부 `Registry` 설치 · 컴파일 에러 0 · 경고 0 |
+> | NGO 타입 | `Unity.Netcode.NetworkManager` · `UnityTransport` 둘 다 확인 |
+> | 첫 접속 (109) | 실제 클릭 `Btn_Host` → `호스트 시작 = True` |
+> | | `IsListening=True IsHost=True IsServer=True IsClient=True` |
+> | | 내 번호 `0` · 접속자 `1명` |
+> | 플레이어 스폰 | 1개 · 소유자 `0` · `IsSpawned=True` · `IsOwner=True` |
+> | 색 | 파랑 `RGBA(0.300, 0.600, 1.000, 1.000)` |
+> | 로그 | `[호스트] 플레이어 등장 — 소유자 0  내 것인가 = True` |
+> | MPPM (110) | `Player 2` 상태 `NotLaunched → Launching → Launched` |
+> | | 창 제목 `Player 2` · 메모리 3.3 GB (메인 에디터 3.5 GB) |
+> | | `Deactivate` 후 `NotLaunched` 로 복귀 |
+> | 🔴 **싱글 회귀** | Title → [시작] 클릭 → `씬=Game` |
+> | | 12초에 처치 5 · Lv.1 · 체력 20/20 · 풀 재사용 19 |
+> | | `NetworkManager.Singleton = False` (싱글 씬엔 없다) |
+>
+> ⚠️ **2인 동시 접속은 미실측.** 가상 플레이어가 뜨는 것까지만 확인했고,
+> 두 명이 붙어 네모가 두 개가 되는 것은 **111회차(23주차)의 내용**이라 다음 주에 검증한다.
+> ⚠️ **Relay 접속 미실측.** 패키지만 깔았다. UGS 프로젝트 연동이 필요하고 124회차 내용이다.
+
+### ★ 겪은 것 — 설치 직후엔 MPPM 메뉴가 없다
+
+패키지를 깔고 바로 확인했더니 이랬다.
+
+```
+Playmode 어셈블리 = 없음
+메뉴 [Window/Multiplayer/Multiplayer Play Mode] = False
+```
+
+`Library/PackageCache/com.unity.multiplayer.playmode@...` 를 열어보니 **코드가 하나도 없었다** —
+`CHANGELOG.md` `LICENSE.md` `README.md` `package.json` `Documentation~` 이 전부였다.
+
+Unity 6 에서 MPPM 은 **패키지가 문서만 담고 기능은 에디터에 내장**돼 있다.
+그래서 패키지를 깔면 에디터가 **켜질 때** 기능을 등록한다.
+
+**에디터를 재시작하니** 이렇게 바뀌었다.
+
+```
+메뉴 [Window/Multiplayer/Multiplayer Play Mode] = True
+타입 Unity.Multiplayer.PlayMode.Editor.MultiplayerPlaymode 존재
+```
+
+108회차 강의안의 "오늘 1등 사고" 로 넣었다. 학생도 똑같이 겪는다.
+
+### ★ 설계 판단 — 본 게임 대신 연습 씬에서 시작했다
+
+14주차부터 21주차까지는 "`Game.unity` 하나가 계속 자란다" 였다. 이번 주는 **깼다.**
+
+Phase 9 문서의 위험 신호표가 **[혼자 하기]가 깨짐 = 🔴 최대 사고** 로 표시하고
+"매 회차 확인, 깨지면 즉시 되돌린다" 고 못박고 있다. 22~23주차는 개념과 배선 단계라
+본 게임에 넣을 이유가 없다 — 넣으면 위험만 진다.
+
+그래서 `109_Network_Test.unity` 를 따로 만들고, 매 회차 체크리스트 마지막 줄에
+**"`Game.unity` 를 안 건드렸다"** 를 넣었다. 본 게임 이식은 24주차(116~120)부터다.

@@ -50,5 +50,8 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/_Project/Scenes/Practice/065_Survival_Done.unity
     guid: 616f1c1e9b96b3c4cbe2a689e1107ec9
+  - enabled: 0
+    path: Assets/_Project/Scenes/Practice/109_Network_Test.unity
+    guid: f993f87226ff9374e93676ef759c1a21
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
