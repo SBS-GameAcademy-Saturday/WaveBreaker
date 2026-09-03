@@ -5,6 +5,7 @@
 | **회차 / 주차** | 001–020 (20회) / 1~4주차 |
 | **도구** | Visual Studio · C# 콘솔 프로젝트 |
 | **산출물** | 콘솔 미니 프로그램 단독 제작 |
+| **예제 코드** | [CSharpStudyProject](https://github.com/SBS-GameAcademy-Saturday/CSharpStudyProject) — 회차 대응은 [Csharp-학습자료-연동.md](../00_기획/Csharp-학습자료-연동.md) |
 
 ## 🎯 목표
 

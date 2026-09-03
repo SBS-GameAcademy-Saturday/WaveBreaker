@@ -6,6 +6,7 @@
 | **선행** | Phase 0 |
 | **도구** | Visual Studio · C# 콘솔 |
 | **산출물** | 상속·인터페이스로 설계한 몬스터 클래스 (콘솔) |
+| **예제 코드** | [CSharpStudyProject](https://github.com/SBS-GameAcademy-Saturday/CSharpStudyProject) `Chapter5_OOP` — 회차 대응은 [Csharp-학습자료-연동.md](../00_기획/Csharp-학습자료-연동.md) |
 
 ## 🎯 목표
 
