@@ -4,6 +4,9 @@ using UnityEngine;
 // 068회차 · 플레이어를 부드럽게 따라간다.
 // Update 에 쓰면 플레이어가 움직이기 전 위치를 보게 돼 화면이 떤다. 그래서 LateUpdate.
 //
+// 120회차 · 협동 카메라. 고친 건 목록에 넣고 빼는 문 두 개뿐이다.
+//   095에서 이미 "목록의 중심" 으로 만들어뒀기 때문에 계산은 한 줄도 안 고쳤다.
+//
 // 095회차 · "하나를 따라간다" 를 "목록의 중심을 따라간다" 로 바꿨다.
 //   목록에 하나만 넣으면 동작이 068과 완전히 같다.
 //
@@ -51,6 +54,19 @@ public class CameraFollow : MonoBehaviour
         if (count == 0) return transform.position;
 
         return sum / count;
+    }
+
+    // 120회차 · 접속한 플레이어가 스스로 등록한다.
+    public void AddTarget(Transform t)
+    {
+        if (t == null || targets.Contains(t)) return;
+
+        targets.Add(t);
+    }
+
+    public void RemoveTarget(Transform t)
+    {
+        targets.Remove(t);
     }
 
     public void Shake(float power, float duration)

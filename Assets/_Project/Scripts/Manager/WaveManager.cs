@@ -7,6 +7,10 @@ using UnityEngine;
 //    여기저기서 Instantiate 하면 나중에 누가 만들었는지 못 찾는다.
 //
 // 090회차 · 정해진 시각에 보스를 소환한다. 보스도 몬스터라 여기서 만든다.
+// 117회차 · 몬스터를 만드는 건 서버(호스트)만 한다.
+//   싱글 모드에서는 NetworkRole.IsServerOrOffline 이 항상 true 라 동작이 그대로다.
+//   073에서 스폰을 여기 한 곳으로 모아둔 덕분에 고친 곳이 두 줄뿐이다.
+//
 // 102·103회차 · Instantiate 대신 서랍(PoolManager)에서 꺼낸다.
 //   그리고 살아 있는 몬스터 수에 상한을 건다 — 프레임을 실제로 살리는 건 이쪽이다.
 public class WaveManager : MonoBehaviour
@@ -81,6 +85,9 @@ public class WaveManager : MonoBehaviour
 
     public void SpawnOne()
     {
+        // 🔑 117회차 · 클라이언트는 몬스터를 안 만든다. 싱글에서는 항상 통과한다.
+        if (!NetworkRole.IsServerOrOffline) return;
+
         if (enemyPrefabs.Length == 0 || spawnPoints.Length == 0) return;
 
         // 🔑 103회차 · 이미 꽉 찼으면 안 만든다.
@@ -96,6 +103,8 @@ public class WaveManager : MonoBehaviour
 
     public void SpawnBoss(int index)
     {
+        if (!NetworkRole.IsServerOrOffline) return;
+
         if (bossPrefabs == null || index >= bossPrefabs.Length) return;
         if (bossPrefabs[index] == null || spawnPoints.Length == 0) return;
 

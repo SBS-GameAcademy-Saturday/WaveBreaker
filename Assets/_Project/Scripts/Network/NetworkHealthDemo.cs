@@ -2,6 +2,7 @@ using Unity.Netcode;
 using UnityEngine;
 
 // 115회차 · 값을 자동으로 맞춰주는 상자, NetworkVariable.
+// 116회차 · 클라이언트가 값을 바꾸고 싶으면 Rpc 로 서버에 부탁한다.
 //
 // 위치는 NetworkTransform 이 맞춰줬다(112). 체력 같은 숫자는 이걸로 맞춘다.
 //
@@ -41,16 +42,24 @@ public class NetworkHealthDemo : NetworkBehaviour
         Debug.Log($"[{(IsServer ? "호스트" : "클라이언트")}] 소유자 {OwnerClientId} 체력 {before} → {after}");
     }
 
-    // 🚨 서버에서만 불러야 한다. 클라이언트가 부르면 에러가 난다.
-    //    "클라이언트가 자기 체력을 깎고 싶다" 면 Rpc 로 부탁해야 한다 (116회차).
+    // 🚨 서버에서만 부를 수 있다. 115회차에 여기서 벽에 부딪혔다.
     public void TakeDamage(int amount)
     {
         if (!IsServer)
         {
-            Debug.LogWarning("체력은 서버만 바꿀 수 있다. 116회차의 Rpc 가 필요하다.");
+            Debug.LogWarning("체력은 서버만 바꿀 수 있다. RequestDamageRpc 를 쓴다.");
             return;
         }
 
         Health.Value = Mathf.Max(Health.Value - amount, 0);
+    }
+
+    // 116회차 · 클라이언트가 부르면 서버로 전달돼 서버에서 실행된다.
+    //   같은 함수를 호스트가 불러도 잘 돈다 — 호스트는 이미 서버라서 바로 실행된다.
+    [Rpc(SendTo.Server)]
+    public void RequestDamageRpc(int amount)
+    {
+        // 여기부터는 서버다.
+        TakeDamage(amount);
     }
 }
