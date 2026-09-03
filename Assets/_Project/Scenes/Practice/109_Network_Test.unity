@@ -1026,6 +1026,7 @@ GameObject:
   - component: {fileID: 1216155120}
   - component: {fileID: 1216155119}
   - component: {fileID: 1216155118}
+  - component: {fileID: 1216155123}
   m_Layer: 0
   m_Name: UI
   m_TagString: Untagged
@@ -1133,6 +1134,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1216155123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1216155117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2dde4a55fe1896e40b1ed299a04fafe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NetworkAutoConnect
+  enableAutoConnect: 1
+  buttonRoot: {fileID: 25031616}
 --- !u!1 &1250439637
 GameObject:
   m_ObjectHideFlags: 0
@@ -1415,8 +1430,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "109\uD68C\uCC28 \xB7 \uC811\uC18D\uD558\uBA74 \uCE90\uB9AD\uD130\uAC00
-    \uD558\uB098 \uB354 \uC0DD\uAE34\uB2E4 (\uC544\uC9C1 \uC548 \uC6C0\uC9C1\uC778\uB2E4)"
+  m_text: "111~115\uD68C\uCC28 \xB7 \uB450 \uBA85\uC774 \uC811\uC18D\uD574 \uAC01\uC790
+    \uC790\uAE30 \uCE90\uB9AD\uD130\uB97C \uC6C0\uC9C1\uC778\uB2E4 (WASD)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ce7c6f713b3af0340ad9b551425c840d, type: 2}
   m_sharedMaterial: {fileID: -5491693598251383942, guid: ce7c6f713b3af0340ad9b551425c840d, type: 2}
