@@ -1,0 +1,157 @@
+using UnityEngine;
+using UnityEditor;
+using System.Text;
+using System.Linq;
+using System.Collections.Generic;
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 에셋 임포트 일괄 수정 — 2026-09-04
+//
+// 문제 : 폴더로 드래그해 넣으면 Texture Type 이 Sprite 가 아니라 Default 로 들어온다.
+//        Default 는 NPOT Scale 기본값이 ToNearest 라서 2의 제곱수가 아닌 크기가
+//        전부 리사이즈된다 (1408x576 → 1024x512). 격자가 어긋나 슬라이스가 안 맞는다.
+//
+// PPU 는 팩마다 다르게 준다. 격자 크기를 PPU 로 넣으면 "1칸 = 1월드유닛" 이 되어
+// 기존 32px 스프라이트(PPU 32)와 크기가 자동으로 맞는다.
+// ─────────────────────────────────────────────────────────────────────────────
+
+// folder, PPU, 격자, 슬라이스할지
+var rules = new (string folder, int ppu, int cell, bool slice)[]
+{
+    // 🔴 FX 팩은 슬라이스하지 않는다 — 아래 주석 참고
+    ("Assets/_GameAssets/Sprites/Effect and FX Pixel All Free", 64, 64, false),
+    ("Assets/_GameAssets/Sprites/Tiny RPG Character Asset Pack 01 v2.0 -Free Soldier&Orc", 100, 100, true),
+    ("Assets/_GameAssets/Sprites/Tiny RPG Character Asset Pack 02 -Free Demon_A&Blood Monster_A", 100, 100, true),
+    ("Assets/_GameAssets/Sprites/DarkAgesUi_v1.0", 32, 32, true),
+    ("Assets/_GameAssets/Sprites/Coin_Gems", 16, 16, true),
+};
+
+var sb = new StringBuilder();
+int changed = 0, already = 0, slicedFiles = 0, slicedCells = 0;
+
+// 격자로 자른 조각 목록을 만든다. 좌하단이 (0,0) 이고 위로 올라간다.
+List<SpriteMetaData> GridSlice(string path, int w, int h, int cell)
+{
+    var list = new List<SpriteMetaData>();
+    string baseName = System.IO.Path.GetFileNameWithoutExtension(path);
+    int cols = w / cell, rows = h / cell;
+    int n = 0;
+    for (int ry = rows - 1; ry >= 0; ry--)          // 위 → 아래 순서로 번호를 준다
+    {
+        for (int cx = 0; cx < cols; cx++)
+        {
+            list.Add(new SpriteMetaData
+            {
+                name = baseName + "_" + n.ToString("000"),
+                rect = new Rect(cx * cell, ry * cell, cell, cell),
+                alignment = (int)SpriteAlignment.Center,
+                pivot = new Vector2(0.5f, 0.5f),     // 기존 프로젝트 관례와 같게 Center
+                border = Vector4.zero,
+            });
+            n++;
+        }
+    }
+    return list;
+}
+
+AssetDatabase.StartAssetEditing();
+try
+{
+    var jobs = new List<(string path, int ppu, int cell, bool slice)>();
+
+    foreach (var r in rules)
+        foreach (string p in AssetDatabase.FindAssets("t:Texture2D", new[] { r.folder })
+                    .Select(AssetDatabase.GUIDToAssetPath).Distinct())
+            jobs.Add((p, r.ppu, r.cell, r.slice));
+
+    // 던전 타일셋 — 타일 32x32 (사용자 확인)
+    jobs.Add(("Assets/_GameAssets/Sprites/Dungeon_Tileset.png", 32, 32, true));
+
+    foreach (var j in jobs)
+    {
+        var ti = AssetImporter.GetAtPath(j.path) as TextureImporter;
+        if (ti == null) continue;
+
+        int ow, oh;
+        ti.GetSourceTextureWidthAndHeight(out ow, out oh);
+
+        bool needSettings = ti.textureType != TextureImporterType.Sprite
+                         || ti.filterMode != FilterMode.Point
+                         || ti.mipmapEnabled
+                         || ti.textureCompression != TextureImporterCompression.Uncompressed
+                         || ti.spritePixelsPerUnit != j.ppu
+                         || ti.npotScale != TextureImporterNPOTScale.None;
+
+        // 격자에 딱 맞고 2칸 이상이면 Multiple, 아니면 Single
+        bool gridOk = j.slice && ow % j.cell == 0 && oh % j.cell == 0
+                      && (ow / j.cell) * (oh / j.cell) > 1;
+        bool needSlice = gridOk && ti.spritesheet.Length == 0;
+
+        if (!needSettings && !needSlice) { already++; continue; }
+
+        ti.textureType = TextureImporterType.Sprite;
+        ti.npotScale = TextureImporterNPOTScale.None;
+        ti.filterMode = FilterMode.Point;
+        ti.mipmapEnabled = false;
+        ti.textureCompression = TextureImporterCompression.Uncompressed;
+        ti.spritePixelsPerUnit = j.ppu;
+        ti.alphaIsTransparency = true;
+        ti.maxTextureSize = 4096;      // 1408 짜리가 2048 에 안 잘리게
+
+        if (gridOk)
+        {
+            var cells = GridSlice(j.path, ow, oh, j.cell);
+            ti.spriteImportMode = SpriteImportMode.Multiple;
+            ti.spritesheet = cells.ToArray();
+            slicedFiles++;
+            slicedCells += cells.Count;
+        }
+        else if (j.slice)
+        {
+            ti.spriteImportMode = SpriteImportMode.Single;   // 격자 1칸짜리
+        }
+        else
+        {
+            // FX 팩 : Multiple 로 두되 슬라이스는 쓸 이펙트를 고른 뒤에 한다.
+            // 180장을 전부 자르면 9색 x 프레임 = 약 19,000 조각이 되어 .meta 가 폭발한다.
+            // 색상 행 9개 중 실제로 쓰는 건 1개뿐이므로 9배가 낭비다.
+            ti.spriteImportMode = SpriteImportMode.Single;
+        }
+
+        ti.SaveAndReimport();
+        changed++;
+    }
+}
+finally
+{
+    AssetDatabase.StopAssetEditing();
+    AssetDatabase.Refresh();
+}
+
+sb.AppendLine("바꾼 것       = " + changed + "개");
+sb.AppendLine("이미 맞음     = " + already + "개");
+sb.AppendLine("격자로 자름   = " + slicedFiles + "개 파일 · " + slicedCells + "조각");
+sb.AppendLine();
+
+// ── 검증
+var all = AssetDatabase.FindAssets("t:Texture2D", new[] { "Assets/_GameAssets/Sprites" })
+    .Select(AssetDatabase.GUIDToAssetPath).Distinct().ToArray();
+int resized = 0, kept = 0, notPoint = 0, notSprite = 0, compressed = 0;
+foreach (string p in all)
+{
+    var ti = AssetImporter.GetAtPath(p) as TextureImporter;
+    var tex = AssetDatabase.LoadAssetAtPath<Texture2D>(p);
+    if (ti == null || tex == null) continue;
+    int ow, oh; ti.GetSourceTextureWidthAndHeight(out ow, out oh);
+    if (tex.width != ow || tex.height != oh) resized++; else kept++;
+    if (ti.filterMode != FilterMode.Point) notPoint++;
+    if (ti.textureType != TextureImporterType.Sprite) notSprite++;
+    if (ti.textureCompression != TextureImporterCompression.Uncompressed) compressed++;
+}
+sb.AppendLine("=== 검증 (텍스처 " + all.Length + "개, 아래는 전부 0 이어야 한다) ===");
+sb.AppendLine("크기가 바뀐 것   = " + resized);
+sb.AppendLine("Point 아닌 것    = " + notPoint);
+sb.AppendLine("Sprite 아닌 것   = " + notSprite);
+sb.AppendLine("압축된 것        = " + compressed);
+sb.AppendLine("원본 크기 유지   = " + kept + "개");
+return sb.ToString();
