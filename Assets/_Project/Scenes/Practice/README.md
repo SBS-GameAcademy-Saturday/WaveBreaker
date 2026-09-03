@@ -1331,3 +1331,111 @@ Phase 9 문서의 위험 신호표가 **[혼자 하기]가 깨짐 = 🔴 최대 
 
 그래서 `109_Network_Test.unity` 를 따로 만들고, 매 회차 체크리스트 마지막 줄에
 **"`Game.unity` 를 안 건드렸다"** 를 넣었다. 본 게임 이식은 24주차(116~120)부터다.
+
+---
+
+## 23주차 (111–115) — 한 줄로 끝난다 · 동기화와 소유권
+
+> 🔴 **이번 주에도 `Game.unity` 를 안 건드렸다.** 연습 씬에서만 작업했다.
+
+### 새 파일
+
+| 파일 | 하는 일 |
+|---|---|
+| `Scripts/Network/NetworkAutoConnect.cs` | MPPM 태그로 호스트/클라이언트 자동 접속 (에디터 전용) |
+| `Scripts/Network/NetworkPlayerInput.cs` | 067 `PlayerInput` 네트워크판 + `if (!IsOwner) return;` |
+| `Scripts/Network/NetworkPlayerMove.cs` | 067 `PlayerController` 네트워크판 |
+| `Scripts/Network/NetworkHealthDemo.cs` | `NetworkVariable<int>` · 쓰기 권한 Server |
+
+### `NetworkPlayer` 프리팹 (22주차에서 늘어난 것)
+
+| 컴포넌트 | 값 |
+|---|---|
+| `Rigidbody2D` | Gravity 0 · Freeze Rotation · Interpolate · Continuous |
+| `BoxCollider2D` | 1 × 1 |
+| **`NetworkTransform`** | **Authority = Owner** · Interpolate 켬 · Z·회전·스케일 끔 |
+| `NetworkPlayerInput` / `NetworkPlayerMove` / `NetworkHealthDemo` | |
+
+> 🔑 **네임스페이스는 `Unity.Multiplayer.PlayMode`** (P가 대문자).
+> `Unity.Multiplayer.Playmode` 로 쓰면 `CS0234` 가 난다 — 강사가 먼저 겪었다.
+> `CurrentPlayer.ReadOnlyTags()` 는 **폐기 예정**이라 `CurrentPlayer.Tags` 를 쓴다.
+
+> ✅ **자동 검증 완료 (2026-09-03)**
+>
+> **2인 접속** — `Player 2` 에 태그 `Client` 를 붙이고 자동 접속
+>
+> ```
+> IsListening=True  IsHost=True  IsServer=True
+> 내 번호 = 0   접속자 = 2명   접속자 목록 = [0, 1]
+>
+> 플레이어 오브젝트 = 2개
+>    소유자 0  IsOwner=True   위치 (-0.75, 0.00)  색 파랑  체력 20
+>    소유자 1  IsOwner=False  위치 ( 0.40, 0.00)  색 주황  체력 20
+> ```
+>
+> **위치 동기화가 살아 있는지** — 상대 캐릭터를 억지로 옮겨봤다
+>
+> ```
+> [전]        내 것 (-0.75, 0.00)   상대 것 (0.40, 0.00)
+> [강제 이동]  상대 것 → (99, 99)
+> [3초 뒤]     내 것 (-0.65, 0.00)   상대 것 (0.40, 0.00)   ← 돌아왔다
+> ```
+>
+> 클라이언트가 자기 위치를 **계속 보내고 있다**는 증거다. 안 보내면 돌아올 수 없다.
+> 내 것은 `MoveInput` 을 코드로 넣어 `-0.75 → -0.65` 로 이동하는 것도 확인했다.
+>
+> **NetworkVariable** — 호스트가 상대 체력을 깎았다
+>
+> ```
+> 상대 체력 → 13
+> [호스트] 소유자 1 체력 20 → 13
+> ```
+>
+> **로그 전체**
+>
+> ```
+> 태그 없음 — 호스트로 자동 시작
+> [호스트] 플레이어 등장 — 소유자 0  내 것인가 = True
+> [호스트] 플레이어 등장 — 소유자 1  내 것인가 = False
+> [호스트] 소유자 1 체력 20 → 13
+> ```
+>
+> 🔴 **싱글 회귀 통과**: Title → [시작] → `씬=Game`, 12초에 처치 4 · Lv.1 · 체력 20/20,
+> 풀 재사용 16, `NetworkManager.Singleton = False`.
+>
+> ⚠️ **클라이언트 쪽 화면 상태는 미실측.** 가상 플레이어 프로세스 안의 값을 읽을 수단이 없다.
+> 호스트가 받은 데이터로 간접 확인했다.
+> ⚠️ **키보드 입력(WASD)은 미실측.** 레거시 Input Manager 라 시뮬레이션이 안 된다.
+> `MoveInput` 을 코드로 넣어 이동 경로만 검증했다.
+> ⚠️ **끊김·지연의 체감은 미실측.** 로컬이라 RTT 가 0에 가깝다. 113회차의 Network Simulator 설명은
+> 문서 기반이며 실제로 Delay 를 걸어 관찰하지는 않았다.
+
+### ★ 겪은 것 — 네임스페이스 대소문자
+
+MPPM 태그를 읽으려고 `using Unity.Multiplayer.Playmode;` 라고 썼더니 컴파일이 깨졌다.
+
+```
+CS0234: The type or namespace name 'Playmode' does not exist in the namespace 'Unity.Multiplayer'
+```
+
+타입을 찾아보니 **`Unity.Multiplayer.PlayMode.CurrentPlayer`** 였다 — `PlayMode` 의 M 이 대문자다.
+어셈블리는 `UnityEngine.MultiplayerModule` (런타임 모듈)이고, 클래스는 `public` 이다.
+
+그리고 `ReadOnlyTags()` 로 쓰면 이런 경고가 난다.
+
+```
+CS0618: 'CurrentPlayer.ReadOnlyTags()' is obsolete:
+        Use CurrentPlayer.Tags which has better performance properties.
+```
+
+그래서 `foreach (string tag in CurrentPlayer.Tags)` 로 바꿨다. 111회차 강의안의 사고표에 넣었다.
+
+### ★ 설계 판단 — `IsOwner` 를 이동 쪽에도 넣었다
+
+114회차의 핵심은 "입력 쪽 한 줄" 이지만, `NetworkPlayerMove` 에도 같은 검사를 넣었다.
+
+`Rigidbody2D` 가 관성으로 밀기 때문이다. 입력만 막으면 마지막 속도가 남아
+**받은 위치와 물리가 싸우고**, 상대 캐릭터가 부들부들 떤다.
+
+강의안에는 "입력 쪽이 본질, 이동 쪽은 물리 때문" 이라고 이유를 나눠 적었다.
+한 줄로 끝난다는 메시지를 흐리지 않으면서 실제로 필요한 코드는 빠뜨리지 않기 위해서다.
