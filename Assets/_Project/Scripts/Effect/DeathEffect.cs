@@ -23,7 +23,8 @@ public class DeathEffect : MonoBehaviour
     private Vector2[] dirs;
     private float elapsed;
 
-    private void Start()
+    // 102회차 · 조각을 만드는 건 처음 한 번만(Awake), 위치를 되돌리는 건 매번(OnEnable).
+    private void Awake()
     {
         shards = new SpriteRenderer[count];
         dirs = new Vector2[count];
@@ -47,6 +48,19 @@ public class DeathEffect : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        elapsed = 0f;   // 이걸 안 하면 두 번째부터 꺼내자마자 사라진다
+
+        if (shards == null) return;
+
+        for (int i = 0; i < shards.Length; i++)
+        {
+            shards[i].transform.localPosition = Vector3.zero;
+            shards[i].color = color;
+        }
+    }
+
     private void Update()
     {
         elapsed += Time.deltaTime;
@@ -55,7 +69,7 @@ public class DeathEffect : MonoBehaviour
 
         if (k >= 1f)
         {
-            Destroy(gameObject);
+            PoolManager.Despawn(gameObject);
             return;
         }
 

@@ -7,6 +7,8 @@ using UnityEngine;
 //    여기저기서 Instantiate 하면 나중에 누가 만들었는지 못 찾는다.
 //
 // 090회차 · 정해진 시각에 보스를 소환한다. 보스도 몬스터라 여기서 만든다.
+// 102·103회차 · Instantiate 대신 서랍(PoolManager)에서 꺼낸다.
+//   그리고 살아 있는 몬스터 수에 상한을 건다 — 프레임을 실제로 살리는 건 이쪽이다.
 public class WaveManager : MonoBehaviour
 {
     [SerializeField] private GameObject[] enemyPrefabs;   // 0 돌진 · 1 러너 · 2 탱커
@@ -15,6 +17,9 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private float minInterval = 0.4f;
     [SerializeField] private float intervalStep = 0.3f;
     [SerializeField] private float waveDuration = 15f;
+
+    [Header("개수 상한 (103회차)")]
+    [SerializeField] private int maxAlive = 250;
 
     [Header("보스 (090회차)")]
     [SerializeField] private GameObject[] bossPrefabs;
@@ -78,10 +83,15 @@ public class WaveManager : MonoBehaviour
     {
         if (enemyPrefabs.Length == 0 || spawnPoints.Length == 0) return;
 
+        // 🔑 103회차 · 이미 꽉 찼으면 안 만든다.
+        //    화면에 300마리가 있으나 250마리가 있으나 플레이어는 차이를 모른다.
+        //    프레임은 크게 차이 난다.
+        if (Enemy.AliveCount >= maxAlive) return;
+
         GameObject prefab = enemyPrefabs[Random.Range(0, KindCount())];
         Transform point = spawnPoints[Random.Range(0, spawnPoints.Length)];
 
-        Instantiate(prefab, point.position, Quaternion.identity);
+        PoolManager.Spawn(prefab, point.position, Quaternion.identity);
     }
 
     public void SpawnBoss(int index)
@@ -91,7 +101,7 @@ public class WaveManager : MonoBehaviour
 
         Transform point = spawnPoints[Random.Range(0, spawnPoints.Length)];
 
-        Instantiate(bossPrefabs[index], point.position, Quaternion.identity);
+        PoolManager.Spawn(bossPrefabs[index], point.position, Quaternion.identity);
     }
 
     [ContextMenu("한 마리 소환")]

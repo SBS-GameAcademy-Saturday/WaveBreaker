@@ -14,40 +14,40 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/Result.unity
     guid: 1466e17659ec97c47bfdd0e7ce8355af
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Project/Scenes/Practice/056_Score_Done.unity
     guid: 449bbccf40339d14397194cabb46c68d
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Project/Scenes/Practice/057_GameOver_Start.unity
     guid: f26d120b075665f4cab566fada3feb1c
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Project/Scenes/Practice/057_GameOver_Done.unity
     guid: fb060d852373c704599648740150769a
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Project/Scenes/Practice/060_Breakout_Start.unity
     guid: dc3dfd3709c3f004ba573bd646c68324
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Project/Scenes/Practice/060_Breakout_Done.unity
     guid: b63111c5af2f68d4b9a022d66ac3271f
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Project/Scenes/Practice/061_Lives_Done.unity
     guid: 3ccc8fc7a8971314cb50a57212d0ec06
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Project/Scenes/Practice/062_Polish_Start.unity
     guid: a617c4d8e88ee3544871c327b9246a24
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Project/Scenes/Practice/062_Polish_Done.unity
     guid: d0357c5dffdc5cd449c7bb52026ca67e
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Project/Scenes/Practice/064_AutoFire_Done.unity
     guid: b116c2c0dd5e5a14497febdb52445ace
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Project/Scenes/Practice/065_Survival_Start.unity
     guid: a6ceb399d8a4ef24f847c3d45e276789
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Project/Scenes/Practice/065_Survival_Done.unity
     guid: 616f1c1e9b96b3c4cbe2a689e1107ec9
   m_configObjects:

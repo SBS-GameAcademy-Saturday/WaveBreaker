@@ -6,6 +6,8 @@ using UnityEngine;
 //
 // 086회차 · 피해·관통도 업그레이드된다.
 // 088회차 · 시작 수치를 WeaponData(SO)에서 읽는다.
+// 103회차 · 총알을 서랍에서 꺼낸다. 방향은 꺼낼 때 같이 준다 —
+//   OnEnable 이 transform.up 을 보고 속도를 정하므로 그 전에 회전이 정해져 있어야 한다.
 public class AutoGun : MonoBehaviour
 {
     [SerializeField] private WeaponData data;
@@ -47,10 +49,11 @@ public class AutoGun : MonoBehaviour
 
             Vector2 dir = ((Vector2)CurrentTarget.position - (Vector2)transform.position).normalized;
 
-            GameObject shot = Instantiate(projectilePrefab, transform.position, Quaternion.identity);
-            shot.transform.up = dir;   // 방향 벡터를 넣으면 유니티가 회전을 만들어 준다 (064)
+            Quaternion rot = Quaternion.FromToRotation(Vector3.up, dir);   // 064의 transform.up 과 같은 뜻
 
-            if (shot.TryGetComponent(out Projectile p))
+            GameObject shot = PoolManager.Spawn(projectilePrefab, transform.position, rot);
+
+            if (shot != null && shot.TryGetComponent(out Projectile p))
             {
                 p.Setup(damage, pierce);
             }

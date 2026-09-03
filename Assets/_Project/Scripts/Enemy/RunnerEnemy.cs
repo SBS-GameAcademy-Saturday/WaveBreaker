@@ -7,9 +7,9 @@ public class RunnerEnemy : Enemy
     private Vector2 chargeDir;
     private bool aimed;
 
-    protected override void Start()
+    protected override void OnEnable()
     {
-        base.Start();   // 이걸 빼면 체력이 0 인 채로 시작한다.
+        base.OnEnable();   // 이걸 빼면 체력이 0 인 채로 시작한다.
         Debug.Log($"{name} : 러너 등장 (체력 {maxHealth}, 속도 {moveSpeed})");
     }
 

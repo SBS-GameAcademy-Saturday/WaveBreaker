@@ -8,7 +8,9 @@ using UnityEngine;
 // 072회차 · TakeDamage 를 virtual 로 바꿨다. TankEnemy 가 받는 피해를 줄이기 위해서다.
 // 081회차 · 죽으면 경험치 젬을 떨군다.
 // 087·088회차 · 수치를 EnemyData(SO)에서 읽는다. 코드를 안 고치고 밸런싱할 수 있다.
-// 099·100회차 · 맞으면 하얗게 번쩍이고, 죽으면 파티클과 소리가 난다.
+// 099·100회차 · 맞으면 하얗게 번쩍이고, 죽으면 조각과 소리가 난다.
+// 102회차 · 풀링. Destroy 대신 서랍에 반납한다.
+//   Start 는 처음 한 번만 돈다. 재활용될 때마다 다시 채워야 하는 건 OnEnable 로 옮겼다.
 public abstract class Enemy : MonoBehaviour, IDamageable
 {
     [SerializeField] protected EnemyData data;
@@ -51,9 +53,18 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     }
 
     // private 으로 두면 자식이 override 할 수 없다.
-    protected virtual void Start()
+    // 살아 있는 몬스터 수. 웨이브 매니저가 상한을 걸 때 쓴다 (103회차).
+    public static int AliveCount { get; private set; }
+
+    public static void ResetAliveCount() => AliveCount = 0;
+
+    // 🔑 102회차 · Start 가 아니라 OnEnable 이다.
+    //    서랍에서 꺼낼 때(SetActive(true)) 여기가 다시 돈다.
+    protected virtual void OnEnable()
     {
-        currentHealth = maxHealth;
+        AliveCount++;
+
+        currentHealth = maxHealth;   // 이걸 안 하면 지난 판의 체력 0 을 그대로 갖고 나온다
 
         GameObject found = GameObject.FindWithTag("Player");
 
@@ -61,6 +72,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         {
             player = found.transform;
         }
+    }
+
+    protected virtual void OnDisable()
+    {
+        AliveCount--;
     }
 
     protected virtual void FixedUpdate()
@@ -124,7 +140,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     {
         Debug.Log($"{name} 사망");
 
-        if (deathEffect != null) Instantiate(deathEffect, transform.position, Quaternion.identity);
+        if (deathEffect != null) PoolManager.Spawn(deathEffect, transform.position, Quaternion.identity);
 
         if (AudioManager.Instance != null) AudioManager.Instance.Play(dieSfx, 0.6f);
 
@@ -136,10 +152,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         // 081회차 · 죽은 자리에 경험치 젬을 떨군다.
         if (expGemPrefab != null)
         {
-            Instantiate(expGemPrefab, transform.position, Quaternion.identity);
+            PoolManager.Spawn(expGemPrefab, transform.position, Quaternion.identity);
         }
 
-        Destroy(gameObject);
+        // 102회차 · 버리지 않고 서랍에 반납한다.
+        PoolManager.Despawn(gameObject);
     }
 
     public virtual void Attack(IDamageable target)

@@ -54,6 +54,9 @@ public class GameManager : MonoBehaviour
 
         // 멈춘 채 씬을 다시 열면 화면이 얼어 있다 (057).
         Time.timeScale = 1f;
+
+        // 103회차 · static 은 씬을 다시 열어도 안 사라진다 (097). 여기서 0 으로 되돌린다.
+        Enemy.ResetAliveCount();
     }
 
     public void ChangeState(GameState next)

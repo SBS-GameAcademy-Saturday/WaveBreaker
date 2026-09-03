@@ -7,9 +7,9 @@ public class BossEnemy : Enemy
     [SerializeField] private int contactDamage = 8;
     [SerializeField] private bool isFinal;
 
-    protected override void Start()
+    protected override void OnEnable()
     {
-        base.Start();
+        base.OnEnable();
 
         string title = data != null ? data.title : name;
         Debug.Log($"보스 등장 — {title} (체력 {maxHealth})");

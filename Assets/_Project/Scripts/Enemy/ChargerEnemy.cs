@@ -7,9 +7,9 @@ public class ChargerEnemy : Enemy
 {
     [SerializeField] private int chargeDamage = 3;
 
-    protected override void Start()
+    protected override void OnEnable()
     {
-        base.Start();   // 이걸 빼면 체력이 0 인 채로 시작한다.
+        base.OnEnable();   // 이걸 빼면 체력이 0 인 채로 시작한다.
         Debug.Log($"{name} : 돌진형 등장 (체력 {maxHealth})");
     }
 
