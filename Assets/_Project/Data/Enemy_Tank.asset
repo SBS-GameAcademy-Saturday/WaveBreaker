@@ -16,5 +16,5 @@ MonoBehaviour:
   maxHealth: 30
   damage: 2
   moveSpeed: 1.1
-  color: {r: 0.62, g: 0.42, b: 1, a: 1}
+  color: {r: 1, g: 1, b: 1, a: 1}
   scale: 1.5

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8854086140800354972}
   - component: {fileID: 7787048680222093645}
   - component: {fileID: 1987827394837532223}
+  - component: {fileID: 3294618481864450945}
   m_Layer: 10
   m_Name: Enemy_Boss1
   m_TagString: Enemy
@@ -177,3 +178,38 @@ MonoBehaviour:
   dieSfx: {fileID: 8300000, guid: 7a95994d0b5a86640a55ae84e49106f4, type: 3}
   contactDamage: 8
   isFinal: 0
+--- !u!114 &3294618481864450945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4648608048634230165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 156d758c81e3f514e95c74576e8d23d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteAnimator
+  idle:
+  - {fileID: -4306913896306734227, guid: 21d92fd6cc2909c4581ce901cd3814e7, type: 3}
+  - {fileID: 4628582258134858654, guid: 21d92fd6cc2909c4581ce901cd3814e7, type: 3}
+  - {fileID: 5276430294522903863, guid: 21d92fd6cc2909c4581ce901cd3814e7, type: 3}
+  - {fileID: 2710816392025030911, guid: 21d92fd6cc2909c4581ce901cd3814e7, type: 3}
+  - {fileID: 4528701456479885650, guid: 21d92fd6cc2909c4581ce901cd3814e7, type: 3}
+  - {fileID: 2076914751268816258, guid: 21d92fd6cc2909c4581ce901cd3814e7, type: 3}
+  walk:
+  - {fileID: 6818507045800466582, guid: f06fac3ce525770488560e023cce79dd, type: 3}
+  - {fileID: 3480575733061048457, guid: f06fac3ce525770488560e023cce79dd, type: 3}
+  - {fileID: -6027269738180982589, guid: f06fac3ce525770488560e023cce79dd, type: 3}
+  - {fileID: 8763437769221305443, guid: f06fac3ce525770488560e023cce79dd, type: 3}
+  - {fileID: 677539748754605354, guid: f06fac3ce525770488560e023cce79dd, type: 3}
+  - {fileID: 6870552695595998335, guid: f06fac3ce525770488560e023cce79dd, type: 3}
+  - {fileID: -1747116894496454773, guid: f06fac3ce525770488560e023cce79dd, type: 3}
+  - {fileID: -6733473292922445320, guid: f06fac3ce525770488560e023cce79dd, type: 3}
+  hurt:
+  - {fileID: -2090372449351098683, guid: 51a846375d792174da97767700b0ec15, type: 3}
+  - {fileID: -2421920143705606623, guid: 51a846375d792174da97767700b0ec15, type: 3}
+  - {fileID: 3367183024623905853, guid: 51a846375d792174da97767700b0ec15, type: 3}
+  - {fileID: -3191467905550549227, guid: 51a846375d792174da97767700b0ec15, type: 3}
+  fps: 8
+  moveThreshold: 0.05

@@ -2682,6 +2682,7 @@ GameObject:
   - component: {fileID: 1378747211}
   - component: {fileID: 1378747218}
   - component: {fileID: 1378747219}
+  - component: {fileID: 1378747220}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2905,6 +2906,41 @@ MonoBehaviour:
   baseExp: 5
   expStep: 3
   levelUpView: {fileID: 1713260396}
+--- !u!114 &1378747220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1378747210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 156d758c81e3f514e95c74576e8d23d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteAnimator
+  idle:
+  - {fileID: 8834950578873500010, guid: c4d25862a83cbf24e9d3b3a1b97e4af0, type: 3}
+  - {fileID: 3165372765999505979, guid: c4d25862a83cbf24e9d3b3a1b97e4af0, type: 3}
+  - {fileID: 2031922928574869399, guid: c4d25862a83cbf24e9d3b3a1b97e4af0, type: 3}
+  - {fileID: 3276553528875694346, guid: c4d25862a83cbf24e9d3b3a1b97e4af0, type: 3}
+  - {fileID: -714430936096461422, guid: c4d25862a83cbf24e9d3b3a1b97e4af0, type: 3}
+  - {fileID: 6981971919365253919, guid: c4d25862a83cbf24e9d3b3a1b97e4af0, type: 3}
+  walk:
+  - {fileID: 1923674322845262524, guid: 0803d53e158776f469c3d49a7e6295c2, type: 3}
+  - {fileID: 9027769620019892839, guid: 0803d53e158776f469c3d49a7e6295c2, type: 3}
+  - {fileID: -8532326630030913824, guid: 0803d53e158776f469c3d49a7e6295c2, type: 3}
+  - {fileID: 5244654753237728304, guid: 0803d53e158776f469c3d49a7e6295c2, type: 3}
+  - {fileID: -1010285365810084751, guid: 0803d53e158776f469c3d49a7e6295c2, type: 3}
+  - {fileID: 8470712519631610347, guid: 0803d53e158776f469c3d49a7e6295c2, type: 3}
+  - {fileID: 2321923552844875832, guid: 0803d53e158776f469c3d49a7e6295c2, type: 3}
+  - {fileID: -2532777705734636987, guid: 0803d53e158776f469c3d49a7e6295c2, type: 3}
+  hurt:
+  - {fileID: 3383247062424192134, guid: fb369a09a31669544b7b46ea325dbdc9, type: 3}
+  - {fileID: 7261825679108844823, guid: fb369a09a31669544b7b46ea325dbdc9, type: 3}
+  - {fileID: -1123005592420110832, guid: fb369a09a31669544b7b46ea325dbdc9, type: 3}
+  - {fileID: 7102399512770901450, guid: fb369a09a31669544b7b46ea325dbdc9, type: 3}
+  fps: 10
+  moveThreshold: 0.05
 --- !u!1 &1395269007
 GameObject:
   m_ObjectHideFlags: 0

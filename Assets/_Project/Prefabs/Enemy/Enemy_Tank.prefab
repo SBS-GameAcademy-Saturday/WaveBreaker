@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3854906409889813315}
   - component: {fileID: 1495361551442332751}
   - component: {fileID: 5353061371807627061}
+  - component: {fileID: 7157032820090688489}
   m_Layer: 10
   m_Name: Enemy_Tank
   m_TagString: Enemy
@@ -176,3 +177,38 @@ MonoBehaviour:
   hitSfx: {fileID: 8300000, guid: 4c2adab059de2de4995ce5d051cb8048, type: 3}
   dieSfx: {fileID: 8300000, guid: 7a95994d0b5a86640a55ae84e49106f4, type: 3}
   damageReduction: 0.5
+--- !u!114 &7157032820090688489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7425071141274728355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 156d758c81e3f514e95c74576e8d23d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SpriteAnimator
+  idle:
+  - {fileID: -2257605604154282516, guid: b25fa5f3d7a854046b6f07536fc69c2d, type: 3}
+  - {fileID: -7174113563196573886, guid: b25fa5f3d7a854046b6f07536fc69c2d, type: 3}
+  - {fileID: 6083131136094500501, guid: b25fa5f3d7a854046b6f07536fc69c2d, type: 3}
+  - {fileID: 3022043373950187307, guid: b25fa5f3d7a854046b6f07536fc69c2d, type: 3}
+  - {fileID: 8494911643637778408, guid: b25fa5f3d7a854046b6f07536fc69c2d, type: 3}
+  - {fileID: 7575142762254057108, guid: b25fa5f3d7a854046b6f07536fc69c2d, type: 3}
+  walk:
+  - {fileID: -872737835942410802, guid: 1310f39d3a8442740b37b92e7db5035e, type: 3}
+  - {fileID: 8632717868147210833, guid: 1310f39d3a8442740b37b92e7db5035e, type: 3}
+  - {fileID: -71076384153745920, guid: 1310f39d3a8442740b37b92e7db5035e, type: 3}
+  - {fileID: -1099626118576192375, guid: 1310f39d3a8442740b37b92e7db5035e, type: 3}
+  - {fileID: -2142121854189210963, guid: 1310f39d3a8442740b37b92e7db5035e, type: 3}
+  - {fileID: 3544056452317635434, guid: 1310f39d3a8442740b37b92e7db5035e, type: 3}
+  - {fileID: -8076822972922448278, guid: 1310f39d3a8442740b37b92e7db5035e, type: 3}
+  - {fileID: 1843977576330498316, guid: 1310f39d3a8442740b37b92e7db5035e, type: 3}
+  hurt:
+  - {fileID: -2182870444036533333, guid: 1325fc38216cead46af5a7d0ded7e756, type: 3}
+  - {fileID: -1285687089710984539, guid: 1325fc38216cead46af5a7d0ded7e756, type: 3}
+  - {fileID: -7428596026729828391, guid: 1325fc38216cead46af5a7d0ded7e756, type: 3}
+  - {fileID: 2818803440080794168, guid: 1325fc38216cead46af5a7d0ded7e756, type: 3}
+  fps: 7
+  moveThreshold: 0.05

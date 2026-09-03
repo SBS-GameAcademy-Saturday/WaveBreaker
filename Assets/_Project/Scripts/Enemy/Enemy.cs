@@ -28,12 +28,14 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     protected int currentHealth;
     protected Rigidbody2D rb;
     protected SpriteRenderer sprite;
+    protected SpriteAnimator anim;
     protected Transform player;
 
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
+        anim = GetComponent<SpriteAnimator>();
 
         ApplyData();
     }
@@ -106,6 +108,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         Debug.Log($"{name} : -{amount}  (남은 체력 {currentHealth})");
 
         Flash();
+
+        // 131회차 · 피격 애니메이션. 없으면 아무 일도 안 일어난다.
+        if (anim != null) anim.PlayHurt();
 
         if (AudioManager.Instance != null) AudioManager.Instance.Play(hitSfx, 0.5f);
 
