@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4876969175458948116}
   - component: {fileID: 7447272380938268974}
-  - component: {fileID: 6607966594711739389}
+  - component: {fileID: 3604794378922128821}
+  - component: {fileID: 8958385860257467654}
   m_Layer: 0
   m_Name: Fx_Pickup
   m_TagString: Untagged
@@ -93,7 +94,29 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
---- !u!114 &6607966594711739389
+--- !u!95 &3604794378922128821
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2544217409328368154}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ad5e7f3342276db4da716daca7bd90ee, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8958385860257467654
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -102,18 +125,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 2544217409328368154}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d394aad4734d1e44afd4f553e9bb890, type: 3}
+  m_Script: {fileID: 11500000, guid: 33df4ba508df4c244a01e0cb9a86296f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FxOneShot
-  frames:
-  - {fileID: -4752660517763765761, guid: 9ee94f665a2b6104991b3aac5011df57, type: 3}
-  - {fileID: -8659108686792057656, guid: 9ee94f665a2b6104991b3aac5011df57, type: 3}
-  - {fileID: -625814737244850234, guid: 9ee94f665a2b6104991b3aac5011df57, type: 3}
-  - {fileID: -4223750018690426930, guid: 9ee94f665a2b6104991b3aac5011df57, type: 3}
-  - {fileID: 8823098505924080823, guid: 9ee94f665a2b6104991b3aac5011df57, type: 3}
-  - {fileID: 2224008768127544767, guid: 9ee94f665a2b6104991b3aac5011df57, type: 3}
-  - {fileID: 3010468466178193031, guid: 9ee94f665a2b6104991b3aac5011df57, type: 3}
-  - {fileID: -5171021874440431710, guid: 9ee94f665a2b6104991b3aac5011df57, type: 3}
-  - {fileID: 9205934757011902778, guid: 9ee94f665a2b6104991b3aac5011df57, type: 3}
-  fps: 26
-  randomFlip: 1
+  m_EditorClassIdentifier: Assembly-CSharp::FxAutoDespawn

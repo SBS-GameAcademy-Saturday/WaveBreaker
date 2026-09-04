@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1252644572801966426}
   - component: {fileID: 5609762294316758964}
   - component: {fileID: 4038840271024821753}
-  - component: {fileID: 6989215661315344002}
+  - component: {fileID: 2289503774163642872}
   m_Layer: 0
   m_Name: Blade
   m_TagString: Untagged
@@ -155,34 +155,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Blade
   damage: 3
   hitInterval: 0.3
---- !u!114 &6989215661315344002
-MonoBehaviour:
+--- !u!95 &2289503774163642872
+Animator:
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2818916249809842428}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 156d758c81e3f514e95c74576e8d23d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SpriteAnimator
-  idle:
-  - {fileID: -4533827032000092874, guid: ff321a233f4999647986c7d798d2c235, type: 3}
-  - {fileID: 3755415863066820689, guid: ff321a233f4999647986c7d798d2c235, type: 3}
-  - {fileID: -5177195473261586780, guid: ff321a233f4999647986c7d798d2c235, type: 3}
-  - {fileID: -2936535435747223190, guid: ff321a233f4999647986c7d798d2c235, type: 3}
-  - {fileID: -7147556376943056768, guid: ff321a233f4999647986c7d798d2c235, type: 3}
-  - {fileID: -6463482412474556128, guid: ff321a233f4999647986c7d798d2c235, type: 3}
-  walk:
-  - {fileID: -4533827032000092874, guid: ff321a233f4999647986c7d798d2c235, type: 3}
-  - {fileID: 3755415863066820689, guid: ff321a233f4999647986c7d798d2c235, type: 3}
-  - {fileID: -5177195473261586780, guid: ff321a233f4999647986c7d798d2c235, type: 3}
-  - {fileID: -2936535435747223190, guid: ff321a233f4999647986c7d798d2c235, type: 3}
-  - {fileID: -7147556376943056768, guid: ff321a233f4999647986c7d798d2c235, type: 3}
-  - {fileID: -6463482412474556128, guid: ff321a233f4999647986c7d798d2c235, type: 3}
-  hurt: []
-  attack: []
-  death: []
-  fps: 10
-  moveThreshold: 0.05
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2e6bc4641af044846ba3ef86ed522ead, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

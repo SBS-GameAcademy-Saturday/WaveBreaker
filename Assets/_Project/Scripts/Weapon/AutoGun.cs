@@ -53,8 +53,8 @@ public class AutoGun : MonoBehaviour
 
             // 131회차 · 쏘는 순간 플레이어가 공격 자세를 취한다.
             //   총은 Player 의 자식이라 부모에서 찾는다.
-            var anim = GetComponentInParent<SpriteAnimator>();
-            if (anim != null) anim.PlayAttack();
+            var anim = GetComponentInParent<Animator>();
+            if (anim != null) anim.SetTrigger("Attack");
 
             GameObject shot = PoolManager.Spawn(projectilePrefab, transform.position, rot);
 

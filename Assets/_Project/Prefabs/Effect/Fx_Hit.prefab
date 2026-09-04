@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1847965827910953534}
   - component: {fileID: 6759573264949049961}
-  - component: {fileID: 2975830812773988822}
+  - component: {fileID: 8726464669977326870}
+  - component: {fileID: 7480969191172066111}
   m_Layer: 0
   m_Name: Fx_Hit
   m_TagString: Untagged
@@ -93,7 +94,29 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
---- !u!114 &2975830812773988822
+--- !u!95 &8726464669977326870
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 220360456516487149}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2c8ba3d50c0cad94cbfc4c3ff5162a2f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &7480969191172066111
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -102,16 +125,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 220360456516487149}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d394aad4734d1e44afd4f553e9bb890, type: 3}
+  m_Script: {fileID: 11500000, guid: 33df4ba508df4c244a01e0cb9a86296f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FxOneShot
-  frames:
-  - {fileID: -1678457999091687922, guid: f4ca1f4be13f4424597a943ccff5d75b, type: 3}
-  - {fileID: 3582545784070178357, guid: f4ca1f4be13f4424597a943ccff5d75b, type: 3}
-  - {fileID: 1438928128243509734, guid: f4ca1f4be13f4424597a943ccff5d75b, type: 3}
-  - {fileID: 7095635571173153139, guid: f4ca1f4be13f4424597a943ccff5d75b, type: 3}
-  - {fileID: -8388979752532877254, guid: f4ca1f4be13f4424597a943ccff5d75b, type: 3}
-  - {fileID: 1368734722037761061, guid: f4ca1f4be13f4424597a943ccff5d75b, type: 3}
-  - {fileID: -9104386990269875105, guid: f4ca1f4be13f4424597a943ccff5d75b, type: 3}
-  fps: 24
-  randomFlip: 1
+  m_EditorClassIdentifier: Assembly-CSharp::FxAutoDespawn

@@ -53,8 +53,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         if (AudioManager.Instance != null) AudioManager.Instance.Play(hurtSfx);
 
         // 131회차 · 피격 애니메이션. 없으면 아무 일도 안 일어난다.
-        var anim = GetComponent<SpriteAnimator>();
-        if (anim != null) anim.PlayHurt();
+        var anim = GetComponent<Animator>();
+        if (anim != null) anim.SetTrigger("Hurt");
 
         if (currentHealth == 0)
         {

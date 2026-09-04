@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8571475491020983781}
   - component: {fileID: 6420770291145589152}
   - component: {fileID: 5619363204168432560}
-  - component: {fileID: 4551942500376275947}
+  - component: {fileID: 960009040919033142}
   m_Layer: 0
   m_Name: ExpGem
   m_TagString: Untagged
@@ -175,30 +175,25 @@ MonoBehaviour:
   magnetRange: 2.5
   moveSpeed: 8
   pickupEffect: {fileID: 2544217409328368154, guid: a84f92c273f595448bc75130adeaf583, type: 3}
---- !u!114 &4551942500376275947
-MonoBehaviour:
+--- !u!95 &960009040919033142
+Animator:
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1375084238115605958}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 156d758c81e3f514e95c74576e8d23d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SpriteAnimator
-  idle:
-  - {fileID: 9006124073244438098, guid: da538db9af1d5264eb673ad32aab8d1b, type: 3}
-  - {fileID: 8373553572005684397, guid: da538db9af1d5264eb673ad32aab8d1b, type: 3}
-  - {fileID: 3571624394861716419, guid: da538db9af1d5264eb673ad32aab8d1b, type: 3}
-  - {fileID: 8777293817569925829, guid: da538db9af1d5264eb673ad32aab8d1b, type: 3}
-  walk:
-  - {fileID: 9006124073244438098, guid: da538db9af1d5264eb673ad32aab8d1b, type: 3}
-  - {fileID: 8373553572005684397, guid: da538db9af1d5264eb673ad32aab8d1b, type: 3}
-  - {fileID: 3571624394861716419, guid: da538db9af1d5264eb673ad32aab8d1b, type: 3}
-  - {fileID: 8777293817569925829, guid: da538db9af1d5264eb673ad32aab8d1b, type: 3}
-  hurt: []
-  attack: []
-  death: []
-  fps: 8
-  moveThreshold: 0.05
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 325f15815fbcf55409aafe4ea81b7987, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

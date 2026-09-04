@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1818088713902498704}
   - component: {fileID: 3384110645611319892}
-  - component: {fileID: 1156454371216944685}
+  - component: {fileID: 3988376056932120683}
+  - component: {fileID: 3244813718723128839}
   m_Layer: 0
   m_Name: Fx_Death
   m_TagString: Untagged
@@ -93,7 +94,29 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
---- !u!114 &1156454371216944685
+--- !u!95 &3988376056932120683
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3449588454126282343}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b1b465de36c543a4bb72521327536369, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3244813718723128839
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -102,21 +125,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 3449588454126282343}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d394aad4734d1e44afd4f553e9bb890, type: 3}
+  m_Script: {fileID: 11500000, guid: 33df4ba508df4c244a01e0cb9a86296f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FxOneShot
-  frames:
-  - {fileID: 8399437756619990665, guid: c7c39a4232f4b9e45a66c3a92c9ec50f, type: 3}
-  - {fileID: -3435177558378753763, guid: c7c39a4232f4b9e45a66c3a92c9ec50f, type: 3}
-  - {fileID: 701096816695255130, guid: c7c39a4232f4b9e45a66c3a92c9ec50f, type: 3}
-  - {fileID: 2335539827632322046, guid: c7c39a4232f4b9e45a66c3a92c9ec50f, type: 3}
-  - {fileID: -7170099566168429327, guid: c7c39a4232f4b9e45a66c3a92c9ec50f, type: 3}
-  - {fileID: 102716709716426733, guid: c7c39a4232f4b9e45a66c3a92c9ec50f, type: 3}
-  - {fileID: -5820558258625127741, guid: c7c39a4232f4b9e45a66c3a92c9ec50f, type: 3}
-  - {fileID: 305367000563888286, guid: c7c39a4232f4b9e45a66c3a92c9ec50f, type: 3}
-  - {fileID: 6212762559026760342, guid: c7c39a4232f4b9e45a66c3a92c9ec50f, type: 3}
-  - {fileID: 4523085954606139568, guid: c7c39a4232f4b9e45a66c3a92c9ec50f, type: 3}
-  - {fileID: 4020988993703467040, guid: c7c39a4232f4b9e45a66c3a92c9ec50f, type: 3}
-  - {fileID: -9130934999333050742, guid: c7c39a4232f4b9e45a66c3a92c9ec50f, type: 3}
-  fps: 20
-  randomFlip: 1
+  m_EditorClassIdentifier: Assembly-CSharp::FxAutoDespawn

@@ -29,17 +29,20 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     protected int currentHealth;
     protected Rigidbody2D rb;
     protected SpriteRenderer sprite;
-    protected SpriteAnimator anim;
+    protected Animator anim;
 
     // 131회차 · 죽는 연출이 끝날 때까지 기다린다. 그동안은 안 움직이고 안 때린다.
     protected bool dying;
+
+    // 죽는 애니메이션 길이. Animator 클립에 맞춰 인스펙터에서 넣는다.
+    [SerializeField] protected float deathAnimTime = 0.5f;
     protected Transform player;
 
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
-        anim = GetComponent<SpriteAnimator>();
+        anim = GetComponent<Animator>();
 
         ApplyData();
     }
@@ -77,6 +80,9 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         var col = GetComponent<Collider2D>();
         if (col != null) col.enabled = true;
 
+        // 🔑 죽은 자세로 서랍에 들어갔으니 꺼낼 때 되감는다. 안 하면 시체가 걸어나온다.
+        if (anim != null) { anim.Rebind(); anim.Update(0f); }
+
         GameObject found = GameObject.FindWithTag("Player");
 
         if (found != null)
@@ -98,6 +104,11 @@ public abstract class Enemy : MonoBehaviour, IDamageable
         if (player == null) return;
 
         Move();
+
+        // 🔑 131회차 · Move() 안이 아니라 여기서 넘긴다.
+        //    RunnerEnemy 처럼 자식이 Move 를 override 하면 Move 안에 넣은 코드는 안 돈다.
+        //    실제로 그래서 러너가 Hurt 프레임에 멈춰 있었다.
+        if (anim != null) anim.SetFloat("Speed", rb.linearVelocity.magnitude);
     }
 
     // 072에서 자식마다 다르게 바꾼다.
@@ -112,7 +123,7 @@ public abstract class Enemy : MonoBehaviour, IDamageable
     // 131회차 · 때릴 때 공격 애니메이션. 자식이 Attack 을 부르면 여기가 같이 돈다.
     protected void PlayAttackAnim()
     {
-        if (anim != null && !dying) anim.PlayAttack();
+        if (anim != null && !dying) anim.SetTrigger("Attack");
     }
 
     public virtual void TakeDamage(int amount)
@@ -127,8 +138,8 @@ public abstract class Enemy : MonoBehaviour, IDamageable
 
         Flash();
 
-        // 131회차 · 피격 애니메이션. 없으면 아무 일도 안 일어난다.
-        if (anim != null) anim.PlayHurt();
+        // 131회차 · 피격 애니메이션. 트리거 하나면 Animator 가 알아서 끼어든다.
+        if (anim != null) anim.SetTrigger("Hurt");
 
         // 131회차 · 맞은 자리에 이펙트를 띄운다. 몸통 한가운데보다 살짝 위가 잘 보인다.
         if (hitEffect != null)
@@ -190,12 +201,12 @@ public abstract class Enemy : MonoBehaviour, IDamageable
             PoolManager.Spawn(expGemPrefab, transform.position, Quaternion.identity);
         }
 
-        // 131회차 · 죽는 애니메이션이 있으면 다 보여주고 반납한다.
-        //   ⚠️ 그동안 AliveCount 에는 계속 잡혀 있다. 0.4초라 상한(250)에 영향이 없다.
-        if (anim != null && anim.HasDeath)
+        // 131회차 · 죽는 애니메이션을 다 보여주고 반납한다.
+        //   ⚠️ 그동안 AliveCount 에는 계속 잡혀 있다. 0.5초 안쪽이라 상한(250)에 영향이 없다.
+        if (anim != null)
         {
-            StartCoroutine(DespawnAfter(anim.DeathLength));
-            anim.PlayDeath();
+            anim.SetTrigger("Die");
+            StartCoroutine(DespawnAfter(deathAnimTime));
             return;
         }
 

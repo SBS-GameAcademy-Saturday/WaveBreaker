@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7128580171207630198}
   - component: {fileID: 1094804273533002875}
-  - component: {fileID: 2453853405958667633}
+  - component: {fileID: 1299868845867664116}
+  - component: {fileID: 3768088881203992733}
   m_Layer: 0
   m_Name: Fx_LevelUp
   m_TagString: Untagged
@@ -93,7 +94,29 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
---- !u!114 &2453853405958667633
+--- !u!95 &1299868845867664116
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5344531102375030930}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 5752d5d5dd9d84549a5471022ee346c9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3768088881203992733
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -102,24 +125,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 5344531102375030930}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d394aad4734d1e44afd4f553e9bb890, type: 3}
+  m_Script: {fileID: 11500000, guid: 33df4ba508df4c244a01e0cb9a86296f, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FxOneShot
-  frames:
-  - {fileID: -146269426479957762, guid: 981ecd3ffa11be247ae3dabea10173fb, type: 3}
-  - {fileID: -5142364036184580173, guid: 981ecd3ffa11be247ae3dabea10173fb, type: 3}
-  - {fileID: 5499252283746198419, guid: 981ecd3ffa11be247ae3dabea10173fb, type: 3}
-  - {fileID: 1672830200690723190, guid: 981ecd3ffa11be247ae3dabea10173fb, type: 3}
-  - {fileID: 4770732642967945331, guid: 981ecd3ffa11be247ae3dabea10173fb, type: 3}
-  - {fileID: -7374846894122138154, guid: 981ecd3ffa11be247ae3dabea10173fb, type: 3}
-  - {fileID: -9142306252924575141, guid: 981ecd3ffa11be247ae3dabea10173fb, type: 3}
-  - {fileID: -2526378894047338485, guid: 981ecd3ffa11be247ae3dabea10173fb, type: 3}
-  - {fileID: 5121105307767606012, guid: 981ecd3ffa11be247ae3dabea10173fb, type: 3}
-  - {fileID: 6014098484194123465, guid: 981ecd3ffa11be247ae3dabea10173fb, type: 3}
-  - {fileID: -7479808526032064742, guid: 981ecd3ffa11be247ae3dabea10173fb, type: 3}
-  - {fileID: 7843588790025948103, guid: 981ecd3ffa11be247ae3dabea10173fb, type: 3}
-  - {fileID: 4668895587899250476, guid: 981ecd3ffa11be247ae3dabea10173fb, type: 3}
-  - {fileID: 2638868048007851692, guid: 981ecd3ffa11be247ae3dabea10173fb, type: 3}
-  - {fileID: -1016380350675673918, guid: 981ecd3ffa11be247ae3dabea10173fb, type: 3}
-  fps: 20
-  randomFlip: 1
+  m_EditorClassIdentifier: Assembly-CSharp::FxAutoDespawn
