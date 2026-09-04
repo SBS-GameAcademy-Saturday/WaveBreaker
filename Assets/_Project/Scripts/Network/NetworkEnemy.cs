@@ -17,7 +17,7 @@ public class NetworkEnemy : NetworkBehaviour
     [SerializeField] private int contactDamage = 2;
     [SerializeField] private GameObject gemPrefab;
     [SerializeField] private SpriteRenderer sprite;
-    [SerializeField] private Color bodyColor = new Color(0.9f, 0.35f, 0.35f);
+    [SerializeField] private Color bodyColor = Color.white;   // 🔑 진짜 그림에는 색을 안 씌운다. 씌우면 붉게 물든다
 
     private readonly NetworkVariable<int> health = new NetworkVariable<int>(
         6, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);

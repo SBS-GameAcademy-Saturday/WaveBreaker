@@ -11,10 +11,12 @@ public class NetworkPlayerTag : NetworkBehaviour
     // 접속 순서대로 색을 준다. 0번은 호스트다.
     private static readonly Color[] colors =
     {
-        new Color(0.30f, 0.60f, 1.00f),   // 파랑  — 0번 (호스트)
-        new Color(1.00f, 0.55f, 0.25f),   // 주황  — 1번
-        new Color(0.45f, 0.85f, 0.45f),   // 초록  — 2번
-        new Color(0.90f, 0.45f, 0.85f),   // 자홍  — 3번
+        // 🔑 진한 색을 씌우면 캐릭터 그림이 통째로 물들어 안 보인다.
+        //    흰색에 가깝게 옅혀서 "누가 누군지" 만 구분되게 한다.
+        new Color(0.72f, 0.85f, 1.00f),   // 파랑  — 0번 (호스트)
+        new Color(1.00f, 0.85f, 0.70f),   // 주황  — 1번
+        new Color(0.78f, 0.96f, 0.78f),   // 초록  — 2번
+        new Color(0.98f, 0.80f, 0.95f),   // 자홍  — 3번
     };
 
     // 🔑 Start 가 아니라 OnNetworkSpawn 이다.

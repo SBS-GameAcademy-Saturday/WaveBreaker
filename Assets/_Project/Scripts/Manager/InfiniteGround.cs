@@ -8,21 +8,22 @@ public class InfiniteGround : MonoBehaviour
     [SerializeField] private float tileSize = 20f;
     [SerializeField] private int gridCount = 3;
 
-    private Transform player;
-
-    void Awake()
-    {
-        player = GameObject.FindWithTag("Player").transform;
-    }
-
+    // 🔑 플레이어가 아니라 카메라를 따라간다.
+    //    싱글에서는 카메라가 플레이어를 따라가니 결과가 같고,
+    //    협동에서는 플레이어가 접속한 뒤에 생기기 때문에 Awake 에서 찾으면 없다.
+    //    (실제로 협동 씬에 이 맵을 깔자마자 NullReferenceException 이 났다.)
     void LateUpdate()
     {
+        Camera cam = Camera.main;
+        if (cam == null) return;
+
         float span = tileSize * gridCount;   // 60 — 맵 한 판의 폭
         float half = span / 2f;              // 30 — 이만큼 멀어지면 옮긴다
 
         foreach (Transform tile in transform)
         {
-            Vector3 diff = tile.position - player.position;
+            Vector3 diff = tile.position - cam.transform.position;
+            diff.z = 0f;                     // 카메라는 z 가 -10 이다. 높이는 안 본다
 
             if (diff.x > half) tile.position += Vector3.left * span;
             if (diff.x < -half) tile.position += Vector3.right * span;
