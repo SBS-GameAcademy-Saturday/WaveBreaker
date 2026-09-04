@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -32,7 +33,7 @@ public class NetworkAutoConnect : MonoBehaviour
         if (isClient)
         {
             Debug.Log("태그 Client — 클라이언트로 자동 접속");
-            NetworkManager.Singleton.StartClient();
+            StartCoroutine(ConnectAsClient());
         }
         else
         {
@@ -43,4 +44,38 @@ public class NetworkAutoConnect : MonoBehaviour
         if (buttonRoot != null) buttonRoot.SetActive(false);
 #endif
     }
+
+#if UNITY_EDITOR
+    // 🚨 가상 플레이어와 메인 에디터는 Play 를 동시에 시작한다.
+    //    클라이언트가 호스트보다 먼저 붙으려 하면 "아직 아무도 안 듣고 있다" 라서 그냥 실패하고,
+    //    Start 는 한 번뿐이라 영영 안 붙는다. 화면에는 "접속 안 됨" 만 남는다.
+    //    → 붙을 때까지 몇 번 다시 시도한다. 사람이 버튼을 누를 땐 순서가 보장되니 이건 에디터 문제다.
+    private IEnumerator ConnectAsClient()
+    {
+        var nm = NetworkManager.Singleton;
+
+        for (int attempt = 1; attempt <= 10; attempt++)
+        {
+            nm.StartClient();
+
+            float waited = 0f;
+            while (waited < 1.5f && !nm.IsConnectedClient)
+            {
+                waited += Time.deltaTime;
+                yield return null;
+            }
+
+            if (nm.IsConnectedClient)
+            {
+                Debug.Log($"클라이언트 접속 성공 — {attempt}번째 시도");
+                yield break;
+            }
+
+            nm.Shutdown();
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        Debug.LogWarning("클라이언트 접속 실패 — 호스트가 안 켜져 있는지 확인한다");
+    }
+#endif
 }
