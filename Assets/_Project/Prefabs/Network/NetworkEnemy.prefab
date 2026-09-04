@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 8941609506899488386}
   - component: {fileID: 885702658144989973}
   - component: {fileID: 6161329218401513590}
-  - component: {fileID: 3252424483680378980}
+  - component: {fileID: 3604335151478380379}
   m_Layer: 0
   m_Name: NetworkEnemy
   m_TagString: Untagged
@@ -264,6 +264,7 @@ MonoBehaviour:
   gemPrefab: {fileID: 5155503215721608190, guid: c9de04487fe70574693f17ca19fb920d, type: 3}
   sprite: {fileID: 1431843136648452571}
   bodyColor: {r: 1, g: 1, b: 1, a: 1}
+  deathAnimTime: 0.5
 --- !u!95 &6161329218401513590
 Animator:
   serializedVersion: 7
@@ -286,7 +287,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3252424483680378980
+--- !u!114 &3604335151478380379
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -295,6 +296,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 8936418631833742905}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8c1c40ae4a1e9d4294d787d037fae4e, type: 3}
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NetworkAnim
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkAnimator
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkAnimatorExpanded: 0
+  AuthorityMode: 0
+  m_Animator: {fileID: 6161329218401513590}
+  TransitionStateInfoList: []
+  AnimatorParameterEntries:
+    ParameterEntries:
+    - name: Speed
+      NameHash: -823668238
+      Synchronize: 1
+      ParameterType: 1
+    - name: Hurt
+      NameHash: 1740614436
+      Synchronize: 1
+      ParameterType: 9
+    - name: Attack
+      NameHash: 1080829965
+      Synchronize: 1
+      ParameterType: 9
+    - name: Die
+      NameHash: 20298039
+      Synchronize: 1
+      ParameterType: 9
+  AnimatorParametersExpanded: 0

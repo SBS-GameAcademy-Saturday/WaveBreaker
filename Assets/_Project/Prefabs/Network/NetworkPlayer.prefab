@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 5209927324523993404}
   - component: {fileID: 3214432877553813846}
   - component: {fileID: 176980350279368240}
-  - component: {fileID: 6629543492444756217}
+  - component: {fileID: 3990955616747776981}
   m_Layer: 0
   m_Name: NetworkPlayer
   m_TagString: Untagged
@@ -294,6 +294,7 @@ MonoBehaviour:
   moveSpeed: 5
   input: {fileID: 2233869300163289379}
   rb: {fileID: 3643760689014060271}
+  anim: {fileID: 176980350279368240}
 --- !u!114 &5181107416655341400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -329,6 +330,7 @@ MonoBehaviour:
   range: 3
   damage: 3
   interval: 0.6
+  netAnim: {fileID: 3990955616747776981}
 --- !u!114 &5209927324523993404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -393,7 +395,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6629543492444756217
+--- !u!114 &3990955616747776981
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -402,6 +404,30 @@ MonoBehaviour:
   m_GameObject: {fileID: 5725980634694826839}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8c1c40ae4a1e9d4294d787d037fae4e, type: 3}
+  m_Script: {fileID: 11500000, guid: e8d0727d5ae3244e3b569694d3912374, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NetworkAnim
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.Components.NetworkAnimator
+  ShowTopMostFoldoutHeaderGroup: 1
+  NetworkAnimatorExpanded: 0
+  AuthorityMode: 1
+  m_Animator: {fileID: 176980350279368240}
+  TransitionStateInfoList: []
+  AnimatorParameterEntries:
+    ParameterEntries:
+    - name: Speed
+      NameHash: -823668238
+      Synchronize: 1
+      ParameterType: 1
+    - name: Hurt
+      NameHash: 1740614436
+      Synchronize: 1
+      ParameterType: 9
+    - name: Attack
+      NameHash: 1080829965
+      Synchronize: 1
+      ParameterType: 9
+    - name: Die
+      NameHash: 20298039
+      Synchronize: 1
+      ParameterType: 9
+  AnimatorParametersExpanded: 0

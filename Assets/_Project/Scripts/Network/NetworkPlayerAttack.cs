@@ -1,4 +1,5 @@
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 
 // 116·119회차 · 클라이언트는 몬스터를 직접 못 때린다. 서버에 부탁한다.
@@ -14,6 +15,7 @@ public class NetworkPlayerAttack : NetworkBehaviour
     [SerializeField] private float range = 3f;
     [SerializeField] private int damage = 3;
     [SerializeField] private float interval = 0.6f;
+    [SerializeField] private NetworkAnimator netAnim;
 
     private float nextFire;
 
@@ -28,6 +30,11 @@ public class NetworkPlayerAttack : NetworkBehaviour
         if (target == null) return;
 
         nextFire = Time.time + interval;
+
+        // 🔑 트리거는 Animator 가 아니라 NetworkAnimator 에 넣는다.
+        //    Animator.SetTrigger 는 내 화면에서만 켜지고 상대에게 안 간다.
+        //    한 프레임만 켜졌다 꺼지는 값이라 NetworkAnimator 도 훔쳐볼 수가 없다.
+        if (netAnim != null) netAnim.SetTrigger("Attack");
 
         // 🔑 여기가 오늘의 핵심.
         //    내가 직접 target.TakeDamage(damage) 를 부르지 않는다.

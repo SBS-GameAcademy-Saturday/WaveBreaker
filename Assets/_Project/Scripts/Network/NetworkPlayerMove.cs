@@ -13,22 +13,26 @@ public class NetworkPlayerMove : NetworkBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private NetworkPlayerInput input;
     [SerializeField] private Rigidbody2D rb;
+    [SerializeField] private Animator anim;
 
     void FixedUpdate()
     {
         if (input == null || rb == null) return;
 
-        // 123회차 · 멈춰 있으면 아무도 안 움직인다.
-        if (NetworkTeam.IsPaused) { rb.linearVelocity = Vector2.zero; return; }
-
-        // 내 것이 아니면 움직이지 않는다. 상대 캐릭터는 NetworkTransform 이 옮겨 준다.
-        // 여기서 속도를 건드리면 받은 위치와 싸운다.
+        // 내 것이 아니면 아무것도 안 한다.
+        //   위치는 NetworkTransform 이, 애니메이션은 NetworkAnimator 가 받아서 맞춰 준다.
+        //   여기서 손대면 받은 값과 싸운다.
         if (!IsOwner)
         {
             rb.linearVelocity = Vector2.zero;
             return;
         }
 
-        rb.linearVelocity = input.MoveInput * moveSpeed;
+        // 123회차 · 멈춰 있으면 아무도 안 움직인다.
+        rb.linearVelocity = NetworkTeam.IsPaused ? Vector2.zero : input.MoveInput * moveSpeed;
+
+        // 🔑 067회차 PlayerController 와 **똑같은 한 줄**이다.
+        //    내 화면에서 내 애니메이터에 넣기만 하면, 상대 화면에는 NetworkAnimator 가 옮겨 준다.
+        if (anim != null) anim.SetFloat("Speed", rb.linearVelocity.magnitude);
     }
 }

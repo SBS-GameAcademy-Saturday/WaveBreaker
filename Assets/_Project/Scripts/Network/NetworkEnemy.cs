@@ -1,5 +1,6 @@
 using System.Collections;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 using UnityEngine;
 
 // 117·119회차 · 네트워크 몬스터.
@@ -25,6 +26,7 @@ public class NetworkEnemy : NetworkBehaviour
 
     private Rigidbody2D rb;
     private Animator anim;
+    private NetworkAnimator netAnim;
     private bool dying;
     private float nextHitTime;
 
@@ -32,6 +34,7 @@ public class NetworkEnemy : NetworkBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        netAnim = GetComponent<NetworkAnimator>();
         if (sprite == null) sprite = GetComponent<SpriteRenderer>();
     }
 
@@ -47,19 +50,15 @@ public class NetworkEnemy : NetworkBehaviour
         health.OnValueChanged -= OnHealthChanged;
     }
 
-    // 양쪽 화면에서 다 불린다. 맞은 표시도 쓰러지는 그림도 각자 자기 화면에서 한다 (099 회수).
+    // 양쪽 화면에서 다 불린다.
     //
-    // 🔑 131회차 · 애니메이션을 따로 보낼 필요가 없다.
-    //    체력은 이미 NetworkVariable 이라 모두에게 저절로 간다.
-    //    "체력이 0 이 됐다" 는 사실만 가면 쓰러지는 그림은 각자 자기 화면에서 재생하면 된다.
-    //    RPC 를 새로 만들면 보내는 게 두 개가 되고, 둘의 순서가 어긋나면 그때부터 버그다.
+    // 🔑 애니메이션은 여기서 안 건드린다. NetworkAnimator 가 서버 것을 그대로 옮겨 준다.
+    //    여기서 하는 건 "그림 말고 나머지" — 맞은 표시, 시체 정리다.
     private void OnHealthChanged(int before, int after)
     {
         if (after >= before) return;
 
-        if (after <= 0) { PlayDeath(); return; }
-
-        if (anim != null) anim.SetTrigger("Hurt");
+        if (after <= 0) { CleanUpCorpse(); return; }
 
         if (sprite == null) return;
 
@@ -69,8 +68,8 @@ public class NetworkEnemy : NetworkBehaviour
         StartCoroutine(nameof(FlashRoutine));
     }
 
-    // 서버에서도 클라이언트에서도 똑같이 돈다. 화면에 보이는 일만 한다.
-    private void PlayDeath()
+    // 서버에서도 클라이언트에서도 똑같이 돈다. 애니메이션 말고 뒷정리만 한다.
+    private void CleanUpCorpse()
     {
         if (dying) return;
         dying = true;
@@ -81,12 +80,11 @@ public class NetworkEnemy : NetworkBehaviour
 
         if (rb != null) rb.linearVelocity = Vector2.zero;
 
-        // 🔑 시체에 부딪혀 맞으면 안 된다. 양쪽에서 다 끈다.
+        // 🔑 시체를 밀고 다니면 안 된다. 클라이언트 화면에서도 플레이어가 걸린다.
+        //    콜라이더는 네트워크로 안 가는 값이라 각자 꺼야 한다.
         var col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
 
-        // Death 상태는 나가는 전이가 없다. 한 번 들어가면 끝까지 재생된다.
-        if (anim != null) anim.SetTrigger("Die");
     }
 
     private IEnumerator FlashRoutine()
@@ -117,6 +115,10 @@ public class NetworkEnemy : NetworkBehaviour
 
         Vector2 dir = ((Vector2)target.position - rb.position).normalized;
         rb.linearVelocity = dir * moveSpeed;
+
+        // 🔑 서버에서만 넣는다. 모두의 화면에는 NetworkAnimator 가 옮겨 준다.
+        //    Float 은 NetworkAnimator 가 알아서 지켜보다가 바뀌면 보낸다.
+        if (anim != null) anim.SetFloat("Speed", rb.linearVelocity.magnitude);
     }
 
     // 가장 가까운 플레이어를 찾는다. 078의 FindNearest 와 같은 구조다.
@@ -151,6 +153,10 @@ public class NetworkEnemy : NetworkBehaviour
 
         health.Value -= amount;
 
+        // 🔑 Trigger 만은 Animator 가 아니라 NetworkAnimator 로 넣어야 한다.
+        //    한 프레임 켜졌다 꺼지는 값이라, 주기적으로 훔쳐보는 방식으로는 놓친다.
+        if (health.Value > 0 && netAnim != null) netAnim.SetTrigger("Hurt");
+
         if (health.Value <= 0) Die();
     }
 
@@ -163,6 +169,9 @@ public class NetworkEnemy : NetworkBehaviour
             GameObject gem = Instantiate(gemPrefab, transform.position, Quaternion.identity);
             gem.GetComponent<NetworkObject>().Spawn();   // 🔑 Instantiate 만으로는 상대에게 안 보인다
         }
+
+        // Death 상태는 나가는 전이가 없다. 한 번 들어가면 끝까지 재생된다.
+        if (netAnim != null) netAnim.SetTrigger("Die");
 
         // 🚨 여기서 바로 Despawn 하면 클라이언트에서 쓰러지는 그림이 안 보인다.
         //    체력 0 은 다음 네트워크 틱에 실려 가는데, 지우라는 말이 같은 틱에 같이 가면
