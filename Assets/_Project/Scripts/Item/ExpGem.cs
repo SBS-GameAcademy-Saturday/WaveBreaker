@@ -10,6 +10,9 @@ public class ExpGem : MonoBehaviour
     [SerializeField] private float magnetRange = 2.5f;
     [SerializeField] private float moveSpeed = 8f;
 
+    // 131회차 · 먹는 순간 반짝인다.
+    [SerializeField] private GameObject pickupEffect;
+
     private Transform player;
 
     private void Start()
@@ -41,6 +44,10 @@ public class ExpGem : MonoBehaviour
         {
             level.AddExp(exp);
         }
+
+        // 131회차 · 서랍에 넣기 전에 반짝임을 남긴다. 순서가 바뀌면 위치를 잃는다.
+        if (pickupEffect != null)
+            PoolManager.Spawn(pickupEffect, transform.position, Quaternion.identity);
 
         PoolManager.Despawn(gameObject);
     }

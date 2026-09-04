@@ -20638,6 +20638,7 @@ MonoBehaviour:
   baseExp: 5
   expStep: 3
   levelUpView: {fileID: 1713260396}
+  levelUpEffect: {fileID: 5344531102375030930, guid: a1d447ac05973164b879e053d7f77023, type: 3}
 --- !u!114 &1378747220
 MonoBehaviour:
   m_ObjectHideFlags: 0

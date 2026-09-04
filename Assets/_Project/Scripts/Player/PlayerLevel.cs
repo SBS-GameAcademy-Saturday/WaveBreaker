@@ -8,6 +8,9 @@ public class PlayerLevel : MonoBehaviour
     [SerializeField] private int expStep = 3;
     [SerializeField] private LevelUpView levelUpView;
 
+    // 131회차 · 레벨이 오르는 순간 몸에서 링이 퍼진다.
+    [SerializeField] private GameObject levelUpEffect;
+
     public int Level { get; private set; } = 1;
     public int Exp { get; private set; }
     public int NeedExp => baseExp + (Level - 1) * expStep;
@@ -29,6 +32,11 @@ public class PlayerLevel : MonoBehaviour
         }
 
         // 두 레벨이 한 번에 올라도 카드는 한 번만 띄운다. 지금은 그걸로 충분하다.
+        if (leveled && levelUpEffect != null)
+        {
+            PoolManager.Spawn(levelUpEffect, transform.position, Quaternion.identity);
+        }
+
         if (leveled && levelUpView != null)
         {
             levelUpView.Open();
