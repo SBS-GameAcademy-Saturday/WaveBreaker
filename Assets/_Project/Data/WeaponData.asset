@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60f5aa3218e5cdc4694dccb30afac11a, type: 3}
   m_Name: WeaponData
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  bladeCount: 3
+  bladeCount: 1
   bladeRadius: 2
   bladeRotateSpeed: 180
   bladeDamage: 3

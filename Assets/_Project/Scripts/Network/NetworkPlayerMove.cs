@@ -14,6 +14,21 @@ public class NetworkPlayerMove : NetworkBehaviour
     [SerializeField] private NetworkPlayerInput input;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Animator anim;
+    [SerializeField] private SpriteRenderer sprite;
+
+    // 132회차 · 바라보는 쪽. 검기가 이 값을 보고 어느 쪽을 벨지 정한다.
+    //
+    // 🔑 쓰기 권한이 Owner 다. 지금까지 본 NetworkVariable 은 전부 Server 였다.
+    //    "누가 정하는 값인가" 로 고른다 — 어느 쪽을 보는지는 그 사람이 정한다.
+    public NetworkVariable<bool> FacingLeft = new NetworkVariable<bool>(
+        false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
+    // 132회차 · 레벨업으로 빨라진다. 서버가 바꾼다.
+    public void SpeedUp(float step)
+    {
+        if (!IsServer) return;
+        moveSpeed += step;
+    }
 
     void FixedUpdate()
     {
@@ -25,6 +40,7 @@ public class NetworkPlayerMove : NetworkBehaviour
         if (!IsOwner)
         {
             rb.linearVelocity = Vector2.zero;
+            if (sprite != null) sprite.flipX = FacingLeft.Value;   // 받은 값으로 뒤집는다
             return;
         }
 
@@ -34,5 +50,14 @@ public class NetworkPlayerMove : NetworkBehaviour
         // 🔑 067회차 PlayerController 와 **똑같은 한 줄**이다.
         //    내 화면에서 내 애니메이터에 넣기만 하면, 상대 화면에는 NetworkAnimator 가 옮겨 준다.
         if (anim != null) anim.SetFloat("Speed", rb.linearVelocity.magnitude);
+
+        // 067회차와 같다. 가는 쪽으로 그림을 뒤집고, 그 사실을 값으로 남긴다.
+        float x = input.MoveInput.x;
+        if (x != 0f)
+        {
+            bool left = x < 0f;
+            if (sprite != null) sprite.flipX = left;
+            if (FacingLeft.Value != left) FacingLeft.Value = left;
+        }
     }
 }

@@ -20415,6 +20415,7 @@ GameObject:
   - component: {fileID: 1378747218}
   - component: {fileID: 1378747219}
   - component: {fileID: 1378747220}
+  - component: {fileID: 1378747221}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -20661,6 +20662,24 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1378747221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1378747210}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 569a064d91c69c54faadff0ae1c68f0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SwordSlash
+  slashEffect: {fileID: 3925875464744248903, guid: ffb327961d14bc040a2284cd1467e73d, type: 3}
+  bodySprite: {fileID: 1378747216}
+  width: 3.2
+  height: 2
+  interval: 1.2
+  damage: 6
 --- !u!1 &1389520300
 GameObject:
   m_ObjectHideFlags: 0
@@ -25338,8 +25357,13 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c5ea6c59c66981045a345d568127c19f, type: 2}
   - {fileID: 11400000, guid: e9e90c268730a30488b868cf7ceec0e7, type: 2}
   - {fileID: 11400000, guid: 6bf25e7af1f8d7a4e9c4fc1b5234ff4d, type: 2}
+  - {fileID: 11400000, guid: 1f3bde993d905aa44ab7cb5b3f36d3ec, type: 2}
+  - {fileID: 11400000, guid: 9124bd63d257c50469014038eb7b21b2, type: 2}
+  - {fileID: 11400000, guid: b0da1243e0de9db4fadd36682d99341b, type: 2}
+  - {fileID: 11400000, guid: cba6542b1371a0a40b83c133bfb077de, type: 2}
   meleeRing: {fileID: 416664781}
   autoGun: {fileID: 1378747218}
+  swordSlash: {fileID: 1378747221}
   playerController: {fileID: 1378747212}
   playerHealth: {fileID: 1378747211}
 --- !u!114 &1713260397

@@ -54,6 +54,15 @@ public class NetworkHealthDemo : NetworkBehaviour
         Health.Value = Mathf.Max(Health.Value - amount, 0);
     }
 
+    // 132회차 · 상한이 오르고 그만큼 회복된다. 088회차 PlayerHealth 와 같은 규칙이다.
+    public void AddMaxHealth(int step)
+    {
+        if (!IsServer) return;
+
+        maxHealth += step;
+        Health.Value = Mathf.Min(Health.Value + step, maxHealth);
+    }
+
     // 122회차 · 부활할 때 쓴다. 서버만 부른다.
     public void SetHealth(int value)
     {

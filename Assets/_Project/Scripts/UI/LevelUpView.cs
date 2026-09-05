@@ -19,6 +19,7 @@ public class LevelUpView : MonoBehaviour
 
     [SerializeField] private MeleeRing meleeRing;
     [SerializeField] private AutoGun autoGun;
+    [SerializeField] private SwordSlash swordSlash;
     [SerializeField] private PlayerController playerController;
     [SerializeField] private PlayerHealth playerHealth;
 
@@ -51,7 +52,12 @@ public class LevelUpView : MonoBehaviour
             UpgradeData data = picked[i];   // 반복문 변수를 그대로 쓰면 전부 마지막 값이 된다
 
             if (buttons[i] != null) buttons[i].gameObject.SetActive(true);
-            if (labels[i] != null) labels[i].text = $"{data.title}\n<size=60%>{data.description}";
+
+            // 새 무기는 눈에 띄어야 한다. 강화 카드와 섞이면 지나친다.
+            string head = UpgradeRule.IsAcquire(data.type)
+                ? $"<color=#FFD35C>새 무기</color>\n{data.title}"
+                : data.title;
+            if (labels[i] != null) labels[i].text = $"{head}\n<size=60%>{data.description}";
 
             if (buttons[i] == null) continue;
 
@@ -72,13 +78,29 @@ public class LevelUpView : MonoBehaviour
     }
 
     // 서로 다른 3개를 뽑는다.
+    //
+    // 🔑 132회차 · 아무거나 뽑으면 안 된다.
+    //    칼도 없는데 "칼 피해 +" 가 나오면 골라도 아무 일이 안 일어난다.
+    //    이미 칼이 있는데 "회전하는 칼" 획득 카드가 또 나와도 안 된다.
+    //    지금 보여줘도 되는 카드만 통에 넣는다.
     private List<UpgradeData> PickThree()
     {
+        // 무기마다 "가지고 있나" 를 알려준다. 총은 시작 무기라 언제나 가지고 있다.
+        System.Func<WeaponKind, bool> owns = kind =>
+        {
+            if (kind == WeaponKind.Gun) return autoGun != null && autoGun.Owned;
+            if (kind == WeaponKind.Blade) return meleeRing != null && meleeRing.Owned;
+            if (kind == WeaponKind.Slash) return swordSlash != null && swordSlash.Owned;
+            return true;
+        };
+
         List<UpgradeData> pool = new List<UpgradeData>();
 
         foreach (UpgradeData u in upgrades)
         {
-            if (u != null) pool.Add(u);
+            if (u == null) continue;
+            if (!UpgradeRule.CanShow(u.type, owns)) continue;
+            pool.Add(u);
         }
 
         List<UpgradeData> result = new List<UpgradeData>();
@@ -97,6 +119,26 @@ public class LevelUpView : MonoBehaviour
     {
         switch (data.type)
         {
+            case UpgradeType.WeaponGun:
+                if (autoGun != null) autoGun.Acquire();
+                break;
+
+            case UpgradeType.WeaponBlade:
+                if (meleeRing != null) meleeRing.Acquire();
+                break;
+
+            case UpgradeType.WeaponSlash:
+                if (swordSlash != null) swordSlash.Acquire();
+                break;
+
+            case UpgradeType.SlashDamage:
+                if (swordSlash != null) swordSlash.AddDamage((int)data.value);
+                break;
+
+            case UpgradeType.SlashRate:
+                if (swordSlash != null) swordSlash.SpeedUp(data.value, data.minLimit);
+                break;
+
             case UpgradeType.BladeCount:
                 if (meleeRing != null) meleeRing.AddBlade((int)data.value);
                 break;

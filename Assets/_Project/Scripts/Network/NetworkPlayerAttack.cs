@@ -19,10 +19,37 @@ public class NetworkPlayerAttack : NetworkBehaviour
 
     private float nextFire;
 
+    // 132회차 · 총도 얻는 무기다. 시작 무기는 검기 하나.
+    public NetworkVariable<bool> HasGun = new NetworkVariable<bool>(
+        false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Server);
+
+    public bool Owned => HasGun.Value;
+
+    public void Acquire()
+    {
+        if (!IsServer || HasGun.Value) return;
+        HasGun.Value = true;
+    }
+
+    // 132회차 · 레벨업으로 세진다. 서버만 바꾼다 — 진짜 값은 서버 것이다(107).
+    public void AddDamage(int step)
+    {
+        if (!IsServer) return;
+        damage += step;
+    }
+
+    public void SpeedUp(float step, float min)
+    {
+        if (!IsServer) return;
+        interval = Mathf.Max(interval - step, Mathf.Max(min, 0.1f));
+    }
+
     private void Update()
     {
         // 공격을 시도하는 건 내 캐릭터만 (114 회수).
         if (!IsOwner) return;
+
+        if (!HasGun.Value) return;      // 아직 총이 없다
 
         if (Time.time < nextFire) return;
 
@@ -31,10 +58,7 @@ public class NetworkPlayerAttack : NetworkBehaviour
 
         nextFire = Time.time + interval;
 
-        // 🔑 트리거는 Animator 가 아니라 NetworkAnimator 에 넣는다.
-        //    Animator.SetTrigger 는 내 화면에서만 켜지고 상대에게 안 간다.
-        //    한 프레임만 켜졌다 꺼지는 값이라 NetworkAnimator 도 훔쳐볼 수가 없다.
-        if (netAnim != null) netAnim.SetTrigger("Attack");
+        // 132회차 · 공격 자세는 검기(NetworkSwordSlash)가 켠다. 한 무기이기 때문이다.
 
         // 🔑 여기가 오늘의 핵심.
         //    내가 직접 target.TakeDamage(damage) 를 부르지 않는다.

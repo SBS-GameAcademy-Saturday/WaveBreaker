@@ -23,6 +23,8 @@ GameObject:
   - component: {fileID: 3214432877553813846}
   - component: {fileID: 176980350279368240}
   - component: {fileID: 3990955616747776981}
+  - component: {fileID: 3673911501437712513}
+  - component: {fileID: 191798356348762753}
   m_Layer: 0
   m_Name: NetworkPlayer
   m_TagString: Untagged
@@ -295,6 +297,12 @@ MonoBehaviour:
   input: {fileID: 2233869300163289379}
   rb: {fileID: 3643760689014060271}
   anim: {fileID: 176980350279368240}
+  sprite: {fileID: 452142862698859669}
+  FacingLeft:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
 --- !u!114 &5181107416655341400
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -331,6 +339,11 @@ MonoBehaviour:
   damage: 3
   interval: 0.6
   netAnim: {fileID: 3990955616747776981}
+  HasGun:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
 --- !u!114 &5209927324523993404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -431,3 +444,65 @@ MonoBehaviour:
       Synchronize: 1
       ParameterType: 9
   AnimatorParametersExpanded: 0
+--- !u!114 &3673911501437712513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5725980634694826839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24bfb0c964fbe8a49a3c73b5a44a6ae1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NetworkMeleeRing
+  ShowTopMostFoldoutHeaderGroup: 1
+  bladePrefab: {fileID: 2818916249809842428, guid: 92eb711ac1f968343a266824a1c1b395, type: 3}
+  radius: 1.6
+  rotateSpeed: 180
+  hitInterval: 0.3
+  bladeHitRadius: 0.45
+  BladeCount:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
+  BladeDamage:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 3
+--- !u!114 &191798356348762753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5725980634694826839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bf8934aeafefcc4fb315bfd44cada6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NetworkSwordSlash
+  ShowTopMostFoldoutHeaderGroup: 1
+  slashEffect: {fileID: 3925875464744248903, guid: ffb327961d14bc040a2284cd1467e73d, type: 3}
+  bodySprite: {fileID: 452142862698859669}
+  move: {fileID: 3812651388670417067}
+  width: 3.2
+  height: 2
+  baseInterval: 1.2
+  HasSlash:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 0
+  Damage:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 6
+  Interval:
+    UpdateTraits:
+      MinSecondsBetweenUpdates: 0
+      MaxSecondsBetweenUpdates: 0
+    m_InternalValue: 1.2

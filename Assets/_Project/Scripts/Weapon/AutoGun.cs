@@ -23,6 +23,9 @@ public class AutoGun : MonoBehaviour
     public int Damage => damage;
     public int Pierce => pierce;
 
+    // 132회차 · 총도 레벨업으로 "얻는" 무기가 됐다. 시작 무기는 검기 하나다.
+    public bool Owned { get; private set; }
+
     private void Start()
     {
         if (data != null)
@@ -32,8 +35,15 @@ public class AutoGun : MonoBehaviour
             damage = data.gunDamage;
             pierce = data.gunPierce;
         }
+        // 🔑 여기서 쏘기 시작하지 않는다. Acquire 를 받고 나서 시작한다.
+    }
 
+    public void Acquire()
+    {
+        if (Owned) return;
+        Owned = true;
         StartCoroutine(FireRoutine());
+        Debug.Log($"무기 획득 — 자동 총 (사거리 {range}, {fireInterval:F2}초마다)");
     }
 
     private IEnumerator FireRoutine()
@@ -51,11 +61,8 @@ public class AutoGun : MonoBehaviour
 
             Quaternion rot = Quaternion.FromToRotation(Vector3.up, dir);   // 064의 transform.up 과 같은 뜻
 
-            // 131회차 · 쏘는 순간 플레이어가 공격 자세를 취한다.
-            //   총은 Player 의 자식이라 부모에서 찾는다.
-            var anim = GetComponentInParent<Animator>();
-            if (anim != null) anim.SetTrigger("Attack");
-
+            // 132회차 · 공격 자세는 이제 검기(SwordSlash)가 시킨다.
+            //   "칼을 휘두르는 그림" 과 "검기가 나가는 것" 은 한 무기다. 총이 끼어들면 안 맞는다.
             GameObject shot = PoolManager.Spawn(projectilePrefab, transform.position, rot);
 
             if (shot != null && shot.TryGetComponent(out Projectile p))
