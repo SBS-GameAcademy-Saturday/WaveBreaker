@@ -20676,8 +20676,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SwordSlash
   slashEffect: {fileID: 3925875464744248903, guid: ffb327961d14bc040a2284cd1467e73d, type: 3}
   bodySprite: {fileID: 1378747216}
-  width: 3.2
-  height: 2
+  width: 2.4
+  height: 2.8
   interval: 1.2
   damage: 6
 --- !u!1 &1389520300

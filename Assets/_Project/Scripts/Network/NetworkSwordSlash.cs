@@ -14,8 +14,8 @@ public class NetworkSwordSlash : NetworkBehaviour
     [SerializeField] private GameObject slashEffect;
     [SerializeField] private SpriteRenderer bodySprite;
     [SerializeField] private NetworkPlayerMove move;
-    [SerializeField] private float width = 3.2f;
-    [SerializeField] private float height = 2.0f;
+    [SerializeField] private float width = 2.4f;
+    [SerializeField] private float height = 2.8f;
     [SerializeField] private float baseInterval = 1.2f;
 
     public NetworkVariable<bool> HasSlash = new NetworkVariable<bool>(

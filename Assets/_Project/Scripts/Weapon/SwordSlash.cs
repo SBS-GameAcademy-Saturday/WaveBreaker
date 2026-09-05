@@ -16,8 +16,8 @@ public class SwordSlash : MonoBehaviour
 {
     [SerializeField] private GameObject slashEffect;
     [SerializeField] private SpriteRenderer bodySprite;      // 뒤집힘(flipX)을 보고 방향을 정한다
-    [SerializeField] private float width = 3.2f;             // 앞으로 뻗는 길이
-    [SerializeField] private float height = 2.0f;            // 위아래 폭
+    [SerializeField] private float width = 2.4f;             // 앞으로 뻗는 길이 (초승달의 가로)
+    [SerializeField] private float height = 2.8f;            // 위아래 폭 (초승달은 세로로 길다)
     [SerializeField] private float interval = 1.2f;
     [SerializeField] private int damage = 6;
 
