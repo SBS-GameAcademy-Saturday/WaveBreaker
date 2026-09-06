@@ -9,11 +9,24 @@ using Unity.Multiplayer.PlayMode;
 // 125회차 · [같이 하기] 가 붙었다. 기획서 3장의 모드 구조가 여기서 완성된다.
 public class TitleView : MonoBehaviour
 {
+    private void Start()
+    {
+        // 132회차 · 실행 인자로 켰으면 타이틀을 건너뛴다 (빌드 두 개 자동 시험)
+        if (RelayLaunchArgs.Any)
+        {
+            Debug.Log("[실행 인자] 협동 씬으로 바로 간다");
+            StartCoop();
+            return;
+        }
+
+        AutoCoopForVirtualPlayer();
+    }
+
 #if UNITY_EDITOR
     // 132회차 · Multiplayer Play Mode 로 시험할 때만 도는 코드.
     //   가상 플레이어도 재생을 시작하면 Title 부터 뜬다. 사람이면 [같이 하기] 를 누르지만
     //   자동 시험에는 누를 손이 없다. 태그가 Client 면 알아서 협동 씬으로 넘어간다.
-    private void Start()
+    private void AutoCoopForVirtualPlayer()
     {
         foreach (string tag in CurrentPlayer.Tags)
         {
@@ -23,6 +36,8 @@ public class TitleView : MonoBehaviour
             return;
         }
     }
+#else
+    private void AutoCoopForVirtualPlayer() { }   // 빌드에는 가상 플레이어가 없다
 #endif
 
     // 혼자 하기 — 21주차에 완성한 그 게임. 네트워크가 전혀 안 끼어든다.

@@ -65,6 +65,13 @@ public class RelayConnector : MonoBehaviour
     }
 #endif
 
+    private void Start()
+    {
+        // 132회차 · 실행 인자로 켰으면 사람이 안 눌러도 알아서 한다 (빌드 두 개 자동 시험)
+        if (RelayLaunchArgs.WantsHost) CreateRoom();
+        else if (!string.IsNullOrEmpty(RelayLaunchArgs.JoinCode)) JoinWithCode(RelayLaunchArgs.JoinCode);
+    }
+
     private async Task<bool> SignIn()
     {
         if (signedIn) return true;
