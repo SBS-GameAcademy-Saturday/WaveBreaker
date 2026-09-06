@@ -27,7 +27,11 @@ public class RelayConnector : MonoBehaviour
 {
     [SerializeField] private TMP_Text statusLabel;
     [SerializeField] private TMP_InputField codeInput;
-    [SerializeField] private int maxPlayers = 2;   // 기획서 3장 — 정확히 2인
+    [SerializeField] private GameObject lobbyRoot;   // 붙고 나면 감출 것 (20.5 회수)
+    // 🚨 접속 코드를 statusLabel 에 쓰면 NetworkTestUI 가 매 프레임 덮어쓴다.
+    //    친구에게 불러 줘야 하는 값이라 **안 지워지는 자리**가 따로 있어야 한다.
+    [SerializeField] private TMP_Text codeLabel;
+    [SerializeField] private int maxPlayers = 2;     // 기획서 3장 — 정확히 2인
 
     // 로그인은 한 번만 하면 된다.
     private static bool signedIn;
@@ -79,6 +83,10 @@ public class RelayConnector : MonoBehaviour
 
             NetworkManager.Singleton.StartHost();
 
+            // 붙었으면 버튼을 치운다. 안 그러면 게임 위에 로비가 계속 떠 있다.
+            if (lobbyRoot != null) lobbyRoot.SetActive(false);
+            ShowCode(code);
+
             Report($"방 만듦 — 접속 코드 {code}");
         }
         catch (Exception e)
@@ -114,12 +122,22 @@ public class RelayConnector : MonoBehaviour
 
             NetworkManager.Singleton.StartClient();
 
+            if (lobbyRoot != null) lobbyRoot.SetActive(false);
+            ShowCode(code);
+
             Report($"입장 — 코드 {code}");
         }
         catch (Exception e)
         {
             Report("입장 실패 — " + e.Message);
         }
+    }
+
+    private void ShowCode(string code)
+    {
+        if (codeLabel == null) return;
+        codeLabel.text = $"접속 코드  {code}";
+        codeLabel.gameObject.SetActive(true);
     }
 
     private void Report(string message)

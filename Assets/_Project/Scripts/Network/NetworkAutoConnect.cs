@@ -30,16 +30,18 @@ public class NetworkAutoConnect : MonoBehaviour
             if (tag == "Client") { isClient = true; break; }
         }
 
-        if (isClient)
+        // 🔑 132회차 · 메인 에디터는 **자동으로 시작하지 않는다.**
+        //    자동으로 호스트가 되면 로비가 바로 감춰져서 [방 만들기](Relay) 를 누를 수가 없다.
+        //    124회차에 Relay 를 붙이면서 이 자리가 막혔다.
+        //    가상 플레이어(태그 Client)만 알아서 붙고, 메인 에디터는 사람이 고른다.
+        if (!isClient)
         {
-            Debug.Log("태그 Client — 클라이언트로 자동 접속");
-            StartCoroutine(ConnectAsClient());
+            Debug.Log("메인 에디터 — 로비에서 고른다 ([호스트] 또는 [방 만들기])");
+            return;
         }
-        else
-        {
-            Debug.Log("태그 없음 — 호스트로 자동 시작");
-            NetworkManager.Singleton.StartHost();
-        }
+
+        Debug.Log("태그 Client — 클라이언트로 자동 접속");
+        StartCoroutine(ConnectAsClient());
 
         if (buttonRoot != null) buttonRoot.SetActive(false);
 #endif
