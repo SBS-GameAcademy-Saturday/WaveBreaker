@@ -2736,6 +2736,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NetworkAutoConnect
   enableAutoConnect: 1
   buttonRoot: {fileID: 1000331570}
+  relay: {fileID: 1216155126}
 --- !u!114 &1216155124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2814,6 +2815,7 @@ MonoBehaviour:
   lobbyRoot: {fileID: 1000331570}
   codeLabel: {fileID: 2039349344}
   maxPlayers: 2
+  connectionType: dtls
 --- !u!1 &1224811281
 GameObject:
   m_ObjectHideFlags: 0
