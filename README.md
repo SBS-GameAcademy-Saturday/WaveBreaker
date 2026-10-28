@@ -1,120 +1,135 @@
-# WaveBreaker · 웨이브 브레이커
+# Chapter 1 · 10주차 — 프리팹과 동적 생성
 
-코딩을 처음 배우는 수강생이 **7개월 과정에서 단계별로 완성하는 2D 협동 웨이브 디펜스 게임.**
-Unity 6 LTS + C#, 싱글 플레이와 2인 협동(Netcode for GameObjects + Relay)을 모두 지원합니다.
-수업용 템플릿과 구간별 스냅샷을 제공합니다.
+> **이 브랜치(`Chapter_1/Week4`)에는 10주차(046–050회차) 수업 내용만 들어 있습니다.**
+> 다른 주차 씬·스크립트·문서는 없습니다. 브랜치를 바꾸면 그 주차 것만 보입니다.
 
 | | |
 |---|---|
-| 과정 | 게임개발 입문 · 7개월 = 28주 = 140회 (280시간) |
-| 대상 | 코딩 경험 0, 연령대 혼합 · 비대면 실시간 |
-| 엔진 | Unity 6 LTS (마이너 버전 미확정) |
-| 네트워크 | Netcode for GameObjects + Relay (호스트 권한) |
-| 에셋 | Kenney CC0 필수 6팩 |
+| Phase | 3 · 유니티 2D 핵심 |
+| 회차 | 046–050 (5회차 · 10시간) |
+| 실습 씬 | 10개 |
+| 스크립트 | 5개 |
+| 프리팹 | 2개 |
 
 ---
 
-## 📚 강의 문서
+## 이번 주 5회차
 
-강의 설계·커리큘럼·회차별 강의안은 전부 **[`docs/`](./docs/README.md)** 에 있습니다. 여기서부터 읽으세요.
+### 046 · 프리팹 — 원본과 복사본
 
-| 문서 | 내용 |
+**배우는 것** — Prefab 만들기, 인스턴스, **Override / Apply**, 프리팹 모드
+
+- GameObject를 **프리팹으로 만든다**
+- **원본을 고치면 전부 바뀐다**는 걸 본다
+- 인스턴스만 바뀐 값(**Override**)과 원본에 반영(**Apply**)을 구분한다
+
+씬: `046_Prefab_Done` · `046_Prefab_Start`
+
+→ [강의안](./docs/02_수업계획서/046-P3-프리팹.md)
+
+### 047 · Instantiate — 총알 발사
+
+**배우는 것** — `Instantiate`, 프리팹 참조, `firePoint`(Transform 참조)
+
+- **`Instantiate`로 프리팹을 코드에서 찍어낸다**
+- **어디에** 만들지를 `firePoint`로 정한다
+- 만들어진 총알이 **스스로 날아가게** 한다
+
+씬: `047_Instantiate_Done` · `047_Instantiate_Start`
+
+→ [강의안](./docs/02_수업계획서/047-P3-Instantiate-총알-발사.md)
+
+### 048 · Destroy와 몬스터 생성 — 오브젝트 수명 관리
+
+**배우는 것** — `Destroy(gameObject)`, `Destroy(obj, 시간)`, 몬스터 스포너
+
+- **`Destroy(gameObject)`** 로 자기 자신을 없앤다
+- **`Destroy(gameObject, 2f)`** 로 수명을 준다
+- 총알이 몬스터에 맞으면 **둘 다 사라지게** 한다
+
+씬: `048_Destroy_Done` · `048_Destroy_Start`
+
+→ [강의안](./docs/02_수업계획서/048-P3-Destroy와-몬스터-생성.md)
+
+### 049 · GetComponent — 남의 부품을 만진다
+
+**배우는 것** — `GetComponent<T>()`, `null`, `TryGetComponent`, `Awake`
+
+- `GetComponent`로 **내 부품**을 코드에서 찾는다 (드래그를 없앤다)
+- `other.GetComponent`로 **남의 부품**을 만진다
+- **없는 부품을 찾으면 `null`** 이라는 걸 알고 대비한다
+
+씬: `049_GetComponent_Done` · `049_GetComponent_Start`
+
+→ [강의안](./docs/02_수업계획서/049-P3-GetComponent.md)
+
+### 050 · 체력과 피격 — 내가 만든 클래스가 게임에서 돈다 (10주차 정리)
+
+**배우는 것** — `Health` 클래스 직접 작성, `TakeDamage`, `Mathf.Clamp`, `Awake` 순서
+
+- **`Health` 클래스를 직접 만든다** — 5~6주차 콘솔 코드와 같은 구조
+- 총알이 `GetComponent<Health>()`로 찾아 **체력을 깎는다**
+- 체력이 `0` 이하면 **죽는다**
+
+씬: `050_Health_Done` · `050_Health_Start`
+
+→ [강의안](./docs/02_수업계획서/050-P3-체력과-피격.md)
+
+---
+
+## 이 브랜치에 있는 것
+
+### 실습 씬 — `Assets/_Project/Scenes/Practice/`
+
+| 회차 | 씬 |
 |---|---|
-| [docs/README.md](./docs/README.md) | ★ 문서 허브 — 전체 진행표 · 설계 원칙 · 현재 상태 |
-| [00_기획/주차별-커리큘럼표.md](./docs/00_기획/주차별-커리큘럼표.md) | 기관 제출용 28주 표 (+ [.xlsx](./docs/00_기획/유니티_커리큘럼_7개월.xlsx)) |
-| [00_기획/확정-게임기획서.md](./docs/00_기획/확정-게임기획서.md) | ★ 이 게임의 목표 사양서 (Phase 5~9) |
-| [00_기획/커리큘럼-로드맵.md](./docs/00_기획/커리큘럼-로드맵.md) | 왜 이렇게 설계했는가 |
-| [00_기획/에셋-리소스.md](./docs/00_기획/에셋-리소스.md) | Kenney CC0 팩 선정 · 임포트 · 라이선스 |
-| [01_Phase개요/](./docs/01_Phase개요/README.md) | Phase 0~10 목표 · 회차 배분 · 종료 조건 |
-| [02_수업계획서/](./docs/02_수업계획서/README.md) | 회차별 하루 강의안 (001~140) |
-| [03_운영/강의-운영-매뉴얼.md](./docs/03_운영/강의-운영-매뉴얼.md) | 수업 운영 · 진도 관리 |
-| [04_배포자료/](./docs/04_배포자료/README.md) | 학생 배포물 (에셋 패키지 · 가이드 · 스냅샷) |
-| [05_Unity프로젝트/](./docs/05_Unity프로젝트/README.md) | ★ 이 저장소의 규격 · 폴더 구조 · 패키지 |
-| [05_Unity프로젝트/스크립트-설계.md](./docs/05_Unity프로젝트/스크립트-설계.md) | 클래스 구조 · 상속 · 인터페이스 설계 |
-| [05_Unity프로젝트/브랜치-전략.md](./docs/05_Unity프로젝트/브랜치-전략.md) | ★ 주차별 · 컨텐츠별 브랜치 규칙과 작업 흐름 |
+| 046 | `046_Prefab_Done` · `046_Prefab_Start` |
+| 047 | `047_Instantiate_Done` · `047_Instantiate_Start` |
+| 048 | `048_Destroy_Done` · `048_Destroy_Start` |
+| 049 | `049_GetComponent_Done` · `049_GetComponent_Start` |
+| 050 | `050_Health_Done` · `050_Health_Start` |
+
+`_Start` 는 수업을 시작하는 상태, `_Done` 은 그 회차가 끝났을 때의 정답,
+`_Demo` 는 설명용 시연 씬입니다. 수업은 `_Start` 를 열어서 시작합니다.
+
+### 스크립트 — `Assets/_Project/Scripts/`
+
+- `Enemy/EnemySpawner.cs`
+- `Enemy/Health.cs`
+- `Player/PlayerPhysicsMove.cs`
+- `Player/PlayerShooter.cs`
+- `Weapon/Bullet.cs`
+
+이전 주차에 만든 스크립트도 이번 주 씬이 쓰면 함께 들어 있습니다.
+
+### 프리팹 — `Assets/_Project/Prefabs/`
+
+- `Enemy/Enemy.prefab`
+- `Projectile/Bullet.prefab`
 
 ---
 
-## 🗺 과정 한눈에
+## 같이 보는 문서
 
-> **C# 선행.** 1~4주차 C# 문법 전용(콘솔) → 5~6주차 객체지향 → **7주차부터 C# + 유니티 병행**
-
-| Phase | 회차 | 주차 | 주제 | 이 구간이 끝나면 |
-|---|---|---|---|---|
-| 0 | 001–020 | 1–4주 | C# 기초 (콘솔) | 콘솔 프로그램 단독 제작 |
-| 1 | 021–030 | 5–6주 | C# 객체지향 | 상속·인터페이스로 몬스터 클래스 설계 |
-| 2 | 031–040 | 7–8주 | 유니티 입문 | 키보드로 움직이는 캐릭터 |
-| 3 | 041–055 | 9–11주 | 유니티 2D 핵심 | 충돌·프리팹·코루틴·체력 |
-| 4 | 056–065 | 12–13주 | 미니게임 3개 완주 | 끝까지 만든 게임 3개 |
-| 5 | 066–080 | 14–16주 | 본 프로젝트 코어 | 코어 루프 + 무기·몬스터 3종 |
-| 6 | 081–090 | 17–18주 | 콘텐츠 · 데이터 | 업그레이드 · 보스까지 |
-| 7 | 091–100 | 19–20주 | UI · 연출 | 타이틀~결과 완결 |
-| 8 | 101–105 | 21주 | **싱글 완성 & 빌드** | ✅ **완성된 게임 (안전장치)** |
-| 9 | 106–125 | 22–25주 | 네트워크 협동 | 친구와 같이 하는 게임 |
-| 10 | 126–130 | 26주 | 배포 · 발표 | 공유 링크 + 시연 영상 |
-| — | 131–140 | 27–28주 | 버퍼 | 밀린 진도 / 개인 확장 |
+| | |
+|---|---|
+| [docs/02_수업계획서/](./docs/02_수업계획서/) | 이번 주 5회차 강의안 |
+| [docs/01_Phase개요/](./docs/01_Phase개요/) | 이 주차가 속한 Phase 의 목표와 종료 조건 |
+| [docs/04_배포자료/슬라이드/](./docs/04_배포자료/슬라이드/) | 10주차 수업 슬라이드 |
+| [Scenes/Practice/README.md](./Assets/_Project/Scenes/Practice/README.md) | 씬을 어떻게 만들어 뒀는지, 주의할 점 |
 
 ---
 
-## 📦 이 저장소가 담는 것
+## 브랜치
 
-이 저장소는 강의에서 쓰는 **레퍼런스 프로젝트(강사용 완성본)** 입니다.
-학생 배포용 **템플릿**과 Phase별 **스냅샷**은 여기서 파생시킵니다 — 자세한 관리 규칙은
-[05_Unity프로젝트/README.md](./docs/05_Unity프로젝트/README.md) 참고.
-
-| # | 이름 | 용도 |
-|---|---|---|
-| ① | 레퍼런스 (이 저장소) | 강사가 끝까지 만들어 둔 정답 프로젝트 |
-| ② | 템플릿 | 폴더 구조 · 에셋 · 설정만 끝난 빈 프로젝트 (14주차 배포) |
-| ③ | 스냅샷 | 각 Phase 종료 시점을 잘라낸 것 (뒤처진 학생 재합류용) |
-
-### 저장소 구조
-
-```
-WaveBreaker/            ← 저장소 루트 = Unity 프로젝트 루트
-├── README.md           지금 이 파일
-├── Assets/             씬 · 스크립트 · 에셋
-├── Packages/           manifest.json (패키지 목록)
-├── ProjectSettings/    프로젝트 설정
-├── tools/              lesson.ps1 (브랜치 헬퍼)
-└── docs/               강의 문서 전체
-```
-
-> `Library/` · `Temp/` · `Logs/` · `UserSettings/` · `*.csproj` · `*.sln` 은 `.gitignore` 처리됨.
-
-### 경로 규칙
-
-> ⚠️ 프로젝트 경로 **전체에 한글·공백이 없어야 합니다.** 권장: `C:\Unity\WaveBreaker`
-
----
-
-## 🌿 브랜치 운용
-
-수업 준비는 **주차별 · 컨텐츠별 브랜치**로 나눠서 진행합니다. `main`에는 직접 커밋하지 않습니다.
-
-| 브랜치 | 예시 | 역할 |
-|---|---|---|
-| `main` | `main` | 항상 동작하는 최신 진행분. 언제 잘라도 학생에게 줄 수 있는 상태 |
-| `week/NN` | `week/07` | 그 주 5회차 분량 준비 |
-| `feat/<주제>` | `feat/player-move` | 주차 안에서 기능 하나 단위 |
-| `snapshot/<이름>` | `snapshot/P8_Final_Single` | 학생 배포용 고정점. 만든 뒤 건드리지 않음 |
-
-```bash
-./tools/lesson.ps1 week 7
-```
-
-```bash
-./tools/lesson.ps1 feat player-move
-```
-
-```bash
-./tools/lesson.ps1 done
-```
-
-전체 규칙 · 주차↔회차↔Phase 대응표: **[docs/05_Unity프로젝트/브랜치-전략.md](./docs/05_Unity프로젝트/브랜치-전략.md)**
-
----
-
-## 라이선스
-
-코드: 강의용. 에셋: [Kenney](https://kenney.nl) CC0 — 상세는 [에셋-리소스.md](./docs/00_기획/에셋-리소스.md).
+| 브랜치 | 내용 |
+|---|---|
+| `Chapter_1/Week1` | 7주차 (031–035) |
+| `Chapter_1/Week2` | 8주차 (036–040) |
+| `Chapter_1/Week3` | 9주차 (041–045) |
+| `Chapter_1/Week4` | 10주차 (046–050) ← 지금 여기 |
+| `Chapter_1/Week5` | 11주차 (051–055) |
+| `Chapter_1/Week6` | 12주차 (056–060) |
+| `Chapter_1/Week7` | 13주차 (061–065) |
+| `Chapter_1/Full` | 1단계 전체 (031–065) |
+| `main` | 전체 과정 — WaveBreaker 본 게임까지 |
