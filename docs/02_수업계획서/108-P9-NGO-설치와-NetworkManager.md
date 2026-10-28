@@ -75,7 +75,7 @@
 | **Multiplayer Play Mode** | 2.0.2 | 에디터 하나로 2인 테스트 (110회차) |
 | Multiplayer Tools | 2.2.11 | 네트워크 프로파일러 |
 | Services Core | 1.18.0 | 아래 둘의 바탕 |
-| Authentication | 3.7.4 | Relay 를 쓰려면 필요 |
+| Authentication | 3.8.0 | Relay 를 쓰려면 필요 |
 | **Relay** | 1.2.0 | 인터넷 접속 (124회차) |
 
 > 💬 "뒤의 셋은 **25주차**에 씁니다. 그런데 지금 같이 깝니다."

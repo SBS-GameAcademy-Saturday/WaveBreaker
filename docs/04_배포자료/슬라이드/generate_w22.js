@@ -330,15 +330,15 @@ function body(s, x, y, w, text, h) {
     ["패키지", 5.0, "strong", INK], ["버전", 1.8, "code", MUTED], ["왜", 4.87, "", MUTED],
   ], [
     ["Netcode for GameObjects", "2.13.2", "본체. 동기화를 해준다"],
-    ["Multiplayer Play Mode", "2.0.2", "에디터 하나로 2인 테스트"],
+    ["Multiplayer Play Mode", "3.0.0", "에디터 하나로 2인 테스트"],
     ["Multiplayer Tools", "2.2.11", "네트워크 프로파일러"],
     ["Services Core", "1.18.0", "아래 둘의 바탕"],
-    ["Authentication", "3.7.4", "Relay 를 쓰려면 필요"],
+    ["Authentication", "3.8.0", "Relay 를 쓰려면 필요"],
     ["Relay", "1.2.0", "인터넷 접속 (124회차)"],
   ], null, 0.46);
 
   const y2 = h3(s, M, y1 + 0.24, CW, "뒤의 셋은 25주차에 쓴다. 그래도 지금 같이 깐다.");
-  body(s, M, y2, CW, "Unity 6.5(6000.5.4f1) 기준 버전이다. 설치는 하나씩 끝나고 다음 걸 한다. 인터넷이 느리면 5분 이상 걸린다 — 중간에 유니티를 끄지 않는다.", 0.5);
+  body(s, M, y2, CW, "Unity 6.6(6000.6.3f1) 기준 버전이다. 설치는 하나씩 끝나고 다음 걸 한다. 인터넷이 느리면 5분 이상 걸린다 — 중간에 유니티를 끄지 않는다.", 0.5);
   s.addNotes("설치에서 막히면 그 주가 통째로 날아간다. 그래서 한 회차를 설치와 설정에만 쓴다.");
 }
 

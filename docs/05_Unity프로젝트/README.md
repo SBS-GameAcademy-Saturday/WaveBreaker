@@ -144,7 +144,7 @@ A 2D co-op wave defense game built step by step in a 7-month Unity course for ab
 
 | 항목 | 값 | 비고 |
 |---|---|---|
-| Unity 버전 | **Unity 6000.5.4f1** | `ProjectSettings/ProjectVersion.txt` 기준. MPPM이 Unity 6 이상 요구 |
+| Unity 버전 | **Unity 6000.6.3f1** | `ProjectSettings/ProjectVersion.txt` 기준. MPPM이 Unity 6 이상 요구 |
 | 템플릿 | **Universal 2D (URP)** | Unity 6 Hub의 2D 템플릿 기본값. 아래 ⚠️ 참고 |
 | 프로젝트명 | **`WaveBreaker`** | 영문. 한글 금지 (2장 참고) |
 | 경로 | `C:\Unity\WaveBreaker` | ⚠️ **한글·공백 절대 금지** — 21주차 빌드에서 터진다 |
@@ -215,7 +215,7 @@ Assets/
 |---|---|---|
 | **TextMeshPro** | UI 텍스트 | Unity 6에서는 uGUI 패키지에 포함. 별도 설치 불필요 |
 | **2D Sprite / 2D Tilemap** | 기본 2D | 2D 템플릿에 기본 포함 |
-| **Input System** | 설치됨 (1.19.0) | ⚠️ 설치는 돼 있으나 **수업에서는 쓰지 않는다.** 구 `Input.GetAxis`로 간다 (아래 참고) |
+| **Input System** | 설치됨 (1.20.0) | ⚠️ 설치는 돼 있으나 **수업에서는 쓰지 않는다.** 구 `Input.GetAxis`로 간다 (아래 참고) |
 
 > ⚠️ **Input System을 가르치지 않는 이유**: Action Map·Binding 개념이 노베이스에게 큰 벽이고,
 > 8주차에 이걸로 1주를 쓰면 게임 제작 시간이 사라진다. 구 Input Manager로 충분하다.

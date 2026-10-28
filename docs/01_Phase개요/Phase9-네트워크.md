@@ -21,16 +21,19 @@
 
 ## 🔧 기술 스택
 
-> ✅ **2026-09-03 · 실제로 설치하고 검증한 버전** (Unity 6.5 / 6000.5.4f1)
+> 📌 **2026-10-29 현재 프로젝트 버전** (Unity 6.6 / 6000.6.3f1)
 >
 > | 패키지 | 버전 | 비고 |
 > |---|---|---|
 > | `com.unity.netcode.gameobjects` | **2.13.2** | |
-> | `com.unity.multiplayer.playmode` | **2.0.2** | ⚠️ **문서만 들어 있다.** 기능은 에디터 내장 |
+> | `com.unity.multiplayer.playmode` | **3.0.0** | ⚠️ **문서만 들어 있다.** 기능은 에디터 내장 |
+> | `com.unity.multiplayer.center` | 2.0.1 | |
 > | `com.unity.multiplayer.tools` | 2.2.11 | 네트워크 프로파일러 |
 > | `com.unity.services.core` | 1.18.0 | |
-> | `com.unity.services.authentication` | 3.7.4 | Relay 선행 |
+> | `com.unity.services.authentication` | 3.8.0 | Relay 선행 |
 > | `com.unity.services.relay` | 1.2.0 | 124회차 |
+>
+> ⚠️ **2인 접속 검증(2026-09-03)은 6000.5.4f1 / MPPM 2.0.2 에서 한 것이다.** MPPM 이 메이저로 올라갔으므로 아래 메모리·제약 수치는 재검증 전까지 그대로 믿지 않는다.
 >
 > 🚨 **설치 직후에는 `Window → Multiplayer` 메뉴가 없다. 에디터를 재시작해야 생긴다.**
 > 강사가 실제로 겪었고, 108회차 강의안의 '오늘 1등 사고' 로 넣었다.
