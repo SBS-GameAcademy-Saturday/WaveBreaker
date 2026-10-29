@@ -34,6 +34,14 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
+    // 075회차 · 처치 수. 몬스터가 죽을 때 Enemy.Die() 가 올려 준다.
+    public int Kills { get; private set; }
+
+    public void AddKill()
+    {
+        Kills++;
+    }
+
     public void ChangeState(GameState next)
     {
         State = next;
