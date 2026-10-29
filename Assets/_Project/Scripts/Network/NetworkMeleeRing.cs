@@ -10,7 +10,7 @@ using UnityEngine;
 //
 // 🚨 그래서 회전 각도는 사람마다 조금씩 다르다. 눈으로는 안 보이지만
 //    피해 판정을 각자 하면 결과가 갈린다. 그래서 **때리는 건 서버만** 한다(117 규칙).
-public class NetworkMeleeRing : NetworkBehaviour
+public class NetworkMeleeRing : NetworkBehaviour, IWeapon
 {
     [SerializeField] private GameObject bladePrefab;      // 그림용. 네트워크 오브젝트가 아니다
     [SerializeField] private float radius = 1.6f;

@@ -9,7 +9,7 @@ using UnityEngine;
 //    ③ "지금 휘둘렀다"      → Rpc (한순간의 사건이라 값으로 둘 수 없다)
 //
 //    115회차에서 배운 구분이다. **남아 있는 값은 NetworkVariable, 순간의 사건은 Rpc.**
-public class NetworkSwordSlash : NetworkBehaviour
+public class NetworkSwordSlash : NetworkBehaviour, IWeapon
 {
     [SerializeField] private GameObject slashEffect;
     [SerializeField] private SpriteRenderer bodySprite;
@@ -39,8 +39,7 @@ public class NetworkSwordSlash : NetworkBehaviour
 
         Interval.Value = baseInterval;
 
-        // 🔑 시작 무기는 이것 하나다. 총·회전 칼은 레벨업으로 얻는다.
-        HasSlash.Value = true;
+        // 🔑 여기서 스스로 얻지 않는다. 시작 무기는 NetworkStartingWeapons 가 정한다.
     }
 
     // 바라보는 쪽. 그 사람이 정한 값을 서버도 그대로 읽는다.

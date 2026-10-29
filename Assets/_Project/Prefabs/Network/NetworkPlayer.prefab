@@ -25,6 +25,7 @@ GameObject:
   - component: {fileID: 3990955616747776981}
   - component: {fileID: 3673911501437712513}
   - component: {fileID: 191798356348762753}
+  - component: {fileID: 3003397098042299420}
   m_Layer: 0
   m_Name: NetworkPlayer
   m_TagString: Untagged
@@ -506,3 +507,18 @@ MonoBehaviour:
       MinSecondsBetweenUpdates: 0
       MaxSecondsBetweenUpdates: 0
     m_InternalValue: 1.2
+--- !u!114 &3003397098042299420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5725980634694826839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db1670aa13c13bc4dbe7ec3f4a32af61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NetworkStartingWeapons
+  ShowTopMostFoldoutHeaderGroup: 1
+  weapons:
+  - {fileID: 6985552290004032150}

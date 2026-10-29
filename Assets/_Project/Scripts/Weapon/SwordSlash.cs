@@ -12,7 +12,7 @@ using UnityEngine;
 //
 // 판정은 **고정된 네모**다 (부채꼴이 아니다).
 //   앞쪽으로 width 만큼, 위아래로 height 만큼. 어디를 봐도 넓이가 같다.
-public class SwordSlash : MonoBehaviour
+public class SwordSlash : MonoBehaviour, IWeapon
 {
     [SerializeField] private GameObject slashEffect;
     [SerializeField] private SpriteRenderer bodySprite;      // 뒤집힘(flipX)을 보고 방향을 정한다
@@ -33,8 +33,7 @@ public class SwordSlash : MonoBehaviour
         anim = GetComponentInParent<Animator>();
         if (bodySprite == null) bodySprite = GetComponent<SpriteRenderer>();
 
-        // 🔑 시작 무기는 이것 하나다. 나머지(총·회전 칼)는 레벨업으로 얻는다.
-        Acquire();
+        // 🔑 여기서 스스로 얻지 않는다. 시작 무기는 StartingWeapons 가 정한다.
     }
 
     public void Acquire()

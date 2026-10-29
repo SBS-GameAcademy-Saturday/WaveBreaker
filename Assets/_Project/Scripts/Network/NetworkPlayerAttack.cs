@@ -10,7 +10,7 @@ using UnityEngine;
 //
 //    그래서 "때렸다" 고 **알리고**, 판정은 서버가 한다.
 //    알리는 방법이 Rpc 다.
-public class NetworkPlayerAttack : NetworkBehaviour
+public class NetworkPlayerAttack : NetworkBehaviour, IWeapon
 {
     [SerializeField] private float range = 3f;
     [SerializeField] private int damage = 3;

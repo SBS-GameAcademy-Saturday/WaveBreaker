@@ -8,7 +8,7 @@ using UnityEngine;
 // 088회차 · 시작 수치를 WeaponData(SO)에서 읽는다.
 // 103회차 · 총알을 서랍에서 꺼낸다. 방향은 꺼낼 때 같이 준다 —
 //   OnEnable 이 transform.up 을 보고 속도를 정하므로 그 전에 회전이 정해져 있어야 한다.
-public class AutoGun : MonoBehaviour
+public class AutoGun : MonoBehaviour, IWeapon
 {
     [SerializeField] private WeaponData data;
     [SerializeField] private GameObject projectilePrefab;

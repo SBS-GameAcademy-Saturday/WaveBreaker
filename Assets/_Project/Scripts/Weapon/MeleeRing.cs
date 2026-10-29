@@ -6,7 +6,7 @@ using UnityEngine;
 //
 // 086회차 · 회전 속도·피해도 업그레이드된다.
 // 088회차 · 시작 수치를 WeaponData(SO)에서 읽는다. 그 뒤 변하는 값은 여기 런타임 필드다.
-public class MeleeRing : MonoBehaviour
+public class MeleeRing : MonoBehaviour, IWeapon
 {
     [SerializeField] private WeaponData data;
     [SerializeField] private GameObject bladePrefab;
