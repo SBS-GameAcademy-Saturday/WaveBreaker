@@ -227,6 +227,47 @@ SO  →  (Awake 에서 한 번 복사)  →  런타임 필드  →  게임 중�
 > 💬 "업그레이드로 값이 올라도 **SO 파일은 그대로**입니다. 다음 판은 다시 원래 값으로 시작해요."
 > 💬 "만약 SO 를 직접 고쳤다면? **한 판 할 때마다 영구히 세지는** 게임이 됩니다."
 
+#### 함정 둘째 — 에셋 칸이 비면 터진다
+
+> 💬 "`Data` 칸을 **비워 놓고** Play 해보세요."
+
+▶ `Enemy_Charger` 프리팹의 `Data` 칸을 비우고 Play → **`NullReferenceException`**
+
+```
+NullReferenceException: Object reference not set to an instance of an object
+Enemy.Start () (at Assets/_Project/Scripts/Enemy/Enemy.cs:..)
+```
+
+> 💬 "`data.maxHealth` 를 읽는데 `data` 가 없어서예요. 040에서 본 그 에러입니다."
+
+**그래서 필드를 지우지 않는다.**
+
+```csharp
+[SerializeField] private EnemyData data;
+
+// 기존 필드를 **남겨 둔다**
+[SerializeField] protected int maxHealth = 10;
+[SerializeField] protected float moveSpeed = 2f;
+
+protected virtual void Start()
+{
+    // 🔑 에셋이 있으면 덮어쓴다. 없으면 Inspector 값 그대로 간다.
+    if (data != null)
+    {
+        maxHealth = data.maxHealth;
+        moveSpeed = data.moveSpeed;
+    }
+
+    currentHealth = maxHealth;
+}
+```
+
+> 🔑 💬 "`if (data != null)` 한 줄이 **에셋을 깜빡해도 게임이 도는** 안전장치입니다."
+> 💬 "그리고 오늘은 **돌진형만** SO 로 바꿉니다. 러너·탱커는 아직 Inspector 값으로 돌아요."
+> 💬 "이 한 줄 덕분에 **섞여 있어도 됩니다.** 088에서 나머지를 옮겨요."
+
+> 💡 이게 087이 "하나만 바꾼다" 로 끝낼 수 있는 이유다. 한 번에 다 안 바꿔도 된다.
+
 ---
 
 ## 01:05–01:35 · 개인 미션
