@@ -9,6 +9,7 @@
 | 회차 | 066–070 (5회차 · 10시간) |
 | 씬 | `Game.unity` 하나 — 이 씬이 21주차까지 자란다 |
 | 스크립트 | 9개 |
+| 패키지 | `com.unity.cinemachine` 6.6.0 추가 |
 | 결과물 | 끝나지 않는 들판을 돌아다니고, 오크에게 부딪히면 피가 깎인다 |
 
 ## 이번 주 5회차
@@ -34,11 +35,12 @@
 → [강의안](./docs/02_수업계획서/067-P5-플레이어-이동과-반전.md)
 
 ### 068 · 카메라 추적
-**배우는 것** — **`LateUpdate`**, `Vector3.SmoothDamp`
+**배우는 것** — **`LateUpdate`**, `Vector3.SmoothDamp`, **시네머신**
 - `Update` 에 쓰면 카메라가 떠는 것을 **직접 겪는다**
 - 왜 `LateUpdate` 여야 하는지 설명한다
+- 손으로 짠 뒤 **시네머신으로 갈아 끼운다** — `smoothTime` 이 `Damping` 이 될 뿐 하는 일은 같다
 
-`Scripts/Manager/CameraFollow.cs`
+`Scripts/Manager/CameraFollow.cs` (손으로 짜는 단계 · 씬에는 시네머신이 붙어 있다)
 → [강의안](./docs/02_수업계획서/068-P5-카메라-추적.md)
 
 ### 069 · 무한 맵
@@ -89,7 +91,8 @@ Assets/
 | 오브젝트 | 붙은 것 |
 |---|---|
 | `GameManager` | `GameManager` |
-| `Main Camera` | `CameraFollow` (target = Player, smoothTime 0.15) |
+| `Main Camera` | `CinemachineBrain` |
+| `CM_PlayerCamera` | `CinemachineCamera` (Follow = Player) · `CinemachinePositionComposer` (Damping 0.5 / 0.5) |
 | `Player` (tag `Player`) | Soldier 스프라이트 · `Rigidbody2D` · `CapsuleCollider2D` · `PlayerInput` · `PlayerController` · `PlayerHealth` |
 | `Ground` | `InfiniteGround` (tileSize 20, 3×3) + 타일 9장 |
 | `Orc_Charger` | Orc 스프라이트 · `ChargerEnemy` · `Animator(Orc)` |
