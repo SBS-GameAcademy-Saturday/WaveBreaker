@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 8594d7e1f9d2140aeb686c19001bc4bd
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 358058
+  packageName: GUI Pro - Minimal Game Dark
+  packageVersion: 2.0.0
+  assetPath: Assets/Layer Lab/GUI Pro-MinimalGame/Theme_Blue/Prefabs/Prefabs_HUD/ToastMessage_01.prefab
+  uploadId: 1018740

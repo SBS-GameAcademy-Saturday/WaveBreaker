@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a072e4c9f5bd6472fbc95eeace08dbe3
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 358058
+  packageName: GUI Pro - Minimal Game Dark
+  packageVersion: 2.0.0
+  assetPath: Assets/Layer Lab/GUI Pro-MinimalGame/Theme_Blue/Prefabs/Prefabs~DemoLayout/ListItem_GuildMember.prefab
+  uploadId: 1018740
