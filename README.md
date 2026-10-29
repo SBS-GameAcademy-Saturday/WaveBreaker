@@ -1,120 +1,103 @@
-# WaveBreaker · 웨이브 브레이커
+# Chapter 2 · 14주차 — 본 프로젝트 착수와 무한 맵
 
-코딩을 처음 배우는 수강생이 **7개월 과정에서 단계별로 완성하는 2D 협동 웨이브 디펜스 게임.**
-Unity 6 LTS + C#, 싱글 플레이와 2인 협동(Netcode for GameObjects + Relay)을 모두 지원합니다.
-수업용 템플릿과 구간별 스냅샷을 제공합니다.
+> **이 브랜치(`Chapter_2/Week1`)에는 14주차(066–070회차) 수업 내용만 들어 있습니다.**
+> Chapter 1 실습 씬은 없습니다. `Chapter_1/Week1`~`Week7` 에 있습니다.
 
 | | |
 |---|---|
-| 과정 | 게임개발 입문 · 7개월 = 28주 = 140회 (280시간) |
-| 대상 | 코딩 경험 0, 연령대 혼합 · 비대면 실시간 |
-| 엔진 | Unity 6 LTS (마이너 버전 미확정) |
-| 네트워크 | Netcode for GameObjects + Relay (호스트 권한) |
-| 에셋 | Kenney CC0 필수 6팩 |
+| Phase | 5 · 본 프로젝트 코어 (첫 주) |
+| 회차 | 066–070 (5회차 · 10시간) |
+| 씬 | `Game.unity` 하나 — 이 씬이 21주차까지 자란다 |
+| 스크립트 | 9개 |
+| 결과물 | 끝나지 않는 들판을 돌아다니고, 오크에게 부딪히면 피가 깎인다 |
 
----
+## 이번 주 5회차
 
-## 📚 강의 문서
+### 066 · 본 프로젝트 착수
+**배우는 것** — 폴더 규칙, `enum` 게임 상태, **설계 규칙 2가지**
+- `GameState` 를 `bool` 여러 개가 아니라 `enum` 으로 두는 이유를 말한다
+- 규칙 ① **몬스터를 만드는 곳은 스포너 한 곳뿐이다**
+- 규칙 ② **입력을 읽는 코드와 움직이는 코드를 나눈다**
 
-강의 설계·커리큘럼·회차별 강의안은 전부 **[`docs/`](./docs/README.md)** 에 있습니다. 여기서부터 읽으세요.
+> 이 두 규칙은 22주차 네트워크를 위한 것이다. 지금은 네트워크를 한마디도 하지 않는다.
 
-| 문서 | 내용 |
+`Scripts/Manager/GameManager.cs`
+→ [강의안](./docs/02_수업계획서/066-P5-본프로젝트-착수.md)
+
+### 067 · 플레이어 이동과 반전
+**배우는 것** — `PlayerInput` / `PlayerController` 분리, `flipX` 좌우 반전
+- 입력과 이동을 **다른 스크립트로** 나눈다 ← 규칙 ②
+- `.normalized` 를 빼면 대각선이 빨라지는 것을 확인한다
+- 손을 뗐을 때 캐릭터가 홱 돌아가지 않게 조건을 건다
+
+`Scripts/Player/PlayerInput.cs` · `PlayerController.cs`
+→ [강의안](./docs/02_수업계획서/067-P5-플레이어-이동과-반전.md)
+
+### 068 · 카메라 추적
+**배우는 것** — **`LateUpdate`**, `Vector3.SmoothDamp`
+- `Update` 에 쓰면 카메라가 떠는 것을 **직접 겪는다**
+- 왜 `LateUpdate` 여야 하는지 설명한다
+
+`Scripts/Manager/CameraFollow.cs`
+→ [강의안](./docs/02_수업계획서/068-P5-카메라-추적.md)
+
+### 069 · 무한 맵
+**배우는 것** — 타일 순환, `foreach (Transform t in transform)`
+- 바닥 타일 **3×3** 을 깐다
+- 멀어진 타일을 반대편으로 옮긴다 — 맵을 넓게 만들지 않는다
+
+`Scripts/Map/InfiniteGround.cs`
+→ [강의안](./docs/02_수업계획서/069-P5-무한-맵.md)
+
+### 070 · Enemy 와 IDamageable ⭐
+**배우는 것** — `abstract` · `virtual/override` · `interface` **를 유니티에서**
+- 6주차에 콘솔로 짠 `Enemy` 상속과 `IDamageable` 을 **그대로 꺼낸다**
+- `base.Start()` 를 빼면 체력이 0 으로 시작하는 것을 확인한다
+- 플레이어도 `IDamageable` 을 단다 — 때리는 쪽은 상대가 뭔지 모른다
+
+`Scripts/IDamageable.cs` · `Enemy/Enemy.cs` · `Enemy/ChargerEnemy.cs` · `Player/PlayerHealth.cs`
+→ [강의안](./docs/02_수업계획서/070-P5-Enemy와-IDamageable.md)
+
+## 이 브랜치에 있는 것
+
+```
+Assets/
+├── _Project/
+│   ├── Scenes/Game.unity ········ 이번 주에 만든 씬
+│   ├── Scripts/ ················· 9개 (아래)
+│   └── Animation/ ··············· Orc 클립 5 + 컨트롤러
+└── _GameAssets/ ················· 에셋 팩 (교체 완료본)
+    ├── Character/ ··············· Tiny RPG — Soldier · Orc
+    ├── Environment/Cainos/ ······ 바닥 타일
+    ├── Action RPG SFX V2/ ······· 효과음
+    ├── Action RPG Music 1.6/ ···· BGM
+    ├── Layer Lab/ ··············· GUI
+    ├── Effect and FX Pixel All Free/
+    ├── Items/ · Fonts/
+```
+
+| 스크립트 | 회차 |
 |---|---|
-| [docs/README.md](./docs/README.md) | ★ 문서 허브 — 전체 진행표 · 설계 원칙 · 현재 상태 |
-| [00_기획/주차별-커리큘럼표.md](./docs/00_기획/주차별-커리큘럼표.md) | 기관 제출용 28주 표 (+ [.xlsx](./docs/00_기획/유니티_커리큘럼_7개월.xlsx)) |
-| [00_기획/확정-게임기획서.md](./docs/00_기획/확정-게임기획서.md) | ★ 이 게임의 목표 사양서 (Phase 5~9) |
-| [00_기획/커리큘럼-로드맵.md](./docs/00_기획/커리큘럼-로드맵.md) | 왜 이렇게 설계했는가 |
-| [00_기획/에셋-리소스.md](./docs/00_기획/에셋-리소스.md) | Kenney CC0 팩 선정 · 임포트 · 라이선스 |
-| [01_Phase개요/](./docs/01_Phase개요/README.md) | Phase 0~10 목표 · 회차 배분 · 종료 조건 |
-| [02_수업계획서/](./docs/02_수업계획서/README.md) | 회차별 하루 강의안 (001~140) |
-| [03_운영/강의-운영-매뉴얼.md](./docs/03_운영/강의-운영-매뉴얼.md) | 수업 운영 · 진도 관리 |
-| [04_배포자료/](./docs/04_배포자료/README.md) | 학생 배포물 (에셋 패키지 · 가이드 · 스냅샷) |
-| [05_Unity프로젝트/](./docs/05_Unity프로젝트/README.md) | ★ 이 저장소의 규격 · 폴더 구조 · 패키지 |
-| [05_Unity프로젝트/스크립트-설계.md](./docs/05_Unity프로젝트/스크립트-설계.md) | 클래스 구조 · 상속 · 인터페이스 설계 |
-| [05_Unity프로젝트/브랜치-전략.md](./docs/05_Unity프로젝트/브랜치-전략.md) | ★ 주차별 · 컨텐츠별 브랜치 규칙과 작업 흐름 |
+| `Manager/GameManager.cs` | 066 |
+| `Player/PlayerInput.cs` · `PlayerController.cs` | 067 |
+| `Manager/CameraFollow.cs` | 068 |
+| `Map/InfiniteGround.cs` | 069 |
+| `IDamageable.cs` · `Enemy/Enemy.cs` · `Enemy/ChargerEnemy.cs` · `Player/PlayerHealth.cs` | 070 |
 
----
+## 씬 구성
 
-## 🗺 과정 한눈에
+| 오브젝트 | 붙은 것 |
+|---|---|
+| `GameManager` | `GameManager` |
+| `Main Camera` | `CameraFollow` (target = Player, smoothTime 0.15) |
+| `Player` (tag `Player`) | Soldier 스프라이트 · `Rigidbody2D` · `CapsuleCollider2D` · `PlayerInput` · `PlayerController` · `PlayerHealth` |
+| `Ground` | `InfiniteGround` (tileSize 20, 3×3) + 타일 9장 |
+| `Orc_Charger` | Orc 스프라이트 · `ChargerEnemy` · `Animator(Orc)` |
 
-> **C# 선행.** 1~4주차 C# 문법 전용(콘솔) → 5~6주차 객체지향 → **7주차부터 C# + 유니티 병행**
+## 브랜치
 
-| Phase | 회차 | 주차 | 주제 | 이 구간이 끝나면 |
-|---|---|---|---|---|
-| 0 | 001–020 | 1–4주 | C# 기초 (콘솔) | 콘솔 프로그램 단독 제작 |
-| 1 | 021–030 | 5–6주 | C# 객체지향 | 상속·인터페이스로 몬스터 클래스 설계 |
-| 2 | 031–040 | 7–8주 | 유니티 입문 | 키보드로 움직이는 캐릭터 |
-| 3 | 041–055 | 9–11주 | 유니티 2D 핵심 | 충돌·프리팹·코루틴·체력 |
-| 4 | 056–065 | 12–13주 | 미니게임 3개 완주 | 끝까지 만든 게임 3개 |
-| 5 | 066–080 | 14–16주 | 본 프로젝트 코어 | 코어 루프 + 무기·몬스터 3종 |
-| 6 | 081–090 | 17–18주 | 콘텐츠 · 데이터 | 업그레이드 · 보스까지 |
-| 7 | 091–100 | 19–20주 | UI · 연출 | 타이틀~결과 완결 |
-| 8 | 101–105 | 21주 | **싱글 완성 & 빌드** | ✅ **완성된 게임 (안전장치)** |
-| 9 | 106–125 | 22–25주 | 네트워크 협동 | 친구와 같이 하는 게임 |
-| 10 | 126–130 | 26주 | 배포 · 발표 | 공유 링크 + 시연 영상 |
-| — | 131–140 | 27–28주 | 버퍼 | 밀린 진도 / 개인 확장 |
-
----
-
-## 📦 이 저장소가 담는 것
-
-이 저장소는 강의에서 쓰는 **레퍼런스 프로젝트(강사용 완성본)** 입니다.
-학생 배포용 **템플릿**과 Phase별 **스냅샷**은 여기서 파생시킵니다 — 자세한 관리 규칙은
-[05_Unity프로젝트/README.md](./docs/05_Unity프로젝트/README.md) 참고.
-
-| # | 이름 | 용도 |
-|---|---|---|
-| ① | 레퍼런스 (이 저장소) | 강사가 끝까지 만들어 둔 정답 프로젝트 |
-| ② | 템플릿 | 폴더 구조 · 에셋 · 설정만 끝난 빈 프로젝트 (14주차 배포) |
-| ③ | 스냅샷 | 각 Phase 종료 시점을 잘라낸 것 (뒤처진 학생 재합류용) |
-
-### 저장소 구조
-
-```
-WaveBreaker/            ← 저장소 루트 = Unity 프로젝트 루트
-├── README.md           지금 이 파일
-├── Assets/             씬 · 스크립트 · 에셋
-├── Packages/           manifest.json (패키지 목록)
-├── ProjectSettings/    프로젝트 설정
-├── tools/              lesson.ps1 (브랜치 헬퍼)
-└── docs/               강의 문서 전체
-```
-
-> `Library/` · `Temp/` · `Logs/` · `UserSettings/` · `*.csproj` · `*.sln` 은 `.gitignore` 처리됨.
-
-### 경로 규칙
-
-> ⚠️ 프로젝트 경로 **전체에 한글·공백이 없어야 합니다.** 권장: `C:\Unity\WaveBreaker`
-
----
-
-## 🌿 브랜치 운용
-
-수업 준비는 **주차별 · 컨텐츠별 브랜치**로 나눠서 진행합니다. `main`에는 직접 커밋하지 않습니다.
-
-| 브랜치 | 예시 | 역할 |
-|---|---|---|
-| `main` | `main` | 항상 동작하는 최신 진행분. 언제 잘라도 학생에게 줄 수 있는 상태 |
-| `week/NN` | `week/07` | 그 주 5회차 분량 준비 |
-| `feat/<주제>` | `feat/player-move` | 주차 안에서 기능 하나 단위 |
-| `snapshot/<이름>` | `snapshot/P8_Final_Single` | 학생 배포용 고정점. 만든 뒤 건드리지 않음 |
-
-```bash
-./tools/lesson.ps1 week 7
-```
-
-```bash
-./tools/lesson.ps1 feat player-move
-```
-
-```bash
-./tools/lesson.ps1 done
-```
-
-전체 규칙 · 주차↔회차↔Phase 대응표: **[docs/05_Unity프로젝트/브랜치-전략.md](./docs/05_Unity프로젝트/브랜치-전략.md)**
-
----
-
-## 라이선스
-
-코드: 강의용. 에셋: [Kenney](https://kenney.nl) CC0 — 상세는 [에셋-리소스.md](./docs/00_기획/에셋-리소스.md).
+| | |
+|---|---|
+| `Chapter_1/Week1`~`Week7` | 유니티 기초 (031–065) |
+| **`Chapter_2/Week1`** | **← 지금 여기** (066–070) |
+| `main` | 전체 과정 문서 + Chapter 1 |
