@@ -1,30 +1,16 @@
 using UnityEngine;
 
-// 072회차 · 러너. 빠르지만 **처음 본 방향으로만** 간다.
+// 072회차 · 러너. 빠르고 약하다. **떼로 몰려온다.**
 //
-// 🔑 Move() 하나만 덮어쓴다. 체력·피해·죽는 법은 부모 것을 그대로 쓴다.
-//    이게 상속이 일하는 모습이다.
+// 🔑 움직이는 법은 오크와 같다 — 플레이어를 향해 직진.
+//    다른 건 **수치**(빠르고 약하다)와 **나오는 방법**(WaveManager 가 떼로 뿌린다)뿐이다.
+//    뱀서류가 적 종류를 늘리는 방식이 이렇다. 한 마리씩 보면 다 비슷하고,
+//    **어떻게 쏟아지느냐**가 체감을 만든다.
 public class RunnerEnemy : Enemy
 {
-    private Vector2 chargeDir;
-    private bool aimed;
-
     protected override void Start()
     {
         base.Start();   // 🚨 빼면 체력이 0 이고 player 도 못 찾는다
         Debug.Log($"{name} : 러너 등장 (체력 {maxHealth}, 속도 {moveSpeed})");
-    }
-
-    protected override void Move()
-    {
-        // 처음 한 번만 플레이어를 본다. 그 뒤로는 안 꺾는다.
-        if (!aimed)
-        {
-            chargeDir = ((Vector2)player.position - rb.position).normalized;
-            sprite.flipX = chargeDir.x < 0f;
-            aimed = true;
-        }
-
-        rb.linearVelocity = chargeDir * moveSpeed;
     }
 }
