@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31d9c28dd39849d489ac5fec220446cf, type: 3}
+  m_Name: Weapon_Blade
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  title: "\uD68C\uC804 \uCE7C"
+  icon: {fileID: 21300000, guid: 4e1344591adef4c618d6471e9d096390, type: 3}
+  kind: 0
+  projectilePrefab: {fileID: 2591170818231123025, guid: 8f126c1db3707754c9538f0c978e43c2, type: 3}
+  bodySprite: {fileID: 0}
+  levels:
+  - damage: 4
+    interval: 0.25
+    range: 1.9
+    count: 2
+    speed: 200
+  - damage: 7
+    interval: 0.25
+    range: 2.02
+    count: 2
+    speed: 220
+  - damage: 10
+    interval: 0.25
+    range: 2.1399999
+    count: 3
+    speed: 240
+  - damage: 13
+    interval: 0.25
+    range: 2.26
+    count: 3
+    speed: 260
+  - damage: 16
+    interval: 0.25
+    range: 2.3799999
+    count: 4
+    speed: 280
+  - damage: 19
+    interval: 0.25
+    range: 2.5
+    count: 4
+    speed: 300
+  - damage: 22
+    interval: 0.25
+    range: 2.62
+    count: 5
+    speed: 320

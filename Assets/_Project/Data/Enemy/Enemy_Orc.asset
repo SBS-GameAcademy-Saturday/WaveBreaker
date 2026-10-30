@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95407feaa0a30954d859643c02879a6a, type: 3}
+  m_Name: Enemy_Orc
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyData
+  title: "\uC624\uD06C"
+  animator: {fileID: 9100000, guid: 2a8d04d0a8793e843a13ebf9c5eebc27, type: 2}
+  sprite: {fileID: 4684342976254856162, guid: 7a41f849b595f554bac99017169b4394, type: 3}
+  scale: 1
+  tint: {r: 1, g: 1, b: 1, a: 1}
+  maxHealth: 20
+  contactDamage: 4
+  moveSpeed: 2
+  damageReduction: 0
+  gemExp: 1
+  isBoss: 0
+  isFinalBoss: 0

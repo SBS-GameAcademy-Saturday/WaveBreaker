@@ -1,88 +1,131 @@
 using UnityEngine;
 
-// 070회차 · 6주차 콘솔의 Enemy 를 유니티로 옮긴 것. 상속 구조는 그대로다.
-// 071회차 · 플레이어를 쫓아온다. 쫓아오는 방법을 Move() 로 떼어 둔다.
-// 072회차 · TakeDamage 를 virtual 로 연다 — 탱커가 덮어쓴다.
+// 몬스터 하나. **종류는 EnemyData 가 정한다.**
 //
-// 🔑 abstract 라서 이 자체로는 씬에 못 붙인다. 반드시 자식을 만들어야 한다.
-//    "몬스터 일반" 이라는 건 세상에 없다. 돌진형이거나 러너거나 탱커다.
-public abstract class Enemy : MonoBehaviour, IDamageable
+// 🔑 클래스를 종류마다 나누지 않는다. 숫자와 그림이 다를 뿐이면 에셋이면 된다.
+//    행동이 다른 것(보스)만 자식으로 만든다.
+public class Enemy : MonoBehaviour, IDamageable
 {
-    [SerializeField] protected int maxHealth = 10;
-    [SerializeField] protected int damage = 1;
+    [SerializeField] protected EnemyData data;
+
+    // 🚨 data 가 없을 때를 위한 기본값. 씬에 손으로 놓아도 돌아간다.
+    [Header("data 가 없을 때 쓰는 값")]
+    [SerializeField] protected int maxHealth = 20;
+    [SerializeField] protected int contactDamage = 2;
     [SerializeField] protected float moveSpeed = 2f;
 
     protected int currentHealth;
+    protected float damageReduction;
     protected Rigidbody2D rb;
     protected SpriteRenderer sprite;
     protected Transform player;
+    protected Flicker flicker;
+
+    private float healthScale = 1f;
+    private bool dead;
+
+    public EnemyData Data => data;
+    public bool IsBoss => data != null && data.isBoss;
+
+    // 🔑 WaveManager 가 스폰 직후 부른다. Start() 보다 먼저 들어간다.
+    public void Setup(EnemyData d, float scale = 1f)
+    {
+        data = d;
+        healthScale = scale;
+        ApplyData();
+    }
 
     protected virtual void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponent<SpriteRenderer>();
+        flicker = GetComponent<Flicker>();
     }
 
-    // 🚨 virtual 을 안 붙이면 자식이 Start 를 쓰는 순간 이쪽이 안 불린다.
-    //    체력이 0 인 채로 태어난다.
+    protected void ApplyData()
+    {
+        if (data == null) return;
+
+        maxHealth = data.maxHealth;
+        contactDamage = data.contactDamage;
+        moveSpeed = data.moveSpeed;
+        damageReduction = data.damageReduction;
+
+        if (sprite != null)
+        {
+            if (data.sprite != null) sprite.sprite = data.sprite;
+            sprite.color = data.tint;
+        }
+        if (flicker != null) flicker.SetBaseColor(data.tint);
+
+        var anim = GetComponent<Animator>();
+        if (anim != null && data.animator != null) anim.runtimeAnimatorController = data.animator;
+
+        transform.localScale = Vector3.one * data.scale;
+    }
+
     protected virtual void Start()
     {
-        currentHealth = maxHealth;
+        ApplyData();
+        currentHealth = Mathf.Max(Mathf.RoundToInt(maxHealth * healthScale), 1);
 
         GameObject found = GameObject.FindWithTag("Player");
-
-        if (found != null)
-        {
-            player = found.transform;
-        }
+        if (found != null) player = found.transform;
     }
 
     protected virtual void FixedUpdate()
     {
-        if (player == null) return;
-
+        if (player == null || dead) return;
         Move();
     }
 
-    // 🔑 071회차 · 지금은 자식이 아무도 안 덮어쓴다. 그런데 virtual 로 열어 둔다.
-    //    072회차에 러너가 "안 꺾고 직진" 으로 덮어쓸 자리다.
-    //    나중에 열려면 그때 FixedUpdate 를 통째로 뜯어야 한다.
     protected virtual void Move()
     {
-        // 방향 = 목표 − 나. 063회차에서 한 그대로다.
         Vector2 dir = ((Vector2)player.position - rb.position).normalized;
 
         rb.linearVelocity = dir * moveSpeed;
         sprite.flipX = dir.x < 0f;
     }
 
-    // 🔑 072회차 · virtual 로 바꿨다. 탱커가 피해를 깎고 나서 부모를 부른다.
     public virtual void TakeDamage(int amount)
     {
-        currentHealth -= amount;
-        Debug.Log($"{name} : -{amount}  (남은 체력 {currentHealth})");
+        if (dead) return;
 
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
+        // 🔑 감소율이 0 이면 그대로 들어간다. 최소 1 은 보장한다.
+        int real = damageReduction > 0f
+            ? Mathf.Max(Mathf.RoundToInt(amount * (1f - damageReduction)), 1)
+            : amount;
+
+        currentHealth -= real;
+
+        if (flicker != null) flicker.Play();
+
+        if (currentHealth <= 0) Die();
     }
 
     protected virtual void Die()
     {
-        Debug.Log($"{name} 사망");
+        if (dead) return;
+        dead = true;
 
-        // 075회차 · 처치 수는 GameManager 가 센다.
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.AddKill();
-        }
+        if (GameManager.Instance != null) GameManager.Instance.AddKill();
+
+        int exp = data != null ? data.gemExp : 1;
+        GemSpawner.Drop(transform.position, exp);
 
         Destroy(gameObject);
     }
 
-    public virtual void Attack(IDamageable target)
+    // 🚨 같은 편은 안 때린다. 이 한 줄이 없으면 몬스터끼리 서로 죽인다.
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        target.TakeDamage(damage);
+        if (collision.gameObject.CompareTag("Enemy")) return;
+
+        if (collision.gameObject.TryGetComponent(out IDamageable target))
+        {
+            target.TakeDamage(contactDamage);
+        }
     }
+
+    private void OnCollisionStay2D(Collision2D collision) => OnCollisionEnter2D(collision);
 }

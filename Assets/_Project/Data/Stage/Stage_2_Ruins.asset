@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a21bae226fe98f4eaad68ba6da78649, type: 3}
+  m_Name: Stage_2_Ruins
+  m_EditorClassIdentifier: Assembly-CSharp::StageData
+  title: "\uD3D0\uD5C8"
+  thumbnail: {fileID: 0}
+  description: "\uB370\uBAAC \uB5BC\uAC00 \uBC00\uB824\uC628\uB2E4"
+  waves: {fileID: 11400000, guid: 56a8292fad8a03f40bef3e87bdb60c67, type: 2}
+  groundTile: {fileID: 0}
+  groundTint: {r: 1, g: 1, b: 1, a: 1}
+  surviveSeconds: 480

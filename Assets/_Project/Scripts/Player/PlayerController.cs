@@ -10,6 +10,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private SpriteRenderer sprite;
 
+    // 레벨업 보상으로 빨라진다
+    public void AddSpeed(float v) => moveSpeed += v;
+
     void FixedUpdate()
     {
         Vector2 move = input.MoveInput;
