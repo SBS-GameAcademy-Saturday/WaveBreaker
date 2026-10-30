@@ -13,9 +13,19 @@ MonoBehaviour:
   m_Name: Stage_1_Field
   m_EditorClassIdentifier: Assembly-CSharp::StageData
   title: "\uB4E4\uD310"
-  thumbnail: {fileID: 4684342976254856162, guid: 7a41f849b595f554bac99017169b4394, type: 3}
+  thumbnail: {fileID: -7193780634215836745, guid: 941390bd77831794a87236dcaf1a6d36, type: 3}
   description: "\uCC98\uC74C \uC624\uB294 \uACF3. \uC624\uD06C\uAC00 \uB744\uC5C4\uB744\uC5C4 \uB098\uC628\uB2E4"
   waves: {fileID: 11400000, guid: 2bcc992d5e141d84dbe96baf18cb4dcc, type: 2}
-  groundTile: {fileID: 0}
+  groundTile: {fileID: 21300000, guid: 1c9ed9d1200c29d4cbfd2071028c1cd5, type: 3}
   groundTint: {r: 1, g: 1, b: 1, a: 1}
+  decorSprites:
+  - {fileID: 21300136, guid: c3a40e1c46727b94e959990527f8e7fa, type: 3}
+  - {fileID: 21300134, guid: c3a40e1c46727b94e959990527f8e7fa, type: 3}
+  - {fileID: 21300140, guid: c3a40e1c46727b94e959990527f8e7fa, type: 3}
+  - {fileID: 21300144, guid: c3a40e1c46727b94e959990527f8e7fa, type: 3}
+  - {fileID: 21300146, guid: c3a40e1c46727b94e959990527f8e7fa, type: 3}
+  - {fileID: 21300148, guid: c3a40e1c46727b94e959990527f8e7fa, type: 3}
+  - {fileID: 21300174, guid: c3a40e1c46727b94e959990527f8e7fa, type: 3}
+  decorPerTile: 16
+  decorTint: {r: 1, g: 1, b: 1, a: 1}
   surviveSeconds: 300

@@ -13,9 +13,20 @@ MonoBehaviour:
   m_Name: Stage_2_Ruins
   m_EditorClassIdentifier: Assembly-CSharp::StageData
   title: "\uD3D0\uD5C8"
-  thumbnail: {fileID: 6818507045800466582, guid: 546ddd4a7a192764eb21525b1ac8669c, type: 3}
+  thumbnail: {fileID: -4306913896306734227, guid: 65f43ea13e34c17439b3f5af2aa1c4da, type: 3}
   description: "\uB370\uBAAC \uB5BC\uAC00 \uBC00\uB824\uC628\uB2E4"
   waves: {fileID: 11400000, guid: 56a8292fad8a03f40bef3e87bdb60c67, type: 2}
-  groundTile: {fileID: 0}
-  groundTint: {r: 1, g: 1, b: 1, a: 1}
+  groundTile: {fileID: 21300000, guid: a07735877a3bd644094331b137b71878, type: 3}
+  groundTint: {r: 0.92, g: 0.9, b: 0.86, a: 1}
+  decorSprites:
+  - {fileID: 21300152, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}
+  - {fileID: 21300154, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}
+  - {fileID: 21300156, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}
+  - {fileID: 21300102, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}
+  - {fileID: 21300104, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}
+  - {fileID: 21300106, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}
+  - {fileID: 21300108, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}
+  - {fileID: 21300110, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}
+  decorPerTile: 12
+  decorTint: {r: 0.95, g: 0.93, b: 0.9, a: 1}
   surviveSeconds: 480
