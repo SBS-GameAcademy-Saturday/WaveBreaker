@@ -25,6 +25,8 @@ public class StageData : ScriptableObject
     [Range(0, 30)] public int decorPercent = 7;
     public Color decorTint = Color.white;
 
-    [Header("클리어 조건")]
+    // 🔑 이 시간을 버티면 **보스가 나온다**. 클리어는 그 보스를 잡아야 된다.
+    //    보스전에는 제한 시간이 없다.
+    [Header("보스가 나오기까지")]
     public float surviveSeconds = 600f;
 }

@@ -14,17 +14,23 @@ public class WaveManager : MonoBehaviour
     [SerializeField] private GameObject bossPrefab;       // 보스 — 행동이 달라 따로
     [SerializeField] private Transform[] spawnPoints;
 
+    [SerializeField] private float bossTime = 600f;   // 몇 초를 버티면 보스가 나오는가
+
     public float Elapsed { get; private set; }
     public bool BossActive { get; private set; }
+
+    // 🔑 최종 보스를 잡았는가. 이게 곧 클리어 조건이다.
+    public bool BossDefeated { get; private set; }
 
     // 표시 전용. 스폰 판단에는 안 쓴다.
     public int Wave => Mathf.FloorToInt(Elapsed / 15f) + 1;
 
     private void Awake() => Instance = this;
 
-    public void Begin(WaveData table)
+    public void Begin(WaveData table, float bossAt)
     {
         waves = table;
+        bossTime = bossAt;
         StartAll();
     }
 
@@ -37,9 +43,11 @@ public class WaveManager : MonoBehaviour
     {
         StopAllCoroutines();
         Elapsed = 0f;
+        BossActive = false;
+        BossDefeated = false;
 
         foreach (SpawnStep s in waves.steps) StartCoroutine(RunStep(s));
-        StartCoroutine(RunBosses());
+        StartCoroutine(RunFinalBoss());
     }
 
     private void Update()
@@ -60,54 +68,61 @@ public class WaveManager : MonoBehaviour
             // 🚨 보스가 나와 있으면 잡졸을 멈춘다. 안 그러면 화면이 감당이 안 된다.
             if (Paused || BossActive) { yield return null; continue; }
 
+            float minutes = Elapsed / 60f;
+            float interval = Mathf.Max(0.15f, s.interval * Mathf.Pow(s.intervalMulPerMinute, minutes));
+            int extra = Mathf.FloorToInt(s.countAddPerMinute * minutes);
+            float hp = s.healthScale + s.healthAddPerMinute * minutes;
+
             if (s.pattern == SpawnPattern.Trickle)
             {
-                SpawnAt(s.enemy, s.healthScale, PickPoint());
-                yield return new WaitForSeconds(s.interval);
+                // 한 번에 1 마리로 시작해 시간이 갈수록 여럿이 같이 나온다
+                for (int i = 0; i < 1 + extra; i++)
+                    SpawnAt(s.enemy, hp, PickPoint());
+
+                yield return new WaitForSeconds(interval);
             }
             else
             {
                 for (int b = 0; b < Mathf.Max(s.burst, 1); b++)
                 {
-                    SpawnCluster(s);
+                    SpawnCluster(s, s.count + extra, hp);
                     yield return new WaitForSeconds(s.burstGap);
                 }
-                yield return new WaitForSeconds(s.interval);
+                yield return new WaitForSeconds(interval);
             }
         }
     }
 
-    private IEnumerator RunBosses()
+    private IEnumerator RunFinalBoss()
     {
-        if (waves.bosses == null) yield break;
+        if (waves.finalBoss == null) yield break;
 
-        foreach (BossStep b in waves.bosses)
-        {
-            while (Elapsed < b.time) yield return null;
+        while (Elapsed < bossTime) yield return null;
 
-            BossActive = true;
-            GameObject go = SpawnAt(b.boss, 1f, PickPoint(), true);
+        // 🔑 보스가 나오면 잡졸은 멈춘다. 보스전에는 제한 시간이 없다.
+        //    여기서부터는 시계가 아니라 **보스의 체력**이 끝을 정한다.
+        BossActive = true;
+        GameObject go = SpawnAt(waves.finalBoss, 1f, PickPoint(), true);
 
-            // 보스가 죽을 때까지 기다린다
-            while (go != null) yield return null;
+        while (go != null) yield return null;
 
-            BossActive = false;
-        }
+        BossActive = false;
+        BossDefeated = true;
     }
 
     private Vector3 PickPoint() =>
         spawnPoints.Length == 0 ? transform.position
                                 : spawnPoints[Random.Range(0, spawnPoints.Length)].position;
 
-    private void SpawnCluster(SpawnStep s)
+    private void SpawnCluster(SpawnStep s, int count, float healthScale)
     {
         Vector3 center = PickPoint();
 
         // 🔑 떼는 한 지점에서 나온다. 사방에서 나오면 떼로 안 보인다.
-        for (int i = 0; i < s.count; i++)
+        for (int i = 0; i < count; i++)
         {
             Vector2 off = Random.insideUnitCircle * s.radius;
-            SpawnAt(s.enemy, s.healthScale, center + (Vector3)off);
+            SpawnAt(s.enemy, healthScale, center + (Vector3)off);
         }
     }
 

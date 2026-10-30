@@ -41,4 +41,4 @@ MonoBehaviour:
   - {fileID: 21300110, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}
   decorPercent: 7
   decorTint: {r: 0.95, g: 0.93, b: 0.9, a: 1}
-  surviveSeconds: 480
+  surviveSeconds: 600

@@ -22,7 +22,7 @@ public class StageRunner : MonoBehaviour
         // 바닥과 장식은 타일맵 쪽이 전부 맡는다.
         if (ground != null) ground.Setup(stage);
 
-        if (waves != null && stage.waves != null) waves.Begin(stage.waves);
+        if (waves != null && stage.waves != null) waves.Begin(stage.waves, stage.surviveSeconds);
 
         Debug.Log($"스테이지 시작 — {stage.title} ({stage.surviveSeconds:F0}초)");
     }
@@ -33,8 +33,14 @@ public class StageRunner : MonoBehaviour
 
         GameState s = GameManager.Instance.State;
 
-        // 시간을 다 버티면 클리어
-        if (s == GameState.Playing && waves != null && waves.Elapsed >= stage.surviveSeconds)
+        // 🔑 시계가 아니라 보스가 끝을 정한다.
+        //    10분을 버티면 보스가 나오고, 그 보스를 잡아야 클리어다.
+        //
+        // 🚨 Playing 일 때만 보면 안 된다. 보스를 잡는 순간 경험치가 들어와
+        //    **레벨업 창이 떠 있는** 경우가 흔한데(Upgrading), 그러면 그 판은
+        //    영영 안 끝난다. 실제로 겪은 버그다.
+        if (s != GameState.GameOver && s != GameState.Clear
+            && waves != null && waves.BossDefeated)
         {
             GameManager.Instance.ChangeState(GameState.Clear);
             return;

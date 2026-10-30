@@ -14,39 +14,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WaveData
   steps:
   - startTime: 0
-    endTime: 600
+    endTime: 99999
     enemy: {fileID: 11400000, guid: 527f96d598bb6b24e816033d8cb9e733, type: 2}
-    healthScale: 2.5
+    healthScale: 1.2
     pattern: 0
-    interval: 0.8
+    interval: 1.4
+    intervalMulPerMinute: 0.91
+    countAddPerMinute: 0.25
+    healthAddPerMinute: 0.15
     count: 8
     burst: 1
-    burstGap: 1.5
-    radius: 2.5
-  - startTime: 30
-    endTime: 600
+    burstGap: 1.2
+    radius: 2.6
+  - startTime: 45
+    endTime: 99999
     enemy: {fileID: 11400000, guid: b3cbe92d860ca0941b0c7243e4baa760, type: 2}
-    healthScale: 2
+    healthScale: 1.2
     pattern: 1
-    interval: 14
-    count: 12
+    interval: 15
+    intervalMulPerMinute: 0.94
+    countAddPerMinute: 0.45
+    healthAddPerMinute: 0.15
+    count: 10
     burst: 3
     burstGap: 1.2
-    radius: 2.5
-  - startTime: 60
-    endTime: 600
+    radius: 2.6
+  - startTime: 90
+    endTime: 99999
     enemy: {fileID: 11400000, guid: af04f93067c975545a372bbc4378a147, type: 2}
-    healthScale: 2
+    healthScale: 1.5
     pattern: 0
-    interval: 4
+    interval: 4.5
+    intervalMulPerMinute: 0.93
+    countAddPerMinute: 0.2
+    healthAddPerMinute: 0.15
     count: 8
     burst: 1
-    burstGap: 1.5
-    radius: 2.5
-  bosses:
-  - time: 180
-    boss: {fileID: 11400000, guid: 3f00fc73af8236d4e92a5555a9101561, type: 2}
-  - time: 360
-    boss: {fileID: 11400000, guid: 6e6f98b73c5f9ce4196ed2b645b10d0b, type: 2}
-  - time: 600
-    boss: {fileID: 11400000, guid: bce8d2b484f07b6479fc980856f43446, type: 2}
+    burstGap: 1.2
+    radius: 2.6
+  finalBoss: {fileID: 11400000, guid: bce8d2b484f07b6479fc980856f43446, type: 2}
