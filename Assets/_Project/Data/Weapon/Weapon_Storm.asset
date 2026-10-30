@@ -17,35 +17,48 @@ MonoBehaviour:
   kind: 0
   projectilePrefab: {fileID: 2591170818231123025, guid: 8f126c1db3707754c9538f0c978e43c2, type: 3}
   bodySprite: {fileID: 0}
+  bodyAnimator: {fileID: 0}
+  bodyFillSprite: {fileID: 0}
   baseStat:
     damage: 12
     interval: 0.18
     range: 2.6
     count: 6
     speed: 320
-  upgrades:
-  - title: "\uD53C\uD574 +"
-    desc: "\uD3ED\uD48D\uC774 \uB354 \uC544\uD504\uB2E4"
-    icon: {fileID: 0}
-    damage: 6
-    count: 0
-    range: 0
-    interval: 0
-    speed: 0
-    maxStack: 3
-    requireLevel: 1
-    requireOtherPath: -1
-    requireOtherStack: 0
+  steps:
   - title: "\uCE7C +2"
-    desc: "\uB3C4\uB294 \uCE7C\uC774 \uB450 \uC790\uB8E8 \uB298\uC5B4\uB09C\uB2E4"
-    icon: {fileID: 0}
     damage: 0
     count: 2
     range: 0
     interval: 0
     speed: 0
-    maxStack: 3
-    requireLevel: 1
-    requireOtherPath: -1
-    requireOtherStack: 0
-  maxLevel: 7
+  - title: "\uD53C\uD574 +6"
+    damage: 6
+    count: 0
+    range: 0
+    interval: 0
+    speed: 0
+  - title: "\uCE7C +2"
+    damage: 0
+    count: 2
+    range: 0
+    interval: 0
+    speed: 0
+  - title: "\uD53C\uD574 +6"
+    damage: 6
+    count: 0
+    range: 0
+    interval: 0
+    speed: 0
+  - title: "\uCE7C +2"
+    damage: 0
+    count: 2
+    range: 0
+    interval: 0
+    speed: 0
+  - title: "\uD53C\uD574 +8"
+    damage: 8
+    count: 0
+    range: 0
+    interval: 0
+    speed: 0

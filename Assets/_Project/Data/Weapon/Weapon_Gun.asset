@@ -17,35 +17,48 @@ MonoBehaviour:
   kind: 1
   projectilePrefab: {fileID: 7041926865975445665, guid: 9a74f6d49ac780346abe425c7bee9821, type: 3}
   bodySprite: {fileID: 0}
+  bodyAnimator: {fileID: 0}
+  bodyFillSprite: {fileID: 0}
   baseStat:
     damage: 4
     interval: 0.8
     range: 7
     count: 1
     speed: 11
-  upgrades:
-  - title: "\uD53C\uD574 +"
-    desc: "\uD55C \uBC1C\uC774 \uB354 \uC544\uD504\uB2E4"
-    icon: {fileID: 0}
-    damage: 3
-    count: 0
-    range: 0
-    interval: 0
-    speed: 0
-    maxStack: 3
-    requireLevel: 1
-    requireOtherPath: -1
-    requireOtherStack: 0
+  steps:
   - title: "\uD0C4 +1"
-    desc: "\uD55C \uBC88\uC5D0 \uD55C \uBC1C \uB354 \uB098\uAC04\uB2E4"
-    icon: {fileID: 0}
     damage: 0
     count: 1
     range: 0
     interval: 0
     speed: 0
-    maxStack: 3
-    requireLevel: 1
-    requireOtherPath: -1
-    requireOtherStack: 0
-  maxLevel: 7
+  - title: "\uD53C\uD574 +3"
+    damage: 3
+    count: 0
+    range: 0
+    interval: 0
+    speed: 0
+  - title: "\uD0C4 +1"
+    damage: 0
+    count: 1
+    range: 0
+    interval: 0
+    speed: 0
+  - title: "\uD53C\uD574 +3"
+    damage: 3
+    count: 0
+    range: 0
+    interval: 0
+    speed: 0
+  - title: "\uD0C4 +1"
+    damage: 0
+    count: 1
+    range: 0
+    interval: 0
+    speed: 0
+  - title: "\uD53C\uD574 +4"
+    damage: 4
+    count: 0
+    range: 0
+    interval: 0
+    speed: 0

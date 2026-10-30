@@ -52,26 +52,32 @@ public class WeaponInventory : MonoBehaviour
         Debug.Log($"무기 획득 — {d.title}");
     }
 
-    // 강화는 갈래를 골라서 한다. path 는 WeaponData.upgrades 의 몇 번째인가.
-    public bool CanUpgrade(WeaponData d, int path)
+    public bool CanLevelUp(WeaponData d)
     {
         Weapon w = owned.FirstOrDefault(x => x.Data == d);
-        return w != null && w.CanTake(path);
+        return w != null && !w.IsMax;
     }
 
-    public string PreviewUpgrade(WeaponData d, int path)
+    // 다음 레벨에서 무엇이 오르는지 — 보상 카드가 쓴다.
+    public WeaponStep NextStep(WeaponData d)
     {
         Weapon w = owned.FirstOrDefault(x => x.Data == d);
-        return w != null ? w.Preview(path) : "";
+        return w != null ? w.NextStep : null;
     }
 
-    public void Upgrade(WeaponData d, int path)
+    public string PreviewNext(WeaponData d)
     {
         Weapon w = owned.FirstOrDefault(x => x.Data == d);
-        if (w == null || !w.CanTake(path)) return;
+        return w != null ? w.Preview() : "";
+    }
 
-        w.Take(path);
-        Debug.Log($"무기 강화 — {d.title} · {d.upgrades[path].title} (Lv.{w.Level})");
+    public void LevelUp(WeaponData d)
+    {
+        Weapon w = owned.FirstOrDefault(x => x.Data == d);
+        if (w == null || w.IsMax) return;
+
+        w.LevelUp();
+        Debug.Log($"무기 강화 — {d.title} Lv.{w.Level}");
     }
 
     // 🔑 조합 — 재료 둘을 지우고 결과 하나를 준다.

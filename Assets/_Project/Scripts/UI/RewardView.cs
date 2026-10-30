@@ -122,23 +122,21 @@ public class RewardView : MonoBehaviour
             }
             else
             {
-                // 🔑 한 무기는 카드 **한 장**만 낸다. 피해와 개수가 같이 뜨면
-                //    고르는 게 아니라 늘어놓는 것이고, 셋 중 둘을 한 무기가 먹는다.
-                var open = new List<int>();
-                for (int pi = 0; pi < cap.upgrades.Length; pi++)
-                    if (inv.CanUpgrade(cap, pi)) open.Add(pi);
-
-                if (open.Count > 0)
+                // 🔑 무엇이 오를지는 레벨이 정한다. 고르는 건 "이 무기를 올릴까" 뿐이다.
+                if (inv.CanLevelUp(cap))
                 {
-                    int path = open[Random.Range(0, open.Count)];
-                    WeaponUpgrade u = cap.upgrades[path];
-                    string delta = inv.PreviewUpgrade(cap, path);
+                    WeaponStep step = inv.NextStep(cap);
+                    string delta = inv.PreviewNext(cap);
+                    int next = inv.LevelOf(cap) + 1;
+
                     list.Add(new Option {
-                        title = $"{cap.title} · {u.title}",
+                        title = $"{cap.title} Lv.{next}",
                         kind  = "강화",
-                        desc  = string.IsNullOrEmpty(delta) ? u.desc : u.desc + "  ·  " + delta,
-                        icon  = u.icon != null ? u.icon : cap.icon,
-                        apply = () => inv.Upgrade(cap, path) });
+                        desc  = step != null && !string.IsNullOrEmpty(delta)
+                              ? step.title + "  ·  " + delta
+                              : (step != null ? step.title : "무기를 강화한다"),
+                        icon  = cap.icon,
+                        apply = () => inv.LevelUp(cap) });
                 }
             }
         }
