@@ -122,14 +122,17 @@ public class RewardView : MonoBehaviour
             }
             else
             {
-                // 🔑 강화는 갈래마다 한 장씩. 피해를 올릴지 개수를 늘릴지 고르게 한다.
+                // 🔑 한 무기는 카드 **한 장**만 낸다. 피해와 개수가 같이 뜨면
+                //    고르는 게 아니라 늘어놓는 것이고, 셋 중 둘을 한 무기가 먹는다.
+                var open = new List<int>();
                 for (int pi = 0; pi < cap.upgrades.Length; pi++)
-                {
-                    if (!inv.CanUpgrade(cap, pi)) continue;
+                    if (inv.CanUpgrade(cap, pi)) open.Add(pi);
 
-                    int path = pi;
-                    WeaponUpgrade u = cap.upgrades[pi];
-                    string delta = inv.PreviewUpgrade(cap, pi);
+                if (open.Count > 0)
+                {
+                    int path = open[Random.Range(0, open.Count)];
+                    WeaponUpgrade u = cap.upgrades[path];
+                    string delta = inv.PreviewUpgrade(cap, path);
                     list.Add(new Option {
                         title = $"{cap.title} · {u.title}",
                         kind  = "강화",

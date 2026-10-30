@@ -41,11 +41,11 @@ MonoBehaviour:
     icon: {fileID: 0}
     damage: 0
     count: 2
-    range: 0.3
+    range: 0
     interval: 0
     speed: 0
     maxStack: 3
-    requireLevel: 3
-    requireOtherPath: 0
-    requireOtherStack: 2
+    requireLevel: 1
+    requireOtherPath: -1
+    requireOtherStack: 0
   maxLevel: 7
