@@ -227,14 +227,6 @@ MonoBehaviour:
   - {fileID: 4316239735667944982}
   - {fileID: 859013753883498594}
   - {fileID: 7061899435452367488}
-  titles:
-  - {fileID: 4316239736167363854}
-  - {fileID: 859013753040077634}
-  - {fileID: 7061899434617739617}
-  descs:
-  - {fileID: 4316239735023340446}
-  - {fileID: 859013754060373458}
-  - {fileID: 7061899433465374705}
 --- !u!114 &830065135
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1388,7 +1380,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: +200%
+  m_text: "\uD3D0\uD5C8"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ce7c6f713b3af0340ad9b551425c840d, type: 2}
   m_sharedMaterial: {fileID: -5491693598251383942, guid: ce7c6f713b3af0340ad9b551425c840d, type: 2}
@@ -1652,7 +1644,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: HP Increase
+  m_text: "\uB370\uBAAC \uB5BC\uAC00 \uBC00\uB824\uC628\uB2E4\n\n8\uBD84 \uBC84\uD2F0\uAE30"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ce7c6f713b3af0340ad9b551425c840d, type: 2}
   m_sharedMaterial: {fileID: -5491693598251383942, guid: ce7c6f713b3af0340ad9b551425c840d, type: 2}
@@ -5411,7 +5403,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Increases Attack Speed
+  m_text: "\uCC98\uC74C \uC624\uB294 \uACF3. \uC624\uD06C\uAC00 \uB744\uC5C4\uB744\uC5C4 \uB098\uC628\uB2E4\n\n5\uBD84 \uBC84\uD2F0\uAE30"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ce7c6f713b3af0340ad9b551425c840d, type: 2}
   m_sharedMaterial: {fileID: -5491693598251383942, guid: ce7c6f713b3af0340ad9b551425c840d, type: 2}
@@ -6067,7 +6059,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: +300%
+  m_text: "\uB4E4\uD310"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ce7c6f713b3af0340ad9b551425c840d, type: 2}
   m_sharedMaterial: {fileID: -5491693598251383942, guid: ce7c6f713b3af0340ad9b551425c840d, type: 2}
@@ -9148,7 +9140,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Food Production Speed
+  m_text: "\uB05D\uAE4C\uC9C0 \uBC84\uD2F0\uBA74 \uAD70\uCCB4\uC655\uC774 \uB098\uC628\uB2E4\n\n10\uBD84 \uBC84\uD2F0\uAE30"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ce7c6f713b3af0340ad9b551425c840d, type: 2}
   m_sharedMaterial: {fileID: -5491693598251383942, guid: ce7c6f713b3af0340ad9b551425c840d, type: 2}
@@ -9285,7 +9277,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: +50%
+  m_text: "\uC2EC\uC5F0"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ce7c6f713b3af0340ad9b551425c840d, type: 2}
   m_sharedMaterial: {fileID: -5491693598251383942, guid: ce7c6f713b3af0340ad9b551425c840d, type: 2}
