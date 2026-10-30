@@ -158,6 +158,12 @@ public class RewardView : MonoBehaviour
         }
     }
 
+    // 결과창이 뜰 때 강제로 닫는다. 두 창이 겹쳐 보이면 안 된다.
+    public void Close()
+    {
+        if (panel != null) panel.SetActive(false);
+    }
+
     private void Choose(int index)
     {
         if (index < shown.Count) shown[index].apply?.Invoke();

@@ -91,15 +91,17 @@ public class StageRunner : MonoBehaviour
             waves != null ? waves.Elapsed : 0f,
             level);
 
-        StartCoroutine(GoAfter(1.2f));   // 잠깐 보여주고 넘긴다
+        StartCoroutine(ShowResultAfter(1.2f, cleared));   // 잠깐 보여주고 띄운다
     }
 
     // 🚨 Invoke 도 WaitForSeconds 도 timeScale 을 탄다.
-    //    게임오버는 timeScale 을 0 으로 만들어서 **영원히 안 넘어간다.**
+    //    게임오버는 timeScale 을 0 으로 만들어서 **영원히 안 불린다.**
     //    실제로 겪은 버그다. Realtime 을 써야 한다.
-    private System.Collections.IEnumerator GoAfter(float seconds)
+    private IEnumerator ShowResultAfter(float seconds, bool cleared)
     {
         yield return new WaitForSecondsRealtime(seconds);
-        SceneFlow.GoResult();
+
+        if (ResultView.Instance != null) ResultView.Instance.Show(cleared);
+        else SceneFlow.GoLobby();   // 결과 패널이 없는 씬에서도 멈추지는 않게
     }
 }
