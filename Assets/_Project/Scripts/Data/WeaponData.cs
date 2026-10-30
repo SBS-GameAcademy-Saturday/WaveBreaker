@@ -23,6 +23,10 @@ public class WeaponData : ScriptableObject
     //    비워 두면 bodySprite 한 장이 가만히 그려진다.
     public RuntimeAnimatorController bodyAnimator;
 
+    // 🔑 고리만 있으면 가운데가 휑하다. 안쪽을 옅게 깔아 주면
+    //    "여기까지가 내 땅" 이라는 게 한눈에 들어온다.
+    public Sprite bodyFillSprite;
+
     [Header("기본 수치 (Lv.1)")]
     public WeaponLevel baseStat = new WeaponLevel();
 

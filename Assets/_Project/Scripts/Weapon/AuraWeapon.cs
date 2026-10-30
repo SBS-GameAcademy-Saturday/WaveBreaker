@@ -4,6 +4,7 @@ using UnityEngine;
 public class AuraWeapon : Weapon
 {
     private SpriteRenderer field;
+    private SpriteRenderer fill;
 
     protected override void OnLevelChanged()
     {
@@ -25,6 +26,24 @@ public class AuraWeapon : Weapon
                 ac.cullingMode = AnimatorCullingMode.AlwaysAnimate;
             }
         }
+        // 고리 안쪽을 옅게 채운다. 고리와 달리 돌지도 깜빡이지도 않는다.
+        if (fill == null && data.bodyFillSprite != null)
+        {
+            var fo = new GameObject("Fill");
+            fo.transform.SetParent(transform, false);
+            fill = fo.AddComponent<SpriteRenderer>();
+            fill.sprite = data.bodyFillSprite;
+            fill.color = new Color(1f, 0.86f, 0.45f, 0.17f);
+            fill.sortingOrder = -2;          // 고리보다 뒤
+        }
+
+        if (fill != null && fill.sprite != null)
+        {
+            // 🚨 고리 **안쪽**에 들어가야 한다. 같은 지름으로 깔면 고리를 덮는다.
+            float u = Mathf.Max(0.01f, fill.sprite.bounds.size.x);
+            fill.transform.localScale = Vector3.one * (Stat.range * 2f * 0.88f / u);
+        }
+
         // 🚨 scale 에 range 를 그냥 넣으면 안 된다. range 는 **반지름**이고
         //    스프라이트는 제 나름의 크기를 갖는다. 그려진 원과 실제로 맞는
         //    범위가 어긋나면 플레이어는 거리를 가늠할 수 없다.
