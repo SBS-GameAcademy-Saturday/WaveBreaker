@@ -19,7 +19,7 @@ MonoBehaviour:
   tint: {r: 1, g: 0.45, b: 0.5, a: 1}
   maxHealth: 2000
   contactDamage: 24
-  moveSpeed: 1.2
+  moveSpeed: 2.8
   damageReduction: 0.4
   gemExp: 150
   isBoss: 1

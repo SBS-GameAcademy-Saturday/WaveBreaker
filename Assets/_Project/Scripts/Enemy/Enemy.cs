@@ -41,6 +41,10 @@ public class Enemy : MonoBehaviour, IDamageable
     public EnemyData Data => data;
     public bool IsBoss => data != null && data.isBoss;
 
+    // 체력바가 쓴다. 지금 체력이 최대 대비 얼마인가.
+    public int MaxHealth => Mathf.Max(1, Mathf.RoundToInt(maxHealth * healthScale));
+    public float HealthRatio => Mathf.Clamp01((float)currentHealth / MaxHealth);
+
     // 🔑 WaveManager 가 스폰 직후 부른다. Start() 보다 먼저 들어간다.
     public void Setup(EnemyData d, float scale = 1f)
     {
@@ -213,9 +217,16 @@ public class Enemy : MonoBehaviour, IDamageable
 
         if (GameManager.Instance != null) GameManager.Instance.AddKill();
 
-        int exp = data != null ? data.gemExp : 1;
-        GemSpawner.Drop(transform.position, exp);
-
+        if (Random.Range(0f, 1f) < 0.1f)
+        {
+            PotionSpawner.Drop(transform.position);
+        }
+        else
+        {
+            int exp = data != null ? data.gemExp : 1;
+            GemSpawner.Drop(transform.position, exp);
+        }
+        
         // 죽는 그림이 있으면 그것만 잠깐 보여 주고 치운다.
         // 🚨 그 사이 다시 맞거나 플레이어를 때리면 안 되니 몸을 먼저 끈다.
         if (anim != null && hasDie)
@@ -230,9 +241,12 @@ public class Enemy : MonoBehaviour, IDamageable
         Recycle();
     }
 
+    // 🚨 WaitForSeconds 는 timeScale 을 탄다. 보스를 잡는 순간 레벨업 창이 떠서
+    //    시간이 멈추면 **영원히 반납되지 않고**, 보스가 안 죽은 것으로 남아
+    //    클리어가 안 된다. StageRunner 에서 겪은 것과 같은 함정이다.
     private System.Collections.IEnumerator RecycleAfter(float sec)
     {
-        yield return new WaitForSeconds(sec);
+        yield return new WaitForSecondsRealtime(sec);
         Recycle();
     }
 

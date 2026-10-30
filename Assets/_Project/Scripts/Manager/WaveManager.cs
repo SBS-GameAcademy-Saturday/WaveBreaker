@@ -22,6 +22,10 @@ public class WaveManager : MonoBehaviour
     // 🔑 최종 보스를 잡았는가. 이게 곧 클리어 조건이다.
     public bool BossDefeated { get; private set; }
 
+    // 지금 싸우는 보스. 체력바가 이것만 보면 된다 —
+    // UI 가 매 프레임 적을 뒤지지 않아도 되게.
+    public Enemy CurrentBoss { get; private set; }
+
     // 표시 전용. 스폰 판단에는 안 쓴다.
     public int Wave => Mathf.FloorToInt(Elapsed / 15f) + 1;
 
@@ -110,10 +114,14 @@ public class WaveManager : MonoBehaviour
         //    여기서부터는 시계가 아니라 **보스의 체력**이 끝을 정한다.
         BossActive = true;
         GameObject go = SpawnAt(waves.finalBoss, 1f, PickPoint(), true);
+        CurrentBoss = go != null ? go.GetComponent<Enemy>() : null;
 
-        while (go != null) yield return null;
+        // 🚨 풀에 돌려준 보스는 **파괴되지 않고 꺼질 뿐**이다. null 만 보면
+        //    영원히 기다리게 된다. 풀링을 넣으면서 생긴 함정이다.
+        while (go != null && go.activeSelf) yield return null;
 
         BossActive = false;
+        CurrentBoss = null;
         BossDefeated = true;
     }
 

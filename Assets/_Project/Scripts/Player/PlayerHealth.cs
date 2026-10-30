@@ -30,6 +30,11 @@ public class PlayerHealth : MonoBehaviour, IDamageable
         currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
     }
 
+    public void AddHealth(int amount)
+    {
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+    }
+
     public void TakeDamage(int amount)
     {
         // 🚨 무적 시간이 없으면 몬스터 떼에 닿는 순간 한 프레임에 다 죽는다.
