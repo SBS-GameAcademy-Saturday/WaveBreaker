@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Stage_1_Field
   m_EditorClassIdentifier: Assembly-CSharp::StageData
   title: "\uB4E4\uD310"
-  thumbnail: {fileID: 0}
+  thumbnail: {fileID: 4684342976254856162, guid: 7a41f849b595f554bac99017169b4394, type: 3}
   description: "\uCC98\uC74C \uC624\uB294 \uACF3. \uC624\uD06C\uAC00 \uB744\uC5C4\uB744\uC5C4 \uB098\uC628\uB2E4"
   waves: {fileID: 11400000, guid: 2bcc992d5e141d84dbe96baf18cb4dcc, type: 2}
   groundTile: {fileID: 0}

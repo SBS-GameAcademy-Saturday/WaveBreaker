@@ -14,6 +14,10 @@ public class Enemy : MonoBehaviour, IDamageable
     [SerializeField] protected int contactDamage = 2;
     [SerializeField] protected float moveSpeed = 2f;
 
+    [Header("서로 비켜서기")]
+    [SerializeField] private float separationRadius = 1.4f;
+    [SerializeField] private float separationWeight = 2.0f;
+
     protected int currentHealth;
     protected float damageReduction;
     protected Rigidbody2D rb;
@@ -83,8 +87,14 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         Vector2 dir = ((Vector2)player.position - rb.position).normalized;
 
-        rb.linearVelocity = dir * moveSpeed;
-        sprite.flipX = dir.x < 0f;
+        // 🔑 쫓아가는 방향 + 서로 비켜서는 방향.
+        //    비켜서는 쪽에 가중치를 작게 줘야 플레이어를 계속 쫓는다.
+        Vector2 move = (dir + separation * separationWeight).normalized;
+
+        rb.linearVelocity = move * moveSpeed;
+        sprite.flipX = move.x < 0f;
+
+        separation = Vector2.zero;   // 매 프레임 다시 모은다
     }
 
     public virtual void TakeDamage(int amount)
@@ -116,16 +126,29 @@ public class Enemy : MonoBehaviour, IDamageable
         Destroy(gameObject);
     }
 
-    // 🚨 같은 편은 안 때린다. 이 한 줄이 없으면 몬스터끼리 서로 죽인다.
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Enemy")) return;
+    // 🔑 콜라이더가 Trigger 라 서로 **밀어내지 않는다.**
+    //    물리로 안 미는 대신, 겹치면 코드로 조금씩 벌린다.
+    private Vector2 separation;
 
-        if (collision.gameObject.TryGetComponent(out IDamageable target))
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            // 같은 편이면 안 때리고, 대신 서로 비켜선다
+            Vector2 away = (Vector2)transform.position - (Vector2)other.transform.position;
+            float d = away.magnitude;
+
+            if (d > 0.001f && d < separationRadius)
+            {
+                // 가까울수록 세게 민다
+                separation += away.normalized * (1f - d / separationRadius);
+            }
+            return;
+        }
+
+        if (other.TryGetComponent(out IDamageable target))
         {
             target.TakeDamage(contactDamage);
         }
     }
-
-    private void OnCollisionStay2D(Collision2D collision) => OnCollisionEnter2D(collision);
 }

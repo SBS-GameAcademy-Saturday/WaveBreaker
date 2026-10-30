@@ -385,7 +385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
   maxHealth: 100
-  invincible: 0.7
+  invincible: 1
 --- !u!114 &290368884
 MonoBehaviour:
   m_ObjectHideFlags: 0

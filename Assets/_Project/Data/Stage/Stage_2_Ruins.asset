@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Stage_2_Ruins
   m_EditorClassIdentifier: Assembly-CSharp::StageData
   title: "\uD3D0\uD5C8"
-  thumbnail: {fileID: 0}
+  thumbnail: {fileID: 6818507045800466582, guid: 546ddd4a7a192764eb21525b1ac8669c, type: 3}
   description: "\uB370\uBAAC \uB5BC\uAC00 \uBC00\uB824\uC628\uB2E4"
   waves: {fileID: 11400000, guid: 56a8292fad8a03f40bef3e87bdb60c67, type: 2}
   groundTile: {fileID: 0}

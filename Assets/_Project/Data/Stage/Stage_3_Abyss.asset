@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Stage_3_Abyss
   m_EditorClassIdentifier: Assembly-CSharp::StageData
   title: "\uC2EC\uC5F0"
-  thumbnail: {fileID: 0}
+  thumbnail: {fileID: -872737835942410802, guid: c94eed7ecc2009c4ebf5d6c06fa9f44d, type: 3}
   description: "\uB05D\uAE4C\uC9C0 \uBC84\uD2F0\uBA74 \uAD70\uCCB4\uC655\uC774 \uB098\uC628\uB2E4"
   waves: {fileID: 11400000, guid: 291a2cb1b7363e54182370fa06e932fe, type: 2}
   groundTile: {fileID: 0}

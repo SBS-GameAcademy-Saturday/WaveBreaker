@@ -11,6 +11,7 @@ public class StageSelectView : MonoBehaviour
     [SerializeField] private Button[] buttons;
     [SerializeField] private TMP_Text[] titles;
     [SerializeField] private TMP_Text[] descs;
+    [SerializeField] private Image[] thumbs;
 
     private void Start()
     {
@@ -23,6 +24,11 @@ public class StageSelectView : MonoBehaviour
             StageData s = stages[i];
             if (titles[i] != null) titles[i].text = s.title;
             if (descs[i] != null) descs[i].text = $"{s.description}\n\n{s.surviveSeconds / 60f:F0}분 버티기";
+
+            if (i < thumbs.Length && thumbs[i] != null && s.thumbnail != null)
+            {
+                thumbs[i].sprite = s.thumbnail;
+            }
 
             buttons[i].onClick.RemoveAllListeners();
             buttons[i].onClick.AddListener(() => SceneFlow.GoGame(s));
