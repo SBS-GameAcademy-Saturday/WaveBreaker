@@ -145,12 +145,19 @@ public class Enemy : MonoBehaviour, IDamageable
 
         Vector2 dir = ((Vector2)player.position - rb.position).normalized;
 
-        // 🔑 쫓아가는 방향 + 서로 비켜서는 방향.
-        //    비켜서는 쪽에 가중치를 작게 줘야 플레이어를 계속 쫓는다.
-        Vector2 move = (dir + separation * separationWeight).normalized;
+        // 🚨 비켜서는 힘에 **상한이 없으면** 몬스터가 뒤로 튕긴다.
+        //    이웃이 늘수록 합이 커져서, 여덟이 뭉치면 쫓아가는 힘(크기 1)을
+        //    훌쩍 넘고 진행 방향이 180° 뒤집힌다. 그게 떨림의 정체였다.
+        Vector2 push = Vector2.ClampMagnitude(separation * separationWeight, 0.7f);
+        Vector2 move = (dir + push).normalized;
 
-        rb.linearVelocity = move * moveSpeed;
-        sprite.flipX = move.x < 0f;
+        // 🚨 목표 속도를 그대로 꽂으면 방향이 매 프레임 홱홱 바뀐다.
+        //    조금씩 끌어당겨야 눈에 떨림으로 안 보인다.
+        Vector2 want = move * moveSpeed;
+        rb.linearVelocity = Vector2.MoveTowards(rb.linearVelocity, want, 24f * Time.fixedDeltaTime);
+
+        // 🚨 x 가 0 근처에서 흔들리면 그림이 좌우로 깜빡인다. 턱을 둔다.
+        if (Mathf.Abs(move.x) > 0.2f) sprite.flipX = move.x < 0f;
 
         // 🚨 Orc 컨트롤러는 Speed 로 Idle ↔ Walk 를 가른다. 안 넣어 주면
         //    아무리 달려도 **선 채로 미끄러진다.** 실제로 그렇게 보였다.
