@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerInput input;
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private SpriteRenderer sprite;
+    [SerializeField] private Animator anim;
 
     // 레벨업 보상으로 빨라진다
     public void AddSpeed(float v) => moveSpeed += v;
@@ -25,5 +26,9 @@ public class PlayerController : MonoBehaviour
         {
             sprite.flipX = move.x < 0f;
         }
+
+        // 🔑 몬스터와 같은 방식이다. 컨트롤러가 Speed 를 보고 Idle ⇄ Walk 를 가른다.
+        //    여기서 안 넘기면 아무리 달려도 선 채로 미끄러진다.
+        if (anim != null) anim.SetFloat("Speed", rb.linearVelocity.magnitude);
     }
 }

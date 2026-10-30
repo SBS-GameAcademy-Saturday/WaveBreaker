@@ -40,6 +40,9 @@ public class SpawnStep
     public float healthAddPerMinute = 0f;     // 체력 배수가 매분 얼마씩 오르는가
 
     [Header("Cluster 전용")]
+    // 🔑 켜면 떼가 플레이어를 **쫓지 않고 스쳐 지나간다.**
+    //    방향은 나올 때 한 번 정하고, 화면을 벗어나면 알아서 사라진다.
+    public bool straight = true;
     public int count = 8;
     public int burst = 1;
     public float burstGap = 1.5f;

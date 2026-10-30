@@ -15,6 +15,15 @@ public class AuraWeapon : Weapon
             field.sprite = data.bodySprite;
             field.color = new Color(1f, 0.93f, 0.62f, 0.55f);   // 금빛 반투명
             field.sortingOrder = -1;
+
+            if (data.bodyAnimator != null)
+            {
+                var ac = go.AddComponent<Animator>();
+                ac.runtimeAnimatorController = data.bodyAnimator;
+                // 🚨 레벨업 창이 뜨면 timeScale 이 0 이 된다. 그때도 장판은 돌아야 한다.
+                ac.updateMode = AnimatorUpdateMode.UnscaledTime;
+                ac.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+            }
         }
         // 🚨 scale 에 range 를 그냥 넣으면 안 된다. range 는 **반지름**이고
         //    스프라이트는 제 나름의 크기를 갖는다. 그려진 원과 실제로 맞는

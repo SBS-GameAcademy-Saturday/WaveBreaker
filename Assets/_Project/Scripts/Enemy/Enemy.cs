@@ -32,6 +32,12 @@ public class Enemy : MonoBehaviour, IDamageable
     private float healthScale = 1f;
     private bool dead;
 
+    // 🔑 떼로 지나가는 몬스터는 플레이어를 쫓지 않는다. 정해진 쪽으로 밀고 간다.
+    //    쫓아오는 놈과 스쳐 가는 놈이 섞여야 피하는 재미가 생긴다.
+    private bool straight;
+    private Vector2 straightDir;
+    private bool enteredView;
+
     public EnemyData Data => data;
     public bool IsBoss => data != null && data.isBoss;
 
@@ -40,7 +46,32 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         data = d;
         healthScale = scale;
+
+        // 🚨 풀에서 다시 꺼낸 몸이다. 지난 판의 흔적을 전부 지운다.
+        dead = false;
+        straight = false;
+        enteredView = false;
+        separation = Vector2.zero;
+
+        if (rb != null) rb.linearVelocity = Vector2.zero;
+        foreach (var c in GetComponents<Collider2D>()) c.enabled = true;
+        if (anim != null) anim.Rebind();
+
         ApplyData();
+        currentHealth = Mathf.Max(Mathf.RoundToInt(maxHealth * healthScale), 1);
+
+        if (player == null)
+        {
+            GameObject found = GameObject.FindWithTag("Player");
+            if (found != null) player = found.transform;
+        }
+    }
+
+    // 떼로 스쳐 가는 몬스터. 한 번 정한 쪽으로만 간다.
+    public void SetStraight(Vector2 dir)
+    {
+        straight = true;
+        straightDir = dir.normalized;
     }
 
     protected virtual void Awake()
@@ -102,6 +133,16 @@ public class Enemy : MonoBehaviour, IDamageable
 
     protected virtual void Move()
     {
+        if (straight)
+        {
+            rb.linearVelocity = straightDir * moveSpeed;
+            sprite.flipX = straightDir.x < 0f;
+            if (anim != null && hasSpeed) anim.SetFloat("Speed", moveSpeed);
+
+            CullIfGone();
+            return;
+        }
+
         Vector2 dir = ((Vector2)player.position - rb.position).normalized;
 
         // 🔑 쫓아가는 방향 + 서로 비켜서는 방향.
@@ -135,6 +176,29 @@ public class Enemy : MonoBehaviour, IDamageable
         if (currentHealth <= 0) Die();
     }
 
+    // 🚨 지나쳐 간 몬스터를 그냥 두면 화면 밖에 끝없이 쌓인다.
+    //    **한 번 보였다가** 나간 놈만 치운다. 스폰 직후는 아직 화면 밖이다.
+    private void CullIfGone()
+    {
+        Camera cam = Camera.main;
+        if (cam == null) return;
+
+        Vector3 v = cam.WorldToViewportPoint(transform.position);
+        bool inView = v.z > 0f && v.x > -0.1f && v.x < 1.1f && v.y > -0.1f && v.y < 1.1f;
+
+        if (inView) { enteredView = true; return; }
+        if (!enteredView) return;
+
+        dead = true;
+        Recycle();
+    }
+
+    private void Recycle()
+    {
+        if (EnemyPool.Instance != null) EnemyPool.Instance.Release(gameObject);
+        else Destroy(gameObject);
+    }
+
     protected virtual void Die()
     {
         if (dead) return;
@@ -152,11 +216,17 @@ public class Enemy : MonoBehaviour, IDamageable
             anim.SetTrigger("Die");
             rb.linearVelocity = Vector2.zero;
             foreach (var c in GetComponents<Collider2D>()) c.enabled = false;
-            Destroy(gameObject, 0.45f);
+            StartCoroutine(RecycleAfter(0.45f));
             return;
         }
 
-        Destroy(gameObject);
+        Recycle();
+    }
+
+    private System.Collections.IEnumerator RecycleAfter(float sec)
+    {
+        yield return new WaitForSeconds(sec);
+        Recycle();
     }
 
     // 🔑 콜라이더가 Trigger 라 서로 **밀어내지 않는다.**

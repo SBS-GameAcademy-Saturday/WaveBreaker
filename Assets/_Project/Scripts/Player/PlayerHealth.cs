@@ -9,12 +9,17 @@ public class PlayerHealth : MonoBehaviour, IDamageable
     private int currentHealth;
     private float nextHit;
     private Flicker flicker;
+    private Animator anim;
 
     public int Max => maxHealth;
     public int Current => currentHealth;
     public float Ratio => maxHealth > 0 ? (float)currentHealth / maxHealth : 0f;
 
-    void Awake() => flicker = GetComponent<Flicker>();
+    void Awake()
+    {
+        flicker = GetComponent<Flicker>();
+        anim = GetComponent<Animator>();
+    }
 
     void Start() => currentHealth = maxHealth;
 
@@ -36,9 +41,17 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
         if (flicker != null) flicker.Play();
 
-        if (currentHealth == 0 && GameManager.Instance != null)
+        if (currentHealth > 0)
         {
-            GameManager.Instance.ChangeState(GameState.GameOver);
+            if (anim != null) anim.SetTrigger("Hurt");
+            return;
         }
+
+        // 🚨 죽는 그림은 timeScale 0 에서도 돌아야 한다. GameOver 가 시간을 멈추기
+        //    때문이다. Animator 를 UnscaledTime 으로 두는 이유가 이것이다.
+        if (anim != null) anim.SetTrigger("Die");
+
+        if (GameManager.Instance != null)
+            GameManager.Instance.ChangeState(GameState.GameOver);
     }
 }

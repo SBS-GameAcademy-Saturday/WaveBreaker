@@ -17,6 +17,7 @@ MonoBehaviour:
   kind: 2
   projectilePrefab: {fileID: 0}
   bodySprite: {fileID: -5946680925579059085, guid: 81e3e3d809bbc074d9282f03342d0d95, type: 3}
+  bodyAnimator: {fileID: 9100000, guid: a8c2c07b580ecf3498e08441e20f5366, type: 2}
   baseStat:
     damage: 2
     interval: 0.6

@@ -4,7 +4,9 @@ using UnityEngine;
 public class PlayerLevel : MonoBehaviour
 {
     [SerializeField] private LevelData curve;
-    [SerializeField] private float pickupRange = 2.5f;
+    // 🔑 기본은 0 이다. 젬은 **밟아야** 먹힌다.
+    //    멀리서 끌어오는 것은 자석 보상을 먹었을 때만 생기는 능력이다.
+    [SerializeField] private float pickupRange = 0f;
 
     public int Level { get; private set; } = 1;
     public int Exp { get; private set; }

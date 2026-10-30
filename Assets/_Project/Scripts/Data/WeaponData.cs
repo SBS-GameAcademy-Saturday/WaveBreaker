@@ -19,6 +19,10 @@ public class WeaponData : ScriptableObject
     public GameObject projectilePrefab;   // 총알 · 칼날 등
     public Sprite bodySprite;
 
+    // 🔑 장판처럼 **계속 움직여야 하는 그림**은 컨트롤러를 끼운다.
+    //    비워 두면 bodySprite 한 장이 가만히 그려진다.
+    public RuntimeAnimatorController bodyAnimator;
+
     [Header("기본 수치 (Lv.1)")]
     public WeaponLevel baseStat = new WeaponLevel();
 

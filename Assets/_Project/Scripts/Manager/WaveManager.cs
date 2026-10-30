@@ -25,7 +25,14 @@ public class WaveManager : MonoBehaviour
     // 표시 전용. 스폰 판단에는 안 쓴다.
     public int Wave => Mathf.FloorToInt(Elapsed / 15f) + 1;
 
-    private void Awake() => Instance = this;
+    private Transform player;
+
+    private void Awake()
+    {
+        Instance = this;
+        GameObject p = GameObject.FindWithTag("Player");
+        if (p != null) player = p.transform;
+    }
 
     public void Begin(WaveData table, float bossAt)
     {
@@ -118,21 +125,42 @@ public class WaveManager : MonoBehaviour
     {
         Vector3 center = PickPoint();
 
-        // 🔑 떼는 한 지점에서 나온다. 사방에서 나오면 떼로 안 보인다.
+        // 🔑 방향은 **떼 전체가 한 번만** 정한다. 한 마리씩 정하면 부채처럼 퍼져
+        //    떼로 안 보인다. 플레이어가 선 쪽을 향해 다 같이 밀고 간다.
+        Vector2 dir = Vector2.right;
+        if (player != null) dir = ((Vector2)player.position - (Vector2)center).normalized;
+
+        // 떼는 한 지점에서 나온다. 사방에서 나오면 떼로 안 보인다.
         for (int i = 0; i < count; i++)
         {
             Vector2 off = Random.insideUnitCircle * s.radius;
-            SpawnAt(s.enemy, healthScale, center + (Vector3)off);
+            GameObject go = SpawnAt(s.enemy, healthScale, center + (Vector3)off);
+
+            if (s.straight && go != null && go.TryGetComponent(out Enemy e))
+                e.SetStraight(dir);
         }
     }
 
     // 🔑 만드는 통로는 이 메서드 하나다.
     public GameObject SpawnAt(EnemyData d, float healthScale, Vector3 pos, bool boss = false)
     {
-        GameObject prefab = boss ? bossPrefab : enemyPrefab;
-        if (prefab == null || d == null) return null;
+        if (d == null) return null;
 
-        GameObject go = Instantiate(prefab, pos, Quaternion.identity);
+        // 🔑 만들지 않고 **빌려 쓴다.** 후반에 초당 수십 마리가 나고 죽는데
+        //    그때마다 Instantiate / Destroy 를 하면 가비지 수집에 화면이 끊긴다.
+        GameObject go;
+        if (EnemyPool.Instance != null)
+        {
+            go = EnemyPool.Instance.Get(boss, pos);
+        }
+        else
+        {
+            GameObject prefab = boss ? bossPrefab : enemyPrefab;
+            if (prefab == null) return null;
+            go = Instantiate(prefab, pos, Quaternion.identity);
+        }
+
+        if (go == null) return null;
         go.GetComponent<Enemy>().Setup(d, healthScale);
         return go;
     }
