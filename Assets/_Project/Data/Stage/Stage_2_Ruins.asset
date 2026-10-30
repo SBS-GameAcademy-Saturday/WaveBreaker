@@ -16,7 +16,8 @@ MonoBehaviour:
   thumbnail: {fileID: -4306913896306734227, guid: 65f43ea13e34c17439b3f5af2aa1c4da, type: 3}
   description: "\uB370\uBAAC \uB5BC\uAC00 \uBC00\uB824\uC628\uB2E4"
   waves: {fileID: 11400000, guid: 56a8292fad8a03f40bef3e87bdb60c67, type: 2}
-  groundTile: {fileID: 21300000, guid: a07735877a3bd644094331b137b71878, type: 3}
+  groundTiles:
+  - {fileID: 11400000, guid: 2e00748cc4924de42a59e142923a3df8, type: 2}
   groundTint: {r: 0.92, g: 0.9, b: 0.86, a: 1}
   decorSprites:
   - {fileID: 21300152, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}
@@ -27,6 +28,6 @@ MonoBehaviour:
   - {fileID: 21300106, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}
   - {fileID: 21300108, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}
   - {fileID: 21300110, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}
-  decorPerTile: 12
+  decorPercent: 7
   decorTint: {r: 0.95, g: 0.93, b: 0.9, a: 1}
   surviveSeconds: 480

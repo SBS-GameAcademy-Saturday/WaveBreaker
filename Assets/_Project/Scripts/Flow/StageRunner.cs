@@ -6,7 +6,7 @@ public class StageRunner : MonoBehaviour
 {
     [SerializeField] private StageData fallback;   // 직접 Game 씬을 열었을 때 쓸 것
     [SerializeField] private WaveManager waves;
-    [SerializeField] private SpriteRenderer[] groundTiles;
+    [SerializeField] private InfiniteTilemapGround ground;
 
     private StageData stage;
     private bool ended;
@@ -19,46 +19,12 @@ public class StageRunner : MonoBehaviour
 
         if (stage == null) return;
 
-        if (stage.groundTile != null)
-            foreach (var t in groundTiles)
-            {
-                if (t == null) continue;
-                t.sprite = stage.groundTile;
-                t.color = stage.groundTint;
-            }
-
-        Decorate();
+        // 바닥과 장식은 타일맵 쪽이 전부 맡는다.
+        if (ground != null) ground.Setup(stage);
 
         if (waves != null && stage.waves != null) waves.Begin(stage.waves);
 
         Debug.Log($"스테이지 시작 — {stage.title} ({stage.surviveSeconds:F0}초)");
-    }
-
-    // 🔑 장식을 **타일의 자식**으로 붙인다. 무한 맵이 타일을 반대편으로 옮길 때
-    //    장식도 같이 따라가서, 돌아다녀도 늘 뭔가 깔려 있는 것처럼 보인다.
-    private void Decorate()
-    {
-        if (stage.decorSprites == null || stage.decorSprites.Length == 0) return;
-
-        foreach (var tile in groundTiles)
-        {
-            if (tile == null) continue;
-
-            float half = tile.size.x * 0.5f;
-
-            for (int i = 0; i < stage.decorPerTile; i++)
-            {
-                var go = new GameObject("Decor");
-                go.transform.SetParent(tile.transform, false);
-                go.transform.localPosition = new Vector3(
-                    Random.Range(-half, half), Random.Range(-half, half), 0f);
-
-                var sr = go.AddComponent<SpriteRenderer>();
-                sr.sprite = stage.decorSprites[Random.Range(0, stage.decorSprites.Length)];
-                sr.color = stage.decorTint;
-                sr.sortingOrder = -5;        // 바닥(-10) 위, 캐릭터(9) 아래
-            }
-        }
     }
 
     private void Update()
