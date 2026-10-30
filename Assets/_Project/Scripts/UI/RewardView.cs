@@ -18,6 +18,7 @@ public class RewardView : MonoBehaviour
     [SerializeField] private TMP_Text[] cardTitles = new TMP_Text[3];
     [SerializeField] private TMP_Text[] cardDescs = new TMP_Text[3];
     [SerializeField] private Image[] cardIcons = new Image[3];
+    [SerializeField] private TMP_Text[] cardLabels = new TMP_Text[3];
 
     [Header("풀")]
     [SerializeField] private WeaponData[] allWeapons;
@@ -50,7 +51,7 @@ public class RewardView : MonoBehaviour
 
     private struct Option
     {
-        public string title, desc;
+        public string title, desc, kind;
         public Sprite icon;
         public System.Action apply;
     }
@@ -73,6 +74,7 @@ public class RewardView : MonoBehaviour
             if (cardTitles[i] != null) cardTitles[i].text = shown[i].title;
             if (cardDescs[i] != null) cardDescs[i].text = shown[i].desc;
             if (cardIcons[i] != null && shown[i].icon != null) cardIcons[i].sprite = shown[i].icon;
+            if (i < cardLabels.Length && cardLabels[i] != null) cardLabels[i].text = shown[i].kind;
 
             cardButtons[i].onClick.RemoveAllListeners();
             cardButtons[i].onClick.AddListener(() => Choose(k));
@@ -95,7 +97,8 @@ public class RewardView : MonoBehaviour
             if (f == null || !f.CanMake(inv)) continue;
             var cap = f;
             list.Add(new Option {
-                title = $"★ {cap.result.title}",
+                title = $"{cap.result.title}",
+                kind  = "조합",
                 desc  = cap.description,
                 icon  = cap.result.icon,
                 apply = () => inv.Fuse(cap) });
@@ -112,6 +115,7 @@ public class RewardView : MonoBehaviour
                 if (inv.IsFull) continue;
                 list.Add(new Option {
                     title = cap.title,
+                    kind  = "새 무기",
                     desc  = "새 무기를 얻는다",
                     icon  = cap.icon,
                     apply = () => inv.Acquire(cap) });
@@ -121,6 +125,7 @@ public class RewardView : MonoBehaviour
                 int next = inv.LevelOf(cap) + 1;
                 list.Add(new Option {
                     title = $"{cap.title} Lv.{next}",
+                    kind  = "강화",
                     desc  = "무기를 강화한다",
                     icon  = cap.icon,
                     apply = () => inv.LevelUp(cap) });
@@ -134,6 +139,7 @@ public class RewardView : MonoBehaviour
             var cap = s;
             list.Add(new Option {
                 title = cap.title,
+                kind  = "몸",
                 desc  = cap.description,
                 icon  = cap.icon,
                 apply = () => ApplyStat(cap) });
