@@ -120,15 +120,23 @@ public class RewardView : MonoBehaviour
                     icon  = cap.icon,
                     apply = () => inv.Acquire(cap) });
             }
-            else if (!inv.IsMax(cap))
+            else
             {
-                int next = inv.LevelOf(cap) + 1;
-                list.Add(new Option {
-                    title = $"{cap.title} Lv.{next}",
-                    kind  = "강화",
-                    desc  = "무기를 강화한다",
-                    icon  = cap.icon,
-                    apply = () => inv.LevelUp(cap) });
+                // 🔑 강화는 갈래마다 한 장씩. 피해를 올릴지 개수를 늘릴지 고르게 한다.
+                for (int pi = 0; pi < cap.upgrades.Length; pi++)
+                {
+                    if (!inv.CanUpgrade(cap, pi)) continue;
+
+                    int path = pi;
+                    WeaponUpgrade u = cap.upgrades[pi];
+                    string delta = inv.PreviewUpgrade(cap, pi);
+                    list.Add(new Option {
+                        title = $"{cap.title} · {u.title}",
+                        kind  = "강화",
+                        desc  = string.IsNullOrEmpty(delta) ? u.desc : u.desc + "  ·  " + delta,
+                        icon  = u.icon != null ? u.icon : cap.icon,
+                        apply = () => inv.Upgrade(cap, path) });
+                }
             }
         }
 

@@ -52,13 +52,26 @@ public class WeaponInventory : MonoBehaviour
         Debug.Log($"무기 획득 — {d.title}");
     }
 
-    public void LevelUp(WeaponData d)
+    // 강화는 갈래를 골라서 한다. path 는 WeaponData.upgrades 의 몇 번째인가.
+    public bool CanUpgrade(WeaponData d, int path)
     {
         Weapon w = owned.FirstOrDefault(x => x.Data == d);
-        if (w == null || w.IsMax) return;
+        return w != null && w.CanTake(path);
+    }
 
-        w.LevelUp();
-        Debug.Log($"무기 강화 — {d.title} Lv.{w.Level}");
+    public string PreviewUpgrade(WeaponData d, int path)
+    {
+        Weapon w = owned.FirstOrDefault(x => x.Data == d);
+        return w != null ? w.Preview(path) : "";
+    }
+
+    public void Upgrade(WeaponData d, int path)
+    {
+        Weapon w = owned.FirstOrDefault(x => x.Data == d);
+        if (w == null || !w.CanTake(path)) return;
+
+        w.Take(path);
+        Debug.Log($"무기 강화 — {d.title} · {d.upgrades[path].title} (Lv.{w.Level})");
     }
 
     // 🔑 조합 — 재료 둘을 지우고 결과 하나를 준다.

@@ -21,8 +21,13 @@ public class GunWeapon : Weapon
         for (int i = 0; i < Stat.count; i++)
         {
             Vector2 d = Quaternion.Euler(0f, 0f, start + spread * i) * dir;
+
+            // 🚨 화살 그림은 **오른쪽을 향해** 그려져 있다.
+            //    위쪽 기준으로 돌리면 날아가는 방향과 90도 어긋난다.
+            float ang = Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
+
             var go = Instantiate(data.projectilePrefab, transform.position,
-                                 Quaternion.FromToRotation(Vector3.up, d));
+                                 Quaternion.Euler(0f, 0f, ang));
             if (go.TryGetComponent(out Projectile p)) p.Setup(Stat.damage, d, Stat.speed);
         }
     }

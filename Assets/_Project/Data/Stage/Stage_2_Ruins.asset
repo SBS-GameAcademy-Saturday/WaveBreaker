@@ -18,6 +18,17 @@ MonoBehaviour:
   waves: {fileID: 11400000, guid: 56a8292fad8a03f40bef3e87bdb60c67, type: 2}
   groundTiles:
   - {fileID: 11400000, guid: 2e00748cc4924de42a59e142923a3df8, type: 2}
+  - {fileID: 11400000, guid: 2e00748cc4924de42a59e142923a3df8, type: 2}
+  - {fileID: 11400000, guid: 2e00748cc4924de42a59e142923a3df8, type: 2}
+  - {fileID: 11400000, guid: 2e00748cc4924de42a59e142923a3df8, type: 2}
+  - {fileID: 11400000, guid: 2e00748cc4924de42a59e142923a3df8, type: 2}
+  - {fileID: 11400000, guid: 2e00748cc4924de42a59e142923a3df8, type: 2}
+  - {fileID: 11400000, guid: 2e00748cc4924de42a59e142923a3df8, type: 2}
+  - {fileID: 11400000, guid: 2e00748cc4924de42a59e142923a3df8, type: 2}
+  - {fileID: 11400000, guid: eef9691b1631014439dae500aba2926f, type: 2}
+  - {fileID: 11400000, guid: a959b762bdf49ed4ebbf171ad48d89df, type: 2}
+  - {fileID: 11400000, guid: 08729fe3592aecd4d952bd7f066c45bb, type: 2}
+  - {fileID: 11400000, guid: ff83bcee22058b444908a98277d998c1, type: 2}
   groundTint: {r: 0.92, g: 0.9, b: 0.86, a: 1}
   decorSprites:
   - {fileID: 21300152, guid: 29c9cded5e558164aaf8c9bf08aa1510, type: 3}

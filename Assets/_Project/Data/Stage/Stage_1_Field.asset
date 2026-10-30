@@ -18,6 +18,21 @@ MonoBehaviour:
   waves: {fileID: 11400000, guid: 2bcc992d5e141d84dbe96baf18cb4dcc, type: 2}
   groundTiles:
   - {fileID: 11400000, guid: 7b6e368fc0ee90b4ca09e0f71344589a, type: 2}
+  - {fileID: 11400000, guid: 7b6e368fc0ee90b4ca09e0f71344589a, type: 2}
+  - {fileID: 11400000, guid: 7b6e368fc0ee90b4ca09e0f71344589a, type: 2}
+  - {fileID: 11400000, guid: 7b6e368fc0ee90b4ca09e0f71344589a, type: 2}
+  - {fileID: 11400000, guid: 7b6e368fc0ee90b4ca09e0f71344589a, type: 2}
+  - {fileID: 11400000, guid: 7b6e368fc0ee90b4ca09e0f71344589a, type: 2}
+  - {fileID: 11400000, guid: 7b6e368fc0ee90b4ca09e0f71344589a, type: 2}
+  - {fileID: 11400000, guid: 7b6e368fc0ee90b4ca09e0f71344589a, type: 2}
+  - {fileID: 11400000, guid: 7b6e368fc0ee90b4ca09e0f71344589a, type: 2}
+  - {fileID: 11400000, guid: 7b6e368fc0ee90b4ca09e0f71344589a, type: 2}
+  - {fileID: 11400000, guid: 7b6e368fc0ee90b4ca09e0f71344589a, type: 2}
+  - {fileID: 11400000, guid: 7b6e368fc0ee90b4ca09e0f71344589a, type: 2}
+  - {fileID: 11400000, guid: 4c8943e2da4e8964bb3eb170c1aaba9f, type: 2}
+  - {fileID: 11400000, guid: 78357bde4dab3464886f927c077dc765, type: 2}
+  - {fileID: 11400000, guid: a9932c56762082e42ae3a877f0c79f7d, type: 2}
+  - {fileID: 11400000, guid: 2c670dc28da29e54da4c78aac2caebe8, type: 2}
   groundTint: {r: 1, g: 1, b: 1, a: 1}
   decorSprites:
   - {fileID: 21300136, guid: c3a40e1c46727b94e959990527f8e7fa, type: 3}
