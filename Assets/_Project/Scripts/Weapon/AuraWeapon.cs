@@ -14,7 +14,8 @@ public class AuraWeapon : Weapon
             go.transform.SetParent(transform, false);
             field = go.AddComponent<SpriteRenderer>();
             field.sprite = data.bodySprite;
-            field.color = new Color(1f, 0.93f, 0.62f, 0.55f);   // 금빛 반투명
+            // 그림이 제 색을 갖고 있으면 틴트는 건드리지 않는다. 투명도만 준다.
+            field.color = new Color(1f, 1f, 1f, 0.75f);
             field.sortingOrder = -1;
 
             if (data.bodyAnimator != null)

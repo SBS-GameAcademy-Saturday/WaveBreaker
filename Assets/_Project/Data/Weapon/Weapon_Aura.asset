@@ -16,9 +16,9 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: e41b3025714804572aad0623c94689cd, type: 3}
   kind: 2
   projectilePrefab: {fileID: 0}
-  bodySprite: {fileID: -5946680925579059085, guid: 81e3e3d809bbc074d9282f03342d0d95, type: 3}
+  bodySprite: {fileID: 5907715444266813459, guid: a1610e20aa9805048bf5962f31ff1dc6, type: 3}
   bodyAnimator: {fileID: 9100000, guid: a8c2c07b580ecf3498e08441e20f5366, type: 2}
-  bodyFillSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  bodyFillSprite: {fileID: 0}
   baseStat:
     damage: 2
     interval: 0.6
