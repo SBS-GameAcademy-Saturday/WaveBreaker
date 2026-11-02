@@ -41,6 +41,9 @@ public class Enemy : MonoBehaviour, IDamageable
     public EnemyData Data => data;
     public bool IsBoss => data != null && data.isBoss;
 
+    // 죽는 그림을 보여 주는 0.45초 동안은 아직 켜져 있다. 무기가 노리면 헛방이다.
+    public bool IsAlive => !dead;
+
     // 체력바가 쓴다. 지금 체력이 최대 대비 얼마인가.
     public int MaxHealth => Mathf.Max(1, Mathf.RoundToInt(maxHealth * healthScale));
     public float HealthRatio => Mathf.Clamp01((float)currentHealth / MaxHealth);

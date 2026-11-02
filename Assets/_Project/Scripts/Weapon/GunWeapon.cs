@@ -36,32 +36,11 @@ public class GunWeapon : Weapon
         }
     }
 
-    // 🔑 화면 밖 적은 고르지 않는다. 보이지도 않는 쪽으로 총알이 날아가면
-    //    플레이어는 총이 헛방을 쏜다고 느낀다.
+    // 사거리 안 + 화면 안 적만. 고르는 일은 Weapon 이 맡는다.
     private void CollectTargets()
     {
         targets.Clear();
-
-        Camera cam = Camera.main;
-        Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, Stat.range);
-
-        foreach (Collider2D h in hits)
-        {
-            if (!h.CompareTag("Enemy")) continue;
-
-            if (cam != null)
-            {
-                Vector3 v = cam.WorldToViewportPoint(h.transform.position);
-                if (v.z < 0f || v.x < 0f || v.x > 1f || v.y < 0f || v.y > 1f) continue;
-            }
-
-            targets.Add(h.transform);
-        }
-
-        // 가까운 쪽부터 맡는다
-        Vector2 me = transform.position;
-        targets.Sort((a, b) =>
-            ((Vector2)a.position - me).sqrMagnitude.CompareTo(((Vector2)b.position - me).sqrMagnitude));
+        targets.AddRange(VisibleEnemies(Stat.range));
     }
 
     private void Fire(Vector2 dir)

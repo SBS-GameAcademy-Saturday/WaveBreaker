@@ -42,8 +42,10 @@ public class WeaponInventory : MonoBehaviour
         Weapon w = d.kind switch
         {
             WeaponKind.Orbit => go.AddComponent<OrbitWeapon>(),
-            WeaponKind.Gun   => go.AddComponent<GunWeapon>(),
-            _                => go.AddComponent<AuraWeapon>(),
+            WeaponKind.Gun       => go.AddComponent<GunWeapon>(),
+            WeaponKind.Lightning => go.AddComponent<LightningWeapon>(),
+            WeaponKind.Fireball  => go.AddComponent<FireballWeapon>(),
+            _                    => go.AddComponent<AuraWeapon>(),
         };
 
         w.Setup(d, transform);

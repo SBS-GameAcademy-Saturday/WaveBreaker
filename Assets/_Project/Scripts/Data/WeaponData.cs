@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum WeaponKind { Orbit, Gun, Aura }
+public enum WeaponKind { Orbit, Gun, Aura, Lightning, Fireball }
 
 // 무기 한 종류.
 //
@@ -16,7 +16,8 @@ public class WeaponData : ScriptableObject
     public WeaponKind kind;
 
     [Header("그림")]
-    public GameObject projectilePrefab;   // 총알 · 칼날 등
+    public GameObject projectilePrefab;   // 총알 · 칼날 · 번개 · 화염구
+    public GameObject hitFxPrefab;        // 맞은 자리에 터지는 그림 (번개 낙뢰점, 폭발)
     public Sprite bodySprite;
 
     // 🔑 장판처럼 계속 움직여야 하는 그림은 컨트롤러를 끼운다.

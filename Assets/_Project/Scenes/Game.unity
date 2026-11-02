@@ -1524,6 +1524,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 4a7ea384ac9f23641881f28c6920c92e, type: 2}
   - {fileID: 11400000, guid: 2d1fc3668344e8c479b805edcccd50e7, type: 2}
   - {fileID: 11400000, guid: e9dba066b25f8794ea231cb576c51b5f, type: 2}
+  - {fileID: 11400000, guid: dddbb18eafcc82c449c8451081cbf3b5, type: 2}
+  - {fileID: 11400000, guid: 8c2becfc1a45f6644b86b4ff27dbc85d, type: 2}
   allFusions:
   - {fileID: 11400000, guid: 0132918a6b2ab9b4593beefd345ad902, type: 2}
   allStats:
