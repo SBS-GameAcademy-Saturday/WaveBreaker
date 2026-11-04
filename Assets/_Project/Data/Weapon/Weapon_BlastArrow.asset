@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31d9c28dd39849d489ac5fec220446cf, type: 3}
+  m_Name: Weapon_BlastArrow
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  title: "\uD3ED\uC5FC \uD654\uC0B4"
+  icon: {fileID: 21300000, guid: 843dce061672f4f4bafb371f7c209990, type: 3}
+  kind: 1
+  projectilePrefab: {fileID: 4494842469280748366, guid: 2bfd5474d173ef04c862a75315e8ae8b, type: 3}
+  hitFxPrefab: {fileID: 5526371947049972003, guid: e6d03acfa36d5a14dba6ca6090347aba, type: 3}
+  bounces: 3
+  blastRadius: 1.1
+  bodySprite: {fileID: 0}
+  bodyAnimator: {fileID: 0}
+  bodyFillSprite: {fileID: 0}
+  baseStat:
+    damage: 10
+    interval: 0.7
+    range: 8
+    count: 4
+    speed: 20
+  steps:
+  - title: "\uD654\uC0B4 +1"
+    damage: 0
+    count: 1
+    range: 0
+    interval: 0
+    speed: 0
+  - title: "\uD53C\uD574 +3"
+    damage: 3
+    count: 0
+    range: 0
+    interval: 0
+    speed: 0
+  - title: "\uD654\uC0B4 +1"
+    damage: 0
+    count: 1
+    range: 0
+    interval: 0
+    speed: 0
+  - title: "\uD53C\uD574 +3"
+    damage: 3
+    count: 0
+    range: 0
+    interval: 0
+    speed: 0
+  - title: "\uD654\uC0B4 +1"
+    damage: 0
+    count: 1
+    range: 0
+    interval: 0
+    speed: 0
+  - title: "\uD53C\uD574 +4"
+    damage: 4
+    count: 0
+    range: 0
+    interval: 0
+    speed: 0

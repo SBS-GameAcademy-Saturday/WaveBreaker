@@ -1528,6 +1528,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8c2becfc1a45f6644b86b4ff27dbc85d, type: 2}
   allFusions:
   - {fileID: 11400000, guid: 0132918a6b2ab9b4593beefd345ad902, type: 2}
+  - {fileID: 11400000, guid: 80b0b2262aab952428cb6f50ce508885, type: 2}
+  - {fileID: 11400000, guid: 7fee06f0491978b45b5bee286088c97e, type: 2}
+  - {fileID: 11400000, guid: e117ffe4ca3691f4abc0ca828dd4f9e7, type: 2}
   allStats:
   - {fileID: 11400000, guid: a00fdc96237b3cd44ba2bc99c63ce7a5, type: 2}
   - {fileID: 11400000, guid: ef59e30cdcaf47f48aca4bc54fe4e511, type: 2}

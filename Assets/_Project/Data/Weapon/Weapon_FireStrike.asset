@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31d9c28dd39849d489ac5fec220446cf, type: 3}
+  m_Name: Weapon_FireStrike
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponData
+  title: "\uBD88\uBCBC\uB77D"
+  icon: {fileID: 21300000, guid: 4ed5df4c182f047428f5aee00b487b4f, type: 3}
+  kind: 3
+  projectilePrefab: {fileID: 280901724487172363, guid: 5d3d241c20e2ea144b718f500e460a1b, type: 3}
+  hitFxPrefab: {fileID: 5526371947049972003, guid: e6d03acfa36d5a14dba6ca6090347aba, type: 3}
+  bounces: 0
+  blastRadius: 0
+  bodySprite: {fileID: 0}
+  bodyAnimator: {fileID: 0}
+  bodyFillSprite: {fileID: 0}
+  baseStat:
+    damage: 30
+    interval: 1.2
+    range: 2.2
+    count: 6
+    speed: 0
+  steps:
+  - title: "\uBCBC\uB77D +1"
+    damage: 0
+    count: 1
+    range: 0
+    interval: 0
+    speed: 0
+  - title: "\uD53C\uD574 + \xB7 \uBC94\uC704 +"
+    damage: 6
+    count: 0
+    range: 0.2
+    interval: 0
+    speed: 0
+  - title: "\uBCBC\uB77D +1"
+    damage: 0
+    count: 1
+    range: 0
+    interval: 0
+    speed: 0
+  - title: "\uD53C\uD574 + \xB7 \uBC94\uC704 +"
+    damage: 6
+    count: 0
+    range: 0.2
+    interval: 0
+    speed: 0
+  - title: "\uBCBC\uB77D +1"
+    damage: 0
+    count: 1
+    range: 0
+    interval: 0
+    speed: 0
+  - title: "\uD53C\uD574 + \xB7 \uBC94\uC704 +"
+    damage: 8
+    count: 0
+    range: 0.3
+    interval: 0
+    speed: 0

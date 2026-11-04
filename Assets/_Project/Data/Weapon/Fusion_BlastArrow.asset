@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a88038395c0efd42bfd95f947728855, type: 3}
+  m_Name: Fusion_BlastArrow
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponFusionData
+  materialA: {fileID: 11400000, guid: 2d1fc3668344e8c479b805edcccd50e7, type: 2}
+  materialB: {fileID: 11400000, guid: 8c2becfc1a45f6644b86b4ff27dbc85d, type: 2}
+  result: {fileID: 11400000, guid: 6b42e45d3ce46784cb8ce2dd59242f0f, type: 2}
+  description: "\uC720\uB3C4 \uD654\uC0B4 + \uD654\uC5FC\uAD6C \u2014 \uAFF0\uB294 \uB188\uB9C8\uB2E4 \uD130\uC9C4\uB2E4"

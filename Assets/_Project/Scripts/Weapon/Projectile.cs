@@ -67,15 +67,14 @@ public class Projectile : MonoBehaviour
 
         if (blastRadius > 0f)
         {
-            // 🚨 한 프레임에 여러 적과 겹치면 Enter 가 여러 번 온다. 한 번만 터진다.
-            spent = true;
+            // 터질 때는 맞은 놈 하나가 아니라 반경 안을 전부 때린다
             Area.Hit(transform.position, blastRadius, damage);
             Area.SpawnFx(blastFx, transform.position, blastRadius);
-            Destroy(gameObject);
-            return;
         }
-
-        if (other.TryGetComponent(out IDamageable t)) t.TakeDamage(damage);
+        else if (other.TryGetComponent(out IDamageable t))
+        {
+            t.TakeDamage(damage);
+        }
         hit.Add(other.transform);
 
         // 튕길 힘이 남았으면 아직 안 맞은 가까운 적에게 간다

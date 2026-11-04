@@ -46,7 +46,7 @@ public class GunWeapon : Weapon
         var go = Instantiate(data.projectilePrefab, transform.position, Quaternion.Euler(0f, 0f, ang));
         if (!go.TryGetComponent(out Projectile p)) return;
 
-        p.Setup(Stat.damage, dir, Stat.speed);
+        p.Setup(Stat.damage, dir, Stat.speed, data.blastRadius, data.hitFxPrefab);   // 폭염 화살이면 맞을 때마다 터진다
         p.Homing(target, data.bounces, bounceRange);
     }
 }
