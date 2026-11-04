@@ -15,4 +15,4 @@ MonoBehaviour:
   materialA: {fileID: 11400000, guid: 4a7ea384ac9f23641881f28c6920c92e, type: 2}
   materialB: {fileID: 11400000, guid: 2d1fc3668344e8c479b805edcccd50e7, type: 2}
   result: {fileID: 11400000, guid: 8baa579d59bfef44fbab2cad4057bc4e, type: 2}
-  description: "\uD68C\uC804 \uCE7C + \uC790\uB3D9 \uCD1D \u2014 \uCE7C\uB0A0\uC774 \uC0AC\uBC29\uC73C\uB85C \uB0A0\uC544\uAC04\uB2E4"
+  description: "\uD68C\uC804 \uCE7C + \uC720\uB3C4 \uD654\uC0B4 \u2014 \uCE7C\uB0A0\uC774 \uC0AC\uBC29\uC73C\uB85C \uB0A0\uC544\uAC04\uB2E4"

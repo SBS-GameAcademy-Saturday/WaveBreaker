@@ -12,52 +12,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31d9c28dd39849d489ac5fec220446cf, type: 3}
   m_Name: Weapon_Gun
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
-  title: "\uC790\uB3D9 \uCD1D"
+  title: "\uC720\uB3C4 \uD654\uC0B4"
   icon: {fileID: 21300000, guid: 90eeefb956d154c4392b6885a8ec1284, type: 3}
   kind: 1
   projectilePrefab: {fileID: 7041926865975445665, guid: 9a74f6d49ac780346abe425c7bee9821, type: 3}
+  hitFxPrefab: {fileID: 0}
+  bounces: 2
   bodySprite: {fileID: 0}
   bodyAnimator: {fileID: 0}
   bodyFillSprite: {fileID: 0}
   baseStat:
-    damage: 4
+    damage: 3
     interval: 0.8
     range: 7
     count: 1
-    speed: 11
+    speed: 20
   steps:
-  - title: "\uD0C4 +1"
+  - title: "\uD654\uC0B4 +1"
     damage: 0
     count: 1
     range: 0
     interval: 0
     speed: 0
-  - title: "\uD53C\uD574 +3"
-    damage: 3
+  - title: "\uD53C\uD574 +2"
+    damage: 2
     count: 0
     range: 0
     interval: 0
     speed: 0
-  - title: "\uD0C4 +1"
+  - title: "\uD654\uC0B4 +1"
     damage: 0
     count: 1
     range: 0
     interval: 0
     speed: 0
-  - title: "\uD53C\uD574 +3"
-    damage: 3
+  - title: "\uD53C\uD574 +2"
+    damage: 2
     count: 0
     range: 0
     interval: 0
     speed: 0
-  - title: "\uD0C4 +1"
+  - title: "\uD654\uC0B4 +1"
     damage: 0
     count: 1
     range: 0
     interval: 0
     speed: 0
-  - title: "\uD53C\uD574 +4"
-    damage: 4
+  - title: "\uD53C\uD574 +2"
+    damage: 2
     count: 0
     range: 0
     interval: 0

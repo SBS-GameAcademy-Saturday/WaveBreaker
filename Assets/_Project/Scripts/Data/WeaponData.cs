@@ -18,6 +18,7 @@ public class WeaponData : ScriptableObject
     [Header("그림")]
     public GameObject projectilePrefab;   // 총알 · 칼날 · 번개 · 화염구
     public GameObject hitFxPrefab;        // 맞은 자리에 터지는 그림 (번개 낙뢰점, 폭발)
+    public int bounces;                   // 맞힌 뒤 다른 적에게 몇 번 더 튕기나 (유도 화살)
     public Sprite bodySprite;
 
     // 🔑 장판처럼 계속 움직여야 하는 그림은 컨트롤러를 끼운다.

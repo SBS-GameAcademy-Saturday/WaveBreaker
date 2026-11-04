@@ -1,19 +1,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// 자동 총 — 탄이 늘면 **서로 다른 적**을 하나씩 맡는다.
+// 유도 화살 — 표적에게 곧장 날아가 맞히고, 가까운 다른 적에게 두 번 더 튕긴다.
 //
-// 🔑 탄 수만큼 같은 적에게 몰아 쏘면, 이미 죽은 적에게 남은 탄이 낭비된다.
-//    탄이 늘어난 보람을 느끼려면 한 발씩 다른 적을 맡아야 한다.
+// 🔑 화염구와 겹치지 않게 성격을 갈랐다.
+//    화염구 : 쏜 방향 그대로, 맞으면 크게 터진다 — 한 방이 세다.
+//    유도 화살 : 놓치지 않고 여러 놈을 꿰지만 — 한 대는 약하다.
+//
+// 🔑 화살이 여러 발이면 **서로 다른 적**을 하나씩 맡는다.
 public class GunWeapon : Weapon
 {
+    [SerializeField] private float bounceRange = 6f;   // 다음 적을 찾는 반경
+
     private readonly List<Transform> targets = new List<Transform>();
 
     protected override void Tick()
     {
         if (Time.time < nextFire) return;
 
-        CollectTargets();
+        targets.Clear();
+        targets.AddRange(VisibleEnemies(Stat.range));
         if (targets.Count == 0) return;
 
         nextFire = Time.time + Stat.interval;
@@ -23,33 +29,24 @@ public class GunWeapon : Weapon
             Transform t = targets[i % targets.Count];
             Vector2 dir = ((Vector2)t.position - (Vector2)transform.position).normalized;
 
-            // 적보다 탄이 많으면 남는 탄은 같은 적을 다시 맡는다.
-            // 겹쳐 날아가면 한 발처럼 보이니 조금씩 비껴 쏜다.
+            // 적보다 화살이 많으면 남는 화살은 같은 적을 맡되 조금 비껴 나간다
             int again = i / targets.Count;
             if (again > 0)
-            {
-                float off = 9f * again * (i % 2 == 0 ? 1f : -1f);
-                dir = Quaternion.Euler(0f, 0f, off) * dir;
-            }
+                dir = Quaternion.Euler(0f, 0f, 20f * again * (i % 2 == 0 ? 1f : -1f)) * dir;
 
-            Fire(dir);
+            Fire(dir, t);
         }
     }
 
-    // 사거리 안 + 화면 안 적만. 고르는 일은 Weapon 이 맡는다.
-    private void CollectTargets()
-    {
-        targets.Clear();
-        targets.AddRange(VisibleEnemies(Stat.range));
-    }
-
-    private void Fire(Vector2 dir)
+    private void Fire(Vector2 dir, Transform target)
     {
         // 🚨 화살 그림은 오른쪽을 향해 그려져 있다.
-        //    위쪽 기준으로 돌리면 날아가는 방향과 90도 어긋난다.
         float ang = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
         var go = Instantiate(data.projectilePrefab, transform.position, Quaternion.Euler(0f, 0f, ang));
-        if (go.TryGetComponent(out Projectile p)) p.Setup(Stat.damage, dir, Stat.speed);
+        if (!go.TryGetComponent(out Projectile p)) return;
+
+        p.Setup(Stat.damage, dir, Stat.speed);
+        p.Homing(target, data.bounces, bounceRange);
     }
 }
