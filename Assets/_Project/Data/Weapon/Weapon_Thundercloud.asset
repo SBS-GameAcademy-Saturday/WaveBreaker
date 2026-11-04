@@ -22,6 +22,7 @@ MonoBehaviour:
   bodySprite: {fileID: -3625120870064366475, guid: a1610e20aa9805048bf5962f31ff1dc6, type: 3}
   bodyAnimator: {fileID: 9100000, guid: b2656faf7caa06e41b01af06174d0921, type: 2}
   bodyFillSprite: {fileID: 0}
+  bodyAlpha: 0.35
   baseStat:
     damage: 12
     interval: 0.4

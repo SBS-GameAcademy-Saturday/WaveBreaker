@@ -25,6 +25,7 @@ public class WeaponData : ScriptableObject
     // 🔑 장판처럼 계속 움직여야 하는 그림은 컨트롤러를 끼운다.
     public RuntimeAnimatorController bodyAnimator;
     public Sprite bodyFillSprite;
+    [Range(0f, 1f)] public float bodyAlpha = 0.75f;   // 장판이 진하면 그 위의 적이 가려진다
 
     [Header("Lv.1 수치")]
     public WeaponLevel baseStat = new WeaponLevel();
