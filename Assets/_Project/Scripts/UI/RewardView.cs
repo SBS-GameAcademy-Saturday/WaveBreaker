@@ -54,6 +54,7 @@ public class RewardView : MonoBehaviour
         public string title, desc, kind;
         public Sprite icon;
         public System.Action apply;
+        public bool pinned;      // 섞지 않고 반드시 보여 준다 (조합)
     }
 
     public void Open()
@@ -61,7 +62,13 @@ public class RewardView : MonoBehaviour
         if (panel == null || inv == null) return;
 
         shown.Clear();
-        shown.AddRange(Build().OrderBy(_ => Random.value).Take(3));
+        // 🚨 전부 한데 섞어 세 장만 뽑으면 조합 카드가 운 나쁘게 빠진다.
+        //    두 무기를 MAX 까지 키운 보상이 안 보이면 그동안의 선택이 헛수고가 된다.
+        //    조합은 먼저 자리를 잡고, 남는 칸만 나머지를 섞어 채운다.
+        List<Option> all = Build();
+        shown.AddRange(all.Where(o => o.pinned)
+                          .Concat(all.Where(o => !o.pinned).OrderBy(_ => Random.value))
+                          .Take(3));
         if (shown.Count == 0) return;
 
         for (int i = 0; i < cardButtons.Length; i++)
@@ -101,13 +108,23 @@ public class RewardView : MonoBehaviour
                 kind  = "조합",
                 desc  = cap.description,
                 icon  = cap.result.icon,
+                pinned = true,
                 apply = () => inv.Fuse(cap) });
         }
 
         // ② 무기 — 없으면 획득, 있으면 강화 (MAX 면 안 보여준다)
+        //
+        // 🚨 allWeapons 만 돌면 **조합으로 얻은 무기**(칼날 폭풍)가 빠진다.
+        //    보상으로 나오면 안 되니 목록에는 없지만, 손에 들었으면 키울 수는 있어야 한다.
+        //    그래서 지금 가진 무기를 뒤에 덧붙인다.
+        var pool = new List<WeaponData>();
         foreach (var w in allWeapons ?? new WeaponData[0])
+            if (w != null && !pool.Contains(w)) pool.Add(w);
+        foreach (var owned in inv.Owned)
+            if (owned != null && owned.Data != null && !pool.Contains(owned.Data)) pool.Add(owned.Data);
+
+        foreach (var w in pool)
         {
-            if (w == null) continue;
             var cap = w;
 
             if (!inv.Has(cap))
