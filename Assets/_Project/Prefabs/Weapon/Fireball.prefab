@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 8
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -6680600123250038887, guid: d246e7a3110435f4d9077adaa816b0c8, type: 3}
+  m_Sprite: {fileID: 3602626225830260529, guid: cf4d640051849ec47afc35a85efab4e8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -158,7 +158,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.35
+  m_Radius: 0.4
 --- !u!114 &7050325916678781836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,11 +185,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpriteFlipbook
   frames:
-  - {fileID: -6680600123250038887, guid: d246e7a3110435f4d9077adaa816b0c8, type: 3}
-  - {fileID: 2306209342628697437, guid: d246e7a3110435f4d9077adaa816b0c8, type: 3}
-  - {fileID: -3652626752229484118, guid: d246e7a3110435f4d9077adaa816b0c8, type: 3}
-  - {fileID: 580709243532262621, guid: d246e7a3110435f4d9077adaa816b0c8, type: 3}
-  - {fileID: -3652626752229484118, guid: d246e7a3110435f4d9077adaa816b0c8, type: 3}
-  - {fileID: 2306209342628697437, guid: d246e7a3110435f4d9077adaa816b0c8, type: 3}
+  - {fileID: 3602626225830260529, guid: cf4d640051849ec47afc35a85efab4e8, type: 3}
+  - {fileID: 3709422588319566935, guid: cf4d640051849ec47afc35a85efab4e8, type: 3}
+  - {fileID: 8821518676125540585, guid: cf4d640051849ec47afc35a85efab4e8, type: 3}
+  - {fileID: 1781658898566652511, guid: cf4d640051849ec47afc35a85efab4e8, type: 3}
+  - {fileID: 998635646906123547, guid: cf4d640051849ec47afc35a85efab4e8, type: 3}
+  - {fileID: 956812331548149173, guid: cf4d640051849ec47afc35a85efab4e8, type: 3}
   fps: 14
   loop: 1

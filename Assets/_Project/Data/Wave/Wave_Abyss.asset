@@ -21,7 +21,7 @@ MonoBehaviour:
     interval: 0.8
     intervalMulPerMinute: 0.93
     countAddPerMinute: 0.25
-    healthAddPerMinute: 0.15
+    healthAddPerMinute: 0.3
     straight: 1
     count: 8
     burst: 1
@@ -35,7 +35,7 @@ MonoBehaviour:
     interval: 11
     intervalMulPerMinute: 0.95
     countAddPerMinute: 0.5
-    healthAddPerMinute: 0.15
+    healthAddPerMinute: 0.3
     straight: 1
     count: 12
     burst: 2
@@ -49,7 +49,7 @@ MonoBehaviour:
     interval: 3.2
     intervalMulPerMinute: 0.94
     countAddPerMinute: 0.18
-    healthAddPerMinute: 0.15
+    healthAddPerMinute: 0.3
     straight: 1
     count: 8
     burst: 1
