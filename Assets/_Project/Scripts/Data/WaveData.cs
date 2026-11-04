@@ -39,6 +39,10 @@ public class SpawnStep
     public float countAddPerMinute = 0f;      // 한 번에 몇 마리씩 더 나오는가
     public float healthAddPerMinute = 0f;     // 체력 배수가 매분 얼마씩 오르는가
 
+    // 🔑 1 이면 직선으로 오른다. 크게 줄수록 **초반엔 천천히** 오르다가 뒤에서 따라잡아,
+    //    보스가 나오는 시각에는 직선일 때와 **같은 값**에 닿는다. 끝은 그대로, 시작에 여유를.
+    [Range(1f, 3f)] public float healthCurve = 1f;
+
     [Header("Cluster 전용")]
     // 🔑 켜면 떼가 플레이어를 **쫓지 않고 스쳐 지나간다.**
     //    방향은 나올 때 한 번 정하고, 화면을 벗어나면 알아서 사라진다.

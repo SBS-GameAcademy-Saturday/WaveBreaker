@@ -18,38 +18,41 @@ MonoBehaviour:
     enemy: {fileID: 11400000, guid: 527f96d598bb6b24e816033d8cb9e733, type: 2}
     healthScale: 1
     pattern: 0
-    interval: 0.75
-    intervalMulPerMinute: 0.94
+    interval: 1.8
+    intervalMulPerMinute: 0.855
     countAddPerMinute: 0.3
     healthAddPerMinute: 0.2
+    healthCurve: 1.8
     straight: 1
     count: 8
     burst: 1
     burstGap: 1.2
     radius: 2.6
-  - startTime: 45
+  - startTime: 90
     endTime: 99999
     enemy: {fileID: 11400000, guid: b3cbe92d860ca0941b0c7243e4baa760, type: 2}
     healthScale: 1
     pattern: 1
-    interval: 12
-    intervalMulPerMinute: 0.96
+    interval: 18
+    intervalMulPerMinute: 0.895
     countAddPerMinute: 0.55
     healthAddPerMinute: 0.2
+    healthCurve: 1.8
     straight: 1
-    count: 10
+    count: 8
     burst: 2
     burstGap: 1.2
     radius: 2.6
-  - startTime: 90
+  - startTime: 150
     endTime: 99999
     enemy: {fileID: 11400000, guid: af04f93067c975545a372bbc4378a147, type: 2}
     healthScale: 1
     pattern: 0
-    interval: 3
-    intervalMulPerMinute: 0.95
+    interval: 5
+    intervalMulPerMinute: 0.9
     countAddPerMinute: 0.18
     healthAddPerMinute: 0.2
+    healthCurve: 1.8
     straight: 1
     count: 8
     burst: 1

@@ -82,7 +82,7 @@ public class WaveManager : MonoBehaviour
             float minutes = Elapsed / 60f;
             float interval = Mathf.Max(0.15f, s.interval * Mathf.Pow(s.intervalMulPerMinute, minutes));
             int extra = Mathf.FloorToInt(s.countAddPerMinute * minutes);
-            float hp = s.healthScale + s.healthAddPerMinute * minutes;
+            float hp = s.healthScale + HealthGrowth(s, minutes);
 
             if (s.pattern == SpawnPattern.Trickle)
             {
@@ -102,6 +102,15 @@ public class WaveManager : MonoBehaviour
                 yield return new WaitForSeconds(interval);
             }
         }
+    }
+
+    // 체력 배수가 지금까지 얼마나 올랐나.
+    // 보스 시각(T분)에서 직선과 같은 값이 되도록 곡선을 맞춘다: add × T × (분/T)^곡선
+    private float HealthGrowth(SpawnStep s, float minutes)
+    {
+        float T = Mathf.Max(1f, bossTime / 60f);
+        float m = Mathf.Min(minutes, T);
+        return s.healthAddPerMinute * T * Mathf.Pow(m / T, Mathf.Max(1f, s.healthCurve));
     }
 
     private IEnumerator RunFinalBoss()
